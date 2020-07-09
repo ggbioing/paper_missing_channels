@@ -1,0 +1,26 @@
+\section{Introduction}
+
+The joint modeling of multiple datasets presents important challenges when integrating data representing heterogeneous information, such as different imaging modalities and other data-types.
+Usually, subjects with missing views are discarded, yielding a severe loss of available information.
+Moreover, non overlapping feature sets among datasets, prevent the gathering of all the available information into a single, robust and generalizable joint model, accounting for the global data variability.
+
+This challenge can be addressed through the development of powerful machine learning techniques,  drawing from the domain of Transfer Learning (TL) and Meta Learning (ML).
+Transfer Learning is a well known approach to transfer model parameters from one dataset to another \citep{TL}.
+It is commonly applied to datasets with same modalities (e.g. from image to image) and in its basic form consists in taking the parameters trained on the first dataset and use them as initialization point for training a second time on a second dataset.
+Unfortunately, this often leads to a catastrophic forgetting (CF) \citep{CatastroficForgetting}, the common problem of neural networks that lose the information of the first task after training a second one.
+To address this issue, meta-learning methods such as model-agnostic meta-learning (MAML) have been proposed \citep{MAML1}.
+Thanks to this formulation, catastrophic forgetting can be addressed by training a model on a variety of learning tasks, thus enforcing the generalization through fine tuning on the new dataset on few samples only (few-shots learning).
+As a result this model can solve new learning tasks after few re-training epochs.
+Nevertheless, these approaches present scalability issues, as for example MAML requires the costly computation of Hessian vectors across dataset parameters.
+
+To overcome the limitations of these machine learning frameworks when applied to complex and heterogeneous biomedical datasets, here we propose a new method able to learn simultaneously from multiple datasets, even in the presence of non-overlapping data-types among datasets.
+By leveraging on the available common views between pairs of datasets, we learn a joint model for all the datasets.
+The common views allows to bridge the datasets, enabling information to flow through all the other views in the dataset pool.
+Our framework is formulated as a generative latent variable model where the variability of the latent variable is expressed into the observations through view-specific parameters shared among datasets.
+Datasets without a particular view will simply not contribute to the learning of those view-specific parameters in the training phase.
+Those datasets will nevertheless benefit from the learned parameters they didn't contribute to learn, for the prediction of their missing views.
+The method is a coherent extension of other multi-view generative models such as \textit{Bayesian CCA} \citep{ Klami2013} and \textit{Multi-Channel Variational Autoencoder} \citep{Antelmi2019}.
+The variational formulation for computing approximate posterior distributions of the latent variables allows fast and scalable training.
+Being dataset agnostic, our method allows to integrate all the available data into a joint model, gathering  all the available information from multiple datasets at the same time.
+Experiments on synthetic data show that minimum overlap is effective in recovering missing views, with a prediction error very competitive with respect to the one obtained with classical imputation methods.
+Experiments on real data from independent brain imaging datasets show that our model generalizes better than dataset-specific models on new unseen data.

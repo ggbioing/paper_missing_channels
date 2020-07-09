@@ -1,0 +1,25 @@
+\begin{table}[!t]
+\caption{
+Mean Squared Error on unseen test data from Adni2, $5$-fold cross validation.
+All models were trained on all the available dataset by holding-out the test dataset.
+Mean (standard deviation) across folds are shown. Best results in boldface.
+}
+\centering
+\begin{tabular}{lcccccc}
+\toprule
+model &         clin &          mri & fdg &         av45 &          tau & mri local \\
+% model &              &              &     &              &              &            \\
+\midrule
+knn5              &  0.51 (0.05) &  0.98 (0.13) &   - &  0.95 (0.14) &  1.05 (0.45) &          - \\
+dae               &  0.46 (0.05) &  1.40 (0.26) &   - &  1.14 (0.27) &  1.13 (0.46) &          - \\
+our               &  \textbf{0.45} (0.10) &  \textbf{0.88} (0.16) &   - &  \textbf{0.93} (0.16) &  \textbf{0.86} (0.43) &          - \\
+% our (non linear)  &  0.52 (0.09) &  1.04 (0.14) &   - &  1.20 (0.23) &  1.00 (0.46) &          - \\
+% \midrule
+% knn5 + dae        &  0.12 (0.02) &  0.92 (0.13) &   - &  0.73 (0.11) &  0.83 (0.40) &          - \\
+% knn5 + vae        &  0.17 (0.03) &  0.91 (0.12) &   - &  0.90 (0.14) &  1.05 (0.45) &          - \\
+% knn5 + mcvae      &  0.25 (0.05) &  0.83 (0.12) &   - &  0.65 (0.10) &  0.82 (0.41) &          - \\
+% knn5 + mcvae (nl) &  0.13 (0.03) &  0.83 (0.14) &   - &  0.61 (0.14) &  0.84 (0.40) &          - \\
+\bottomrule
+\end{tabular}
+\label{table:model_comparison}
+\end{table}

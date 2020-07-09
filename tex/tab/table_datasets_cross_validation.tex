@@ -1,0 +1,56 @@
+\begin{table}[!t]
+\caption{
+Mean Squared Error on unseen test data, $5$-fold cross validation.
+Mean (standard deviation) across folds are shown. Best results in boldface.
+Test data may belong to the same datset used to train the model (within) or on all the other (cross).
+Every modality was predicted from the other available ones.
+}
+\centering
+\begin{tabular}{llcccccc}
+\toprule
+             &       &         clin &          mri &          fdg &         av45 &          tau &   mri local \\
+train & test &              &              &              &              &              &              \\
+\midrule
+adni1 & within &  0.91 (0.11) &  0.95 (0.13) &            - &            - &            - &            - \\
+             & cross &  0.91 (0.29) &  1.01 (0.44) &            - &            - &            - &            - \\
+\midrule
+adni2 & within &  0.77 (0.11) &  \textbf{0.91} (0.20) &  \textbf{0.82} (0.20) &  \textbf{0.93} (0.22) &  1.20 (0.71) &            - \\
+             & cross &  0.82 (0.27) &  1.00 (0.41) &            - &  1.28 (0.46) &  1.67 (1.19) &            - \\
+\midrule
+miriad & within &  0.74 (0.34) &  1.01 (0.52) &            - &            - &            - &            - \\
+             & cross &  0.89 (0.15) &  0.99 (0.18) &            - &            - &            - &            - \\
+\midrule
+local & within &  0.94 (0.28) &            - &            - &  1.20 (0.28) &  1.43 (1.29) &  \textbf{1.23} (0.35) \\
+             & cross &  1.29 (0.28) &            - &            - &  1.13 (0.24) &  \textbf{1.17} (0.75) &            - \\
+\midrule
+\midrule
+average & within &  0.84 (0.21) &  0.96 (0.29) &  \textbf{0.82} (0.20) &  1.06 (0.25) &  1.32 (1.00) &  \textbf{1.23} (0.35) \\
+        & cross  &  0.98 (0.25) &  1.00 (0.34) &            - &  1.21 (0.35) &  1.42 (0.97) &            - \\
+\midrule
+\midrule
+% all (dae)        & within &  0.56 (0.05) &  1.02 (0.12) &  0.98 (0.24) &  1.02 (0.17) &  1.11 (0.62) &  1.10 (0.34) \\
+% all (knn5)        & within &  \textbf{0.65} (0.04) &  1.03 (0.11) &  1.09 (0.20) &  1.42 (0.17) &  1.29 (0.66) &  \textbf{1.23} (0.38) \\
+all       & joint &  \textbf{0.65} (0.05) &  0.95 (0.12) &  0.85 (0.21) &  0.99 (0.20) &  \textbf{1.17} (0.64) &  1.25 (0.35) \\
+\bottomrule
+\end{tabular}
+\label{table:crossvalidation_details}
+\end{table}
+
+%\begin{table}[!t]
+%\caption{
+%Same as above, after average-pooling af means and standard deviations by 
+%}
+%\centering
+%\begin{tabular}{lcccccc}
+%\toprule
+%{} &         clin &          mri &          fdg &         av45 &          tau &   mri local \\
+%train/test   &              &              &              &              &              &              \\
+%\midrule
+%within &  0.84 (0.21) &  0.96 (0.29) &  0.82 (0.20) &  1.06 (0.25) &  1.32 (1.00) &  1.23 (0.35) \\
+%cross  &  0.98 (0.25) &  1.00 (0.34) &            - &  1.21 (0.35) &  1.42 (0.97) &            - \\
+%joint  &  0.65 (0.05) &  0.95 (0.12) &  0.85 (0.21) &  0.99 (0.20) &  1.17 (0.64) &  1.25 (0.35) \\
+%\bottomrule
+%\end{tabular}
+%\label{table:crossvalidation}
+%\end{table}
+

@@ -1,0 +1,23 @@
+\begin{table}[!t]
+\caption{
+Number of subjects per modality available in each dataset.
+The last columns provide the size of the intersection ($\cap$) and union ($\cup$) of subjects with available modalities.
+The mri from the local dataset is considered as a stand-alone modality as the measures were obtained with a different protocol from the ones in the other datasets.
+Notice how in the jont dataset no subject have all the modalities.
+}
+\centering
+\begin{tabular}{lcccccc|cc}
+\toprule
+Modality: &    clin &   mri &  fdg & av45 &  tau & mri local & $\cap$ & $\cup$ \\
+\midrule
+Dataset \\
+adni1   &   819 &   808 &    - &    - &    - &          - & 808 &  819 \\
+adni2   &  1419 &   800 &  463 &  455 &   74 &          - &  64 & 1425 \\
+miriad  &    67 &    67 &    - &    - &    - &          - &  67 &   67 \\
+local   &  1042 &     - &    - &  147 &   66 &        565 &  48 & 1412 \\
+\midrule
+all     &  3347 &  1675 &  463 &  602 &  140 &        565 &   0 & 3723 \\
+\bottomrule
+\end{tabular}
+\label{table:datasets}
+\end{table}

@@ -1,0 +1,114 @@
+\section{Experiments}
+
+In \S\ref{ssec:synth} we first describe our results on extensive synthetic experiments performed with our model in two conditions:
+1) views missing at random for each dataset,
+and 2) datasets with systematically missing views (missing not at random).
+In \S\ref{ssec:real} we evaluate the prediction error of our model when modeling multiple multi-view real datasets.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SYNTHETIC EXPERIMENTS %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Synthetic Experiments}
+\label{ssec:synth}
+\input{./tex/fig/fig_synthetic_benchmark}
+
+To simulate multi dataset observations, we sample the latent variable $\z_{d,n}$ from a multivariate Gaussian with zero-mean and identity covariance matrix, and then we transform it with random linear mapping towards the observation space to get $\xdnv$.
+We then corrupt the observation with increasing levels of noise
+and we apply specific strategies to remove views in the context of the \textit{missing at random} (MAR) and \textit{missing not at random} (MNAR) experiments.
+%% MAR %%
+In the MAR experiments views were randomly removed according to a parameter $0 \leq f \leq 1$ to control the fraction of observation with complete views.
+%% MNAR %%
+In the MNAR experiments we removed specific views for each simulated dataset, ensuring at the same time the absence of at least one view for a datasets, and the presence of at least one view in common between pairs of datasets.
+As an example, in the case with three datasets and three views, the association view-dataset can be expressed through the following association matrix $A$:
+\begin{equation}
+A = 
+\begin{pmatrix}
+1 & 0 & 1 \\
+1 & 1 & 0 \\
+0 & 1 & 1 
+\end{pmatrix},
+\end{equation}
+where $A(v,d)=1$ indicates the presence of view $v$ in dataset $d$.
+In both MAR and MNAR experiments we fit the noisy and view-missing observations with our model, where we choose a linear Gaussian parametrization for the variational and likelihood distributions, such that:
+\begin{align}
+\label{eq:encoder}
+q_{d,n,w}(\z) &= \Gaussof{\mub=\mathbf{V}_w^{(\mu)} \xdnw, \Sigmab = diag(\mathbf{V}_w^{(\sigma)} \xdnw)}, \\
+\label{eq:decoder}
+\p{\xdnv|\z,\thetab_v} &= \Gaussof{\mub = \mathbf{G}_v^{(\mu)} \zb, \Sigmab = diag(\mathbf{g}_v^{(\sigma)})},
+\end{align}
+\textit{i.e.} factorized multivariate Gaussian distributions whose moments are linear transformations depending on the conditioning variables. \\
+$\thetab_v = \{\mathbf{G}_v^{(\mu)}, \mathbf{g}_v^{(\sigma)}\}$ and $\phib_w=\{\mathbf{V}_w^{(\mu)}, \mathbf{V}_w^{(\sigma)}\}$ are the parameters to be optimized through (\ref{eq:argmax}).
+Lastly we predicted the missing views according to \eqnref{eq:reconstruction}
+
+\subsubsection{Results}
+In both the experimental settings, we apply \eqnref{eq:reconstruction} to predict the missing views.
+In the MAR experiments we notice how with already $f \geq 0.25$ we can significantly reduce the prediction error on testing data-points (\figref{fig:synthetic_benchmark_mar_box}).
+In the MNAR experiments the benchmark against the standard k-nearest-neighbor ($k \in \set{1,5}$) is favourable towards our model in all conditions (\figref{fig:synthetic_benchmark_mnar_box}).
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%% MEDICAL IMAGING %%
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Medical Imaging datasets}
+\label{ssec:real}
+
+\input{./tex/tab/table_datasets_numbers.tex}
+\input{./tex/tab/table_datasets_cross_validation.tex}
+\input{./tex/tab/table_model_comparison.tex}
+
+\subsubsection{Data preparation}
+Data used in the preparation of this article were obtained from the following sources.
+1) From the Alzheimer's Disease Neuroimaging Initiative (ADNI)
+\footnote{
+\href{http://adni.loni.usc.edu}{adni.loni.usc.edu}. The ADNI was launched in 2003 as a public-private partnership, led by Principal Investigator Michael W. Weiner, MD. For up-to-date information, see \href{www.adni-info.org}{www.adni-info.org}.
+}.
+2) From MIRIAD dataset \cite{Miriad}, a database of volumetric MRI brain-scans of Alzheimer's sufferers and healthy elderly people.
+3) From a local cohort collected at the University Hospitals, having healthy subjects and subjects with various cognitive disorders.
+
+We divided the ADNI dataset into two independent ones:
+`adni1', composed by subjects recruited in the initial study,
+and `adni2' composed by those subjects subsequently recruited in ADNI-GO, ADNI2, and ADNI3.
+Since data modalities and acquisition protocols of `adni1' are different from those of `adni2', we consider these two cohorts as indipendent datasets.
+
+From the four datasets (`adni1', `adni2', `miriad', `local') we grouped the observations into the following views.
+1) `clin': containing age and the Mini-Mental cognitive score (MMSE).
+2) `mri': brain volumes computed with FreeSurfer \footnote{
+\href{https://surfer.nmr.mgh.harvard.edu/}{surfer.nmr.mgh.harvard.edu}
+}.
+3) `fdg': average brain glucose uptake measured through the analysis of FDG-PET scans.
+4) `av45': average brain amyloid uptake measured through the analysis of AV45-PET scans.
+5) `tau': average brain protein Tau uptake measured through the analysis of TAU-PET scans.
+6) `mri local': this is a view only present in the `local' dataset, composed by measurements on brain gray matter density derived from SPM \cite{Ashburner2000}.
+All the imaging measurements are averaged on the regions of interests defined in the Desikan-Killiany atlas \cite{Desikan2006}
+In \tabref{table:datasets} we show the number of observations stratified by dataset and modality.
+Please note that the only view in common across datasets is the clinical one, composed by MMSE and age features only.
+
+\subsubsection{Fitting procedure}
+For the model architecture, we choose the likelihood function as in \eqnref{eq:decoder}.
+We then choose to parametrize the encoder as:
+\begin{equation}
+\label{eq:dropout_posterior}
+    q_{d,n,w}(\z) = \Gauss{\mub = \mathbf{V}_w^{(\mu)} \xdnw}{\Sigmab = \text{diag}(\sqrt{\alphab} \odot \mub)^2}.
+\end{equation}
+The posterior distribution so defined is known as \textit{dropout posterior}.
+The dropout parameter $\alphab$ has components $\alpha_i = \nicefrac{p_i}{1-p_i}$ linked to the probability $p_i$ of dropping out the $i$-th latent variable component \cite{Wang2013}.
+It has been shown that the association of this dropout posterior with a log-uniform prior distribution $\pz$ leads to sparse and interpretable models \cite{Antelmi2019,Molchanov2017}.
+
+We fit our multi-view model one dataset at a time, and lastly on the whole dataset pool.
+We will refer to this last model as `all'.
+Observations were divided into five splits, stratified to keep an intra-dataset proportion of views as close as possible as the ones of the original datasets.
+After setting a dropout threshold to $0.5$ we measured, through the mean squared error, the prediction error of the dataset-specific models on the testing hold-out observations of the same dataset (within).
+To have a measure of the generalization ability for each model, we measured the prediction accuracy also on all the test sets not belonging to the same dataset of the trainig set (cross).
+The same was done with the model `all'.
+In this case the hold out observations belong to the whole dataset pool and we will refer to its testing set as the `joint' set.
+
+\subsubsection{Results}
+In \tabref{table:crossvalidation_details} we show for each trained multi-view model, the prediction error on the within-dataset test sets, cross-dataset test sets, and joint set, whenever computable.
+We notice that the generalization performance of the model `all' is almost always the best in predicting the `clin' and `mri' views.
+These are also the views most represented in all the datasets.
+We also note that joint model systematically outperforms the dataset-specific models when applyed across dataset.
+Moreover it generally provides better predictions even respect to the within-dataset results.
+On the other extreme, views belonging only to a specific dataset, such as `fdg' in `adni2' and `mri local' in the `local' dataset are better predicted with dataset-specific models.
+In the remainig cases of `av45' and `tau', the joint model seems, on average, to perform better than the single dataset-specific ones.
+
+
