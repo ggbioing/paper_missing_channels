@@ -4,9 +4,9 @@
 
 Let $\Dcal = \set{D_d}_{d=1}^D$ be a collection of $D$ datasets, where each dataset $D_d = \set{\xdn}_{n=1}^{N_d}$ contains $N_d$ data-points.
 In a multi-view setting we further assume that each data-point $\xdn = \set{\xdnv}_{v=1}^{V_{d,n}}$ can be split into $V_{d,n}$ views (\eg sets of clinical scores, or measures extracted from different imaging modalities),
-such that $V_{d,n} \leq V_d$, where $V_d$ is the maximum number of independent views available in dataset $D_d$.
+such that for every data-point $n$, $V_{d,n} \leq V_d$, where $V_d$ is the maximum number of independent views available in dataset $D_d$.
 With the latest inequality we account for data-points with missing views.
-For each observation $\xdnv$ we assume the following generative model:
+For each $\xdnv$ we assume the following generative model:
 
 \begin{equation}\label{eq:model}
 \begin{aligned}
@@ -19,39 +19,49 @@ where $\thetab_v$ represents the view-specific generative parameters shared amon
 By introducing the latent variational approximation $\qz$, we can derive the following lower bound on the marginal log-likelihood for our generative model:
 \begin{equation}\label{eq:LB}
 \begin{aligned}
-\ln \p{\xdnv|\thetab_v} &= \ln \int \p{\xdnv|\z, \thetab_v} \p{\z} \; d\z 
-                        = \ln \EE{\qz}{\nicefrac{\p{\xdnv|\z, \thetab_v} \p{\z}}{\qz}} \\
-                        &\geq \EE{\qz}{\ln \p{\xdnv|\z, \thetab_v}} - \KL{\qz}{\pz}. \\
+\ln \p{\xdnv|\thetab_v} &= \ln \int \p{\xdnv|\z, \thetab_v} \p{\z} \; d\z \\
+                        &= \ln \EE{\qz}{\frac{\p{\xdnv|\z, \thetab_v} \p{\z}}{\qz}} \\
+                        &\geq \EE{\qz}{\ln \p{\xdnv|\z, \thetab_v}} - \KL{\qz}{\pz},
 \end{aligned}
 \end{equation}
-We define the encoder $\qz = \q{\z|\x_{d,n,w}, \phib_w} = q_{d,n,w}(\z)$ and its variational parameter $\phib_w$ to depend on a specific view $w$, and, to force a link among views, we impose the inequality \eqnref{eq:LB} to hold for any encoding $q_{\cdot,\cdot,w}(\z)$.
-We can hence sum the right and left hand sides of \eqnref{eq:LB} across the $V_{d,n}$ views to give the lower bound:
+where we compute the expectation with respect to an arbitrary distribution $\qz$.
+In the last line we leverage on the \textit{Jensen's inequality} applied to the logarithm function, and collect the terms into a new expectation term and in the Kullback-Leibler divergence term ($\kl$).
+We define the distribution $\qz = \q{\z|\x_{d,n,w}, \phib_w} = q_{d,n,w}(\z)$ and its variational parameter $\phib_w$ to depend on a specific view $w$.
+To force a link among views, we impose the inequality \eqnref{eq:LB} to hold for any $1 \leq w \leq V_{d,n}$.
+We can hence average the right and left hand sides of \eqnref{eq:LB} across the $V_{d,n}$ views to give the lower bound:
 \begin{equation}\label{eq:newLB}
 \begin{aligned}
-\ln \p{\xdnv|\thetab_v} \geq \underbrace{\frac{1}{V_{d,n}} \sum_{w=1}^{V_{d,n}}
-  \EE{q_{d,n,w}(\z)}{\ln \p{\xdnv|\z, \thetab_v}}
-- \KL{q_{d,n,w}(\z)}{\pz}}_{\LBn}. \\
+% \ln \p{\xdnv|\thetab_v} &\geq \underbrace{\frac{1}{V_{d,n}} \sum_{w=1}^{V_{d,n}}
+%   \EE{q_{d,n,w}(\z)}{\ln \p{\xdnv|\z, \thetab_v}}
+% - \KL{q_{d,n,w}(\z)}{\pz}}_{\LBn}. \\
+\ln \p{\xdnv|\thetab_v} \geq \LBdnv = \frac{1}{V_{d,n}} \sum_{w=1}^{V_{d,n}} \LBdnvw,
 \end{aligned}
 \end{equation}
-Assuming independent datasets and observations, inference on the model generative parameters $\thetab = \set{\thetab_v}$ and parameters of the variational approximation $\phib = \set{\phib_w}$ can be conducted by solving the maximization problem:
+where
+\begin{equation}\label{eq:LBdnvw}
+\begin{aligned}
+\LBdnvw = \EE{q_{d,n,w}(\z)}{\ln \p{\xdnv|\z, \thetab_v}} - \KL{q_{d,n,w}(\z)}{\pz}
+\end{aligned}
+\end{equation}
+is the lower bound associated to the data-point $\xdn$ when its view $v$ is predicted from its view $w$.
+Assuming independent datasets and observations, inference on the model generative parameters $\thetab = \set{\thetab_v}$ and variational parameters $\phib = \set{\phib_w}$ can be achieved by solving the maximization problem:
 \begin{equation}\label{eq:argmax}
 \begin{aligned}
-\hat{\thetab}, \hat{\phib} = \underset{\thetab, \phib}{\argmax} \sum_{d,n,v} \LBn.
+\hat{\thetab}, \hat{\phib} = \underset{\thetab, \phib}{\argmax} \sum_{d,n,v} \LBdnv.
 \end{aligned}
 \end{equation}
 We use Algorithm \ref{alg:optim} to solve \eqnref{eq:argmax}.
 The summation in \eqnref{eq:argmax} is done for every dataset $d$ along all the available data-points $n$ and their specific views $v$.
-If missing, a particular view $v$ will be simply not accounted for that specific observation, without having to discard all the other views $w \neq v$ that can still contribute to solve the optimization problem in \eqnref{eq:argmax}.
+If missing, a particular view $v$ will be simply not accounted for that specific observation, without having to discard all the other views that can still contribute to optimize \eqnref{eq:argmax}.
 The presence of at least one common view among datasets acts as a link and allows the information to flow through all the datasets to the other views.
 
 We observe that this model extends the Multi-Channel VAE \cite{Antelmi2019}, which is a multi-view extension of the VAE \cite{Kingma2013,Rezende2014}.
 The authors of \cite{Antelmi2019} propose a multi-view generative model where they require all the observation in the training set to have all the available views, hence limited to model one dataset at a time (in the case of datasets with different views), after having discarded incomplete observations in that dataset.
 We address this limitation by allowing missing views in the training set for some observations.
-Similarly to \cite{Antelmi2019}, the trained model can reconstruct missing views from the available ones through the formula:
+Similarly to \cite{Antelmi2019}, the trained model can estimate missing views from the available ones through the formula:
 \begin{equation}\label{eq:reconstruction}
 \begin{aligned}
-\xdnv = \frac{1}{V_w} \sum_{w=1, \,w\neq v}^{V_w} \EE{q_{d,n,w}(\z)}{\p{\xdnv|\z, \thetab_v}},
+\hat\xb_{d,n,v} = \frac{1}{V_{d, n}-1} \sum_{w=1, \,w\neq v}^{V_{d, n}} \EE{q_{d,n,w}(\z)}{\p{\xdnv|\z, \thetab_v}}.
 \end{aligned}
 \end{equation}
-with $V_w \leq V_{d,n} - 1$.
 

@@ -1,0 +1,39 @@
+\begin{table}
+\centering
+\caption{
+Experiment of diagnosis classification.
+Classification prediction accuracy (the higher the better) from a 5-folds cross-validation experiment campain is shown.
+The leave-one-dataset-out (lodo) models have an oaverall better generalization property of predicting the correct class in an unseed dataset with respect to the cross (\ie one dataset at a time) models.
+}
+\begin{tabular}{lll}
+\toprule
+       &      &            accuracy \% mean (std) \\
+test dataset & train type &                \\
+\midrule
+adni1 & within &   61.22 (5.11) \\
+       & cross &  49.43 (11.56) \\
+       & lodo &   58.38 (3.78) \\
+\midrule
+adni2 & within &   64.28 (0.98) \\
+       & cross &   46.41 (5.20) \\
+       & lodo &   56.95 (3.11) \\
+\midrule
+geneva & within &   76.85 (4.41) \\
+       & cross &  34.12 (13.13) \\
+       & lodo &   38.16 (5.41) \\
+\midrule
+miriad & within &   90.99 (8.48) \\
+       & cross &  76.45 (13.07) \\
+       & lodo &   92.42 (9.42) \\
+\midrule
+oasis3 & within &   80.19 (4.95) \\
+       & cross &   54.34 (9.32) \\
+       & lodo &   62.45 (7.01) \\
+\midrule
+\midrule
+       & within &   74.70 (4.79) \\
+       & cross  &  52.15 (10.46) \\
+       & lodo   &   61.67 (5.75) \\
+\bottomrule
+\end{tabular}
+\end{table}

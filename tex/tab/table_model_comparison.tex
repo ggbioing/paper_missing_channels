@@ -5,21 +5,70 @@ All models were trained on all the available dataset by holding-out the test dat
 Mean (standard deviation) across folds are shown. Best results in boldface.
 }
 \centering
-\begin{tabular}{lcccccc}
+\label{table:model_comparison}
+\begin{tabular}{lccc}
 \toprule
-model &         clin &          mri & fdg &         av45 &          tau & mri local \\
-% model &              &              &     &              &              &            \\
+model\_name &          dae &         knn5 &           us \\
 \midrule
-knn5              &  0.51 (0.05) &  0.98 (0.13) &   - &  0.95 (0.14) &  1.05 (0.45) &          - \\
-dae               &  0.46 (0.05) &  1.40 (0.26) &   - &  1.14 (0.27) &  1.13 (0.46) &          - \\
-our               &  \textbf{0.45} (0.10) &  \textbf{0.88} (0.16) &   - &  \textbf{0.93} (0.16) &  \textbf{0.86} (0.43) &          - \\
-% our (non linear)  &  0.52 (0.09) &  1.04 (0.14) &   - &  1.20 (0.23) &  1.00 (0.46) &          - \\
-% \midrule
-% knn5 + dae        &  0.12 (0.02) &  0.92 (0.13) &   - &  0.73 (0.11) &  0.83 (0.40) &          - \\
-% knn5 + vae        &  0.17 (0.03) &  0.91 (0.12) &   - &  0.90 (0.14) &  1.05 (0.45) &          - \\
-% knn5 + mcvae      &  0.25 (0.05) &  0.83 (0.12) &   - &  0.65 (0.10) &  0.82 (0.41) &          - \\
-% knn5 + mcvae (nl) &  0.13 (0.03) &  0.83 (0.14) &   - &  0.61 (0.14) &  0.84 (0.40) &          - \\
+clin       &  0.73 (0.14) &  0.44 (0.05) &  0.43 (0.07) \\
+mri        &  1.23 (0.31) &  0.88 (0.15) &  0.69 (0.11) \\
+fdg        &  4.20 (0.56) &  4.15 (0.59) &  1.14 (0.20) \\
+av45       &  1.45 (0.35) &  1.20 (0.25) &  0.91 (0.17) \\
+tau        &  1.54 (0.82) &  1.44 (0.83) &  1.03 (0.37) \\
 \bottomrule
 \end{tabular}
-\label{table:model_comparison}
 \end{table}
+
+% \begin{table}[!t]
+% \caption{
+% Add OASIS3 dataset (clin, mri, av45)
+% }
+% \centering
+% \begin{tabular}{lcccccc}
+% \toprule
+% model &         clin &          mri & fdg &         av45 &          tau & mri local \\
+% % model &              &              &     &              &              &            \\
+% \midrule
+% knn5              &  0.50 (0.06) &  0.92 (0.13) &   - &  \textbf{1.33} (0.23) &  1.10 (0.54) &  -  \\
+% dae               &  0.45 (0.08) &  0.95 (0.15) &   - &  1.49 (0.20) &  1.09 (0.50) &  -  \\
+% our               &  \textbf{0.39} (0.05) &  \textbf{0.75} (0.13) &   - &  1.38 (0.21) &  \textbf{0.93} (0.51) &  -  \\
+% \bottomrule
+% \end{tabular}
+% \label{table:model_comparison}
+% \end{table}
+% 
+% \begin{table}[!t]
+% \caption{
+% Add OASIS3 dataset (clin, mri, av45), ComBat normalize (mri, fdg, av45, tau)
+% }
+% \centering
+% \begin{tabular}{lcccccc}
+% \toprule
+% model &         clin &          mri & fdg &         av45 &          tau & mri local \\
+% % model &              &              &     &              &              &            \\
+% \midrule
+% knn5              &  0.51 (0.07) &  1.10 (0.17) &   - &  1.16 (0.19) &  \textbf{1.08} (0.62) &  -  \\
+% dae               &  0.44 (0.06) &  1.09 (0.17) &   - &  \textbf{1.06} (0.19) &  1.45 (0.70) &  -  \\
+% our               &  \textbf{0.42} (0.05) &  \textbf{0.94} (0.15) &   - &  \textbf{1.06} (0.20) &  1.32 (0.71) &  -  \\
+% \bottomrule
+% \end{tabular}
+% \label{table:model_comparison}
+% \end{table}
+% 
+% \begin{table}[!t]
+% \caption{
+% Add OASIS3 dataset (clin, mri, av45), add Geneva PET, ComBat normalize (mri, fdg, av45, tau)
+% }
+% \centering
+% \begin{tabular}{lcccccc}
+% \toprule
+% model &         clin &          mri & fdg &         av45 &          tau & mri local \\
+% % model &              &              &     &              &              &            \\
+% \midrule
+% knn5              &  0.50 (0.06) &  1.09 (0.17) &   - &  1.18 (0.20)  &  1.23 (0.92)  &  -  \\
+% dae               &  0.42 (0.08) &  1.09 (0.16) &   - &  1.08 (0.19)  &  1.54 (0.87)  &  -  \\
+% our               &  \textbf{0.41} (0.06) &  \textbf{0.93} (0.15) &   - &  \textbf{1.07} (0.17)  &  \textbf{1.17} (0.81)  &  -  \\
+% \bottomrule
+% \end{tabular}
+% \label{table:model_comparison}
+% \end{table}

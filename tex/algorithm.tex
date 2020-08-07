@@ -2,23 +2,25 @@
 \caption{Model parameters optimization} % give the algorithm a caption
 \label{alg:optim} % and a label for \ref{} commands later in the document
 \begin{algorithmic} % enter the algorithmic environment
-	\Require Initialize the model parameters $\phib, \thetab$. Set the optimizer learning rate.
+	\Require Set the dimensinality of $\z$. Initialize the model parameters $\phib, \thetab$. Set the optimizer learning rate.
 	\While{$\phib, \thetab$ not converged}
+		\State Initialize the total cost:
 		\State $\lb \leftarrow 0$
 		\For{every dataset $d \in D$}
-			\For{every datapoint $n \in N_d$}
-				\For{every \textit{decoding} view $v \in V_{d,n}$}
+			\For{every datapoint $\xdn, n \in N_d$}
+				\For{every view $v \in V_{d,n}$}
+					\State Accumulate the cost of predicting $v$ from $w$:
 					\State $\lb_v \leftarrow 0$
-					\For{every \textit{encoding} view $w \in V_{d,n}$}
-						\State Accumulate the cost of decoding $\xdnv$ through the encoder $q_{d,n,w}(\z)$:
-						\State $\lb_v \leftarrow \lb_v + \EE{q_{d,n,w}(\z)}{\ln \p{\xdnv|\z, \thetab_v}} - \KL{q_{d,n,w}(\z)}{\pz}$.
+					\For{every view $w \in V_{d,n}$}
+						\State $\lb_v \leftarrow \lb_v + \LBdnvw$.
 					\EndFor
-					\State Average the decoding cost and accumulate it in the total cost $\lb$:
+					% \State Average the decoding cost and accumulate it in the total cost $\lb$:
+					\State Accumulate the average $\lb_v$ in the total cost:
 					\State $\lb \leftarrow \lb + \frac{1}{V_{d,n}} \lb_v$.
 				\EndFor
 			\EndFor
 		\EndFor
-		\State $\thetab, \phib = \optim(\phib, \thetab, \nabla_{\phib} \lb, \nabla_{\thetab} \lb)$. \textit{Adam} optimizer used to maximie $\lb$.
+		\State $\thetab, \phib = \optim(\phib, \thetab, \nabla_{\phib} \lb, \nabla_{\thetab} \lb)$. \textit{Adam} optimizer used to maximize $\lb$.
 	\EndWhile
 \end{algorithmic}
 \end{algorithm}
