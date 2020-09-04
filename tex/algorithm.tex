@@ -12,7 +12,7 @@
 					\State Accumulate the cost of predicting $v$ from $w$:
 					\State $\lb_v \leftarrow 0$
 					\For{every view $w \in V_{d,n}$}
-						\State $\lb_v \leftarrow \lb_v + \LBdnvw$.
+						\State $\lb_v \leftarrow \lb_v + \LBdnvw$. (See \eqnref{eq:LBdnvw}).
 					\EndFor
 					% \State Average the decoding cost and accumulate it in the total cost $\lb$:
 					\State Accumulate the average $\lb_v$ in the total cost:

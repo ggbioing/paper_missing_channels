@@ -2,12 +2,14 @@
 
 \input{./tex/algorithm}
 
-Let $\Dcal = \set{D_d}_{d=1}^D$ be a collection of $D$ datasets, where each dataset $D_d = \set{\xdn}_{n=1}^{N_d}$ contains $N_d$ data-points.
-In a multi-view setting we further assume that each data-point $\xdn = \set{\xdnv}_{v=1}^{V_{d,n}}$ can be split into $V_{d,n}$ views (\eg sets of clinical scores, or measures extracted from different imaging modalities),
-such that for every data-point $n$, $V_{d,n} \leq V_d$, where $V_d$ is the maximum number of independent views available in dataset $D_d$.
-With the latest inequality we account for data-points with missing views.
-For each $\xdnv$ we assume the following generative model:
+Let $\Dcal = \set{D_d}_{d=1}^D$ be a collection of $D$ independent datasets, where each dataset $D_d = \set{\xdn}_{n=1}^{N_d}$ is composed by $N_d$ independent data-points (\eg subjects in the case of medical imaging datasets).
+To every dataset $D_d$ we associate a total number of $V_d$ available views
+(\eg sets of clinical scores, imaging derived phenotypes extracted from multiple imaging modalities, \ldots),
+and we assume that each data-point $\xdn = \set{\xdnv}_{v=1}^{V_{d,n}}$ is composed by $V_{d,n}$ views,
+where $V_{d,n} \leq V_d$.
+With the latest inequality we account for data-points with an arbitrary number of missing views.
 
+For each view $\xdnv$ we propose the following generative latent variable model:
 \begin{equation}\label{eq:model}
 \begin{aligned}
 &\z_{d,n} \sim \p{\z}, \\  % = \GaussStdDim{l} \\
@@ -15,8 +17,12 @@ For each $\xdnv$ we assume the following generative model:
 \qquad \textnormal {for} \; v \; \textnormal{in} \; 1 \ldots V_{d,n} \leq V_d,
 \end{aligned}
 \end{equation}
-where $\thetab_v$ represents the view-specific generative parameters shared among all datasets.
-By introducing the latent variational approximation $\qz$, we can derive the following lower bound on the marginal log-likelihood for our generative model:
+where $\pz$ is a prior distribution for the latent variable $\z_{d,n}$ commonly shared by the $V_{d,n}$ views, and
+where the likelihood functions $\p{\xdnv|\z_{d,n},\thetab_v}$ belong to a family of distributions parametrized by $\thetab_v$, which represents the view-specific generative parameters shared among all datasets.
+
+The exact solution to the inference problem is given by the posterior $\p{\z|\set{\xdnv,\thetab_v}_{v=1}^{V_{d,n}}}$, that is not always computable analytically.
+We can nevertheless look for its approximation $\qz$ through the \textit{Variational Inference} framework \citep{Blei2017}.
+By introducing the latent variational approximation $\qz$, we can derive the following lower bound on the marginal log-likelihood for our generative model as follows:
 \begin{equation}\label{eq:LB}
 \begin{aligned}
 \ln \p{\xdnv|\thetab_v} &= \ln \int \p{\xdnv|\z, \thetab_v} \p{\z} \; d\z \\
@@ -25,9 +31,21 @@ By introducing the latent variational approximation $\qz$, we can derive the fol
 \end{aligned}
 \end{equation}
 where we compute the expectation with respect to an arbitrary distribution $\qz$.
-In the last line we leverage on the \textit{Jensen's inequality} applied to the logarithm function, and collect the terms into a new expectation term and in the Kullback-Leibler divergence term ($\kl$).
-We define the distribution $\qz = \q{\z|\x_{d,n,w}, \phib_w} = q_{d,n,w}(\z)$ and its variational parameter $\phib_w$ to depend on a specific view $w$.
-To force a link among views, we impose the inequality \eqnref{eq:LB} to hold for any $1 \leq w \leq V_{d,n}$.
+To derive the last line of \eqnref{eq:LB} we leverage on the \textit{Jensen's inequality} applied to the logarithm function, and collect the result into a new expectation term and in the Kullback-Leibler divergence term ($\kl$).
+
+With the right choice of the functional form of $\qz$, $\pz$, and $\p{\xdnv|\z, \thetab_v}$, the \rhs\ of \eqnref{eq:LB} becomes amenable to computation and maximization, yielding to the maximization of the \lhs, also known as the model evidence.
+
+The common choice for the prior distribution $\pz$ is the multivariate isotropic Gaussian distribution $\Gausstd$,
+while the choice for the likelihood function $\p{\xdnv|\z, \thetab_v}$ depends on the nature of the view $\xdnv$.
+For example it can be parametrized as a multivariate Gaussian in the case of continuous data (\ie imaging derived phenotypes), as a Bernoulli likelihood for dichotomic data, as a Categorical likelihood for categorical data, \textit{etc}.
+We define the distribution $\qz$ to depend on a specific view $w$, such that:
+\begin{equation}\label{eq:q}
+\begin{aligned}
+\qz = \q{\z|\x_{d,n,w}, \phib_w} = q_{d,n,w}(\z),
+\end{aligned}
+\end{equation}
+where $\phib_w$ represents the view-specific variational parameters shared among all datasets.
+To force a link among views, we impose the inequality \eqnref{eq:LB} to hold for any $w$ in $1 \ldots V_{d,n}$.
 We can hence average the right and left hand sides of \eqnref{eq:LB} across the $V_{d,n}$ views to give the lower bound:
 \begin{equation}\label{eq:newLB}
 \begin{aligned}
@@ -44,10 +62,12 @@ where
 \end{aligned}
 \end{equation}
 is the lower bound associated to the data-point $\xdn$ when its view $v$ is predicted from its view $w$.
-Assuming independent datasets and observations, inference on the model generative parameters $\thetab = \set{\thetab_v}$ and variational parameters $\phib = \set{\phib_w}$ can be achieved by solving the maximization problem:
+Assuming independent observations, the marginal log-likelihood in the left hand side of \eqnref{eq:newLB} con be summed up over all the datasets, data-points, and views.
+As a consequence, inference on the model generative parameters $\thetab = \set{\thetab_v}$ and variational parameters $\phib = \set{\phib_w}$ can be achieved by solving the maximization problem:
 \begin{equation}\label{eq:argmax}
 \begin{aligned}
-\hat{\thetab}, \hat{\phib} = \underset{\thetab, \phib}{\argmax} \sum_{d,n,v} \LBdnv.
+\hat{\thetab}, \hat{\phib} &= \underset{\thetab, \phib}{\argmax} \sum_{d,n,v} \LBdnv \\
+                           &= \underset{\thetab, \phib}{\argmax} \sum_{d,n,v} \frac{1}{V_{d,n}} \sum_{w=1}^{V_{d,n}} \LBdnvw.
 \end{aligned}
 \end{equation}
 We use Algorithm \ref{alg:optim} to solve \eqnref{eq:argmax}.
