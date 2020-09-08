@@ -1,22 +1,27 @@
-\section{Experiments}
+\section{Synthetic Experiments}
 
-In \S\ref{ssec:synth} we first describe our results on extensive synthetic experiments performed with our model in two conditions:
+In this section we describe our results on extensive synthetic experiments performed with our model in two conditions:
 1) views missing at random for each dataset,
 and 2) datasets with systematically missing views (missing not at random).
-In \S\ref{ssec:real} we evaluate the prediction error of our model when modeling multiple multi-view real datasets.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% SYNTHETIC EXPERIMENTS %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Synthetic Experiments}
+\subsection{Data preparation}
 \label{ssec:synth}
 \input{./tex/fig/fig_synthetic_benchmark}
 
 To simulate multi dataset observations, we sample the latent variable $\z_{d,n}$ from a multivariate Gaussian with zero-mean and identity covariance matrix, and then we transform it with random linear mapping towards the observation space to get $\xdnv$.
 We then corrupt the observation with increasing levels of noise
 and we apply specific strategies to remove views in the context of the \textit{missing at random} (MAR) and \textit{missing not at random} (MNAR) experiments.
+
 %% MAR %%
-In the MAR experiments views were randomly removed according to a parameter $0 \leq f \leq 1$ to control the fraction of observation with complete views.
+In the MAR experiments views were randomly removed according to a parameter $0 \leq f \leq 1$ to control the fraction of data-points with complete views.
+In the extreme case $f=1$, all the data-points have all the views, representing the ideal case of no missing views, that is the working case of the Multi-Channel Variational Autoencoder \citep{Antelmi2019}.
+In the case $f=0$, each data-point has only one randomly assigned view, representing the case where no relationship between views can be established, where the our multi-view model collapses to a disjoint series of independent Variational Autoencoders \citep{Kingma2013, Rezende2014}.
+In the general case, each data-point has probability $f$ to have all the views, and probability $1-f$ to have a randomly assigned view out of the total available views.
+The general case represents the case where the relationship between views can be established only through a fraction $f$ of the total available data-points.
+
 %% MNAR %%
 In the MNAR experiments we removed specific views for each simulated dataset, ensuring at the same time the absence of at least one view for a datasets, and the presence of at least one view in common between pairs of datasets.
 As an example, in the case with three datasets and three views, the association view-dataset can be expressed through the following association matrix $A$:
@@ -29,7 +34,11 @@ A =
 \end{pmatrix},
 \end{equation}
 where $A(v,d)=1$ indicates the presence of view $v$ in dataset $d$.
-In both MAR and MNAR experiments we fit the noisy and view-missing observations with our model, where we choose a linear Gaussian parametrization for the variational and likelihood distributions, such that:
+We limited our MNAR simulations to cases with square association matrices with maximum dimensionality of $5$.
+
+\subsection{Model fitting and benchmarks}
+
+In both MAR and MNAR experiments we fit the synthetic scenarios with our model, where we choose a linear Gaussian parametrization for the variational and likelihood distributions, such that respectively:
 \begin{align}
 \label{eq:encoder}
 q_{d,n,w}(\z) &= \Gaussof{\mub=\mathbf{V}_w^{(\mu)} \xdnw, \Sigmab = diag(\mathbf{V}_w^{(\sigma)} \xdnw)}, \\
@@ -40,6 +49,13 @@ q_{d,n,w}(\z) &= \Gaussof{\mub=\mathbf{V}_w^{(\mu)} \xdnw, \Sigmab = diag(\mathb
 $\thetab_v = \{\mathbf{G}_v^{(\mu)}, \mathbf{g}_v^{(\sigma)}\}$ and $\phib_w=\{\mathbf{V}_w^{(\mu)}, \mathbf{V}_w^{(\sigma)}\}$ are the parameters to be optimized through (\ref{eq:argmax}).
 Lastly we predicted the missing views according to \eqnref{eq:reconstruction}
 
+As benchmark, we selected the following competing methods:
+\begin{itemize}
+\item k-Nearest Neighbors (knn) with $k=\set{3, 5}$ as implemented in the \textit{Scikit-Learn} library \citep{sklearn};
+\item  Denoising Autoencoder (DAE) as developed by \cite{dae}, where the combination of overcomplete representation and an initial dropout layer   with three layers for encoder and decoder networks, $\theta=7$ and dropout $p=0.5$.
+\item Multivariate Imputation by Chained Equations (MICE) as implemented in \cite{mice}, where missing values are modeled as a multivariate linear combination of the available features.
+\end{itemize}
+
 \subsubsection{Results}
 In both the experimental settings, we apply \eqnref{eq:reconstruction} to predict the missing views.
 In the MAR experiments we notice how with already $f \geq 0.25$ we can significantly reduce the prediction error on testing data-points (\figref{fig:synthetic_benchmark_mar_box}).
@@ -49,7 +65,7 @@ In the MNAR experiments the benchmark against the standard k-nearest-neighbor ($
 %%%%%%%%%%%%%%%%%%%%%
 %% MEDICAL IMAGING %%
 %%%%%%%%%%%%%%%%%%%%%
-\subsection{Medical Imaging datasets}
+\section{Experiments on Medical Imaging datasets}
 \label{ssec:real}
 
 \newpage

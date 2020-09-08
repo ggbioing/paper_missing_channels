@@ -1,8 +1,15 @@
 \begin{algorithm} % enter the algorithm environment
-\caption{Model parameters optimization} % give the algorithm a caption
+\caption{
+Multi-view model optimization.
+Speed can be increased by batching together datapoints which are homogeneous by views, hence reducing the number of second level \textit{for} loop iterations.
+} % give the algorithm a caption
 \label{alg:optim} % and a label for \ref{} commands later in the document
 \begin{algorithmic} % enter the algorithmic environment
-	\Require Set the dimensinality of $\z$. Initialize the model parameters $\phib, \thetab$. Set the optimizer learning rate.
+	\State \textbf{Require:} \\
+	Set the dimensionality of $\z$. \\
+	Initialize the model parameters $\phib, \thetab$. \\
+	Set the optimizer learning rate. \\
+
 	\While{$\phib, \thetab$ not converged}
 		\State Initialize the total cost:
 		\State $\lb \leftarrow 0$
@@ -12,7 +19,7 @@
 					\State Accumulate the cost of predicting $v$ from $w$:
 					\State $\lb_v \leftarrow 0$
 					\For{every view $w \in V_{d,n}$}
-						\State $\lb_v \leftarrow \lb_v + \LBdnvw$. (See \eqnref{eq:LBdnvw}).
+						\State $\lb_v \leftarrow \lb_v + \LBdnvw$. See \eqnref{eq:LBdnvw}.
 					\EndFor
 					% \State Average the decoding cost and accumulate it in the total cost $\lb$:
 					\State Accumulate the average $\lb_v$ in the total cost:

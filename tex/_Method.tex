@@ -39,10 +39,10 @@ With the right choice of the functional form of $\qz$, $\pz$, and $\p{\xdnv|\z, 
 The common choice for the prior distribution $\pz$ is the multivariate isotropic Gaussian distribution $\Gausstd$,
 while the choice for the likelihood function $\p{\xdnv|\z, \thetab_v}$ depends on the nature of the view $\xdnv$.
 For example it can be parametrized as a multivariate Gaussian in the case of continuous data (\ie imaging derived phenotypes), as a Bernoulli likelihood for dichotomic data, as a Categorical likelihood for categorical data, \textit{etc}.
-We define the distribution $\qz$ to depend on a specific view $w$, such that:
+We define the distribution function $\qz$ to depend on a specific dataset $d$, data-point $n$, and view $w$, such that:
 \begin{equation}\label{eq:q}
 \begin{aligned}
-\qz = \q{\z|\x_{d,n,w}, \phib_w} = q_{d,n,w}(\z),
+\qz = q_{d,n,w}(\z) = \q{\z|\x_{d,n,w}, \phib_w},
 \end{aligned}
 \end{equation}
 where $\phib_w$ represents the view-specific variational parameters shared among all datasets.
@@ -72,7 +72,7 @@ As a consequence, inference on the model generative parameters $\thetab = \set{\
 \end{aligned}
 \end{equation}
 We use Algorithm \ref{alg:optim} to solve \eqnref{eq:argmax}.
-The summation in \eqnref{eq:argmax} is done for every dataset $d$ along all the available data-points $n$ and their specific views $v$.
+The summation in \eqnref{eq:argmax} is done for every dataset $d$ along all the available data-points $n$ and their specific views $v$, although batching data-points with common views can speed up the computation by reducing the number of second level \textit{for} loop iterations in Algorithm \ref{alg:optim}.
 If missing, a particular view $v$ will be simply not accounted for that specific observation, without having to discard all the other views that can still contribute to optimize \eqnref{eq:argmax}.
 The presence of at least one common view among datasets acts as a link and allows the information to flow through all the datasets to the other views.
 
