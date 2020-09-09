@@ -1,6 +1,6 @@
 \section{Synthetic Experiments}
 
-In this section we describe our results on extensive synthetic experiments performed with our model in two conditions:
+In this section we describe our results on extensive synthetic experiments performed with our model and benchmark methods in two conditions:
 1) views missing at random for each dataset,
 and 2) datasets with systematically missing views (missing not at random).
 
@@ -9,7 +9,6 @@ and 2) datasets with systematically missing views (missing not at random).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Data preparation}
 \label{ssec:synth}
-\input{./tex/fig/fig_synthetic_benchmark}
 
 To simulate multi dataset observations, we sample the latent variable $\z_{d,n}$ from a multivariate Gaussian with zero-mean and identity covariance matrix, and then we transform it with random linear mapping towards the observation space to get $\xdnv$.
 We then corrupt the observation with increasing levels of noise
@@ -36,7 +35,7 @@ A =
 where $A(v,d)=1$ indicates the presence of view $v$ in dataset $d$.
 We limited our MNAR simulations to cases with square association matrices with maximum dimensionality of $5$.
 
-\subsection{Model fitting and benchmarks}
+\subsection{Model Fitting and Evaluation}
 
 In both MAR and MNAR experiments we fit the synthetic scenarios with our model, where we choose a linear Gaussian parametrization for the variational and likelihood distributions, such that respectively:
 \begin{align}
@@ -47,28 +46,50 @@ q_{d,n,w}(\z) &= \Gaussof{\mub=\mathbf{V}_w^{(\mu)} \xdnw, \Sigmab = diag(\mathb
 \end{align}
 \textit{i.e.} factorized multivariate Gaussian distributions whose moments are linear transformations depending on the conditioning variables. \\
 $\thetab_v = \{\mathbf{G}_v^{(\mu)}, \mathbf{g}_v^{(\sigma)}\}$ and $\phib_w=\{\mathbf{V}_w^{(\mu)}, \mathbf{V}_w^{(\sigma)}\}$ are the parameters to be optimized through (\ref{eq:argmax}).
-Lastly we predicted the missing views according to \eqnref{eq:reconstruction}
+Lastly we predicted for each simulated scenario the missing views according to \eqnref{eq:reconstruction} on testing hold-out datasets.
 
-As benchmark, we selected the following competing methods:
-\begin{itemize}
-\item k-Nearest Neighbors (knn) with $k=\set{3, 5}$ as implemented in the \textit{Scikit-Learn} library \citep{sklearn};
-\item  Denoising Autoencoder (DAE) as developed by \cite{dae}, where the combination of overcomplete representation and an initial dropout layer   with three layers for encoder and decoder networks, $\theta=7$ and dropout $p=0.5$.
-\item Multivariate Imputation by Chained Equations (MICE) as implemented in \cite{mice}, where missing values are modeled as a multivariate linear combination of the available features.
-\end{itemize}
+Results, cross validated $5$ times, were summarized with the \textit{mean squared error} (MSE) metric on testing hold-out datasets for every simulated scenario.
+We applied the same evaluation procedure for the following benchmark methods.
 
-\subsubsection{Results}
-In both the experimental settings, we apply \eqnref{eq:reconstruction} to predict the missing views.
-In the MAR experiments we notice how with already $f \geq 0.25$ we can significantly reduce the prediction error on testing data-points (\figref{fig:synthetic_benchmark_mar_box}).
-In the MNAR experiments the benchmark against the standard k-nearest-neighbor ($k \in \set{1,5}$) is favourable towards our model in all conditions (\figref{fig:synthetic_benchmark_mnar_box}).
+\subsection{Benchmark Methods}
+Among state of the art multivariate linear and non linear imputation methods, we selected the following competitors as a benchmark:
+1) k-Nearest Neighbors (knn) with $k=\set{1, 5}$;
+2) Denoising Autoencoder (DAE);
+3) Multivariate Imputation by Chained Equations (MICE).
 
+For the knn approach we used the \textit{KNNImputer} method as implemented in the \textit{Scikit-Learn} library \citep{sklearn}.
+Here each sample's missing values are imputed using the mean value from $k$ nearest neighbors found in the training set.
+Two samples are close if the features that neither is missing are close in terms of Euclidean distance.
+
+The Denoising Autoencoder, as developed by \cite{dae}, is based on an overcomplete deep autoencoder.
+It maps input data to a higher dimensional subspace, which in combination with an initial dropout layer to induce corruption, makes the model robust to missing data.
+We used the same architecture proposed by the authors, that is three hidden layers for encoder and decoder networks, Tanh activation functions, hyperparameter $\Theta=7$, and dropout $p=0.5$, as they proved to provide consistent better results.
+
+In MICE, as implemented in \cite{mice}, missing values are modeled as a multivariate linear combination of the available features.
+This methodology is attractive if the multivariate distribution is a reasonable description of the data, which in our case it is by construction.
+MICE specifies the multivariate imputation model on a variable-by-variable basis by a set of conditional densities, one for each incomplete variable.
+Starting from an initial imputation, MICE draws imputations by iterating over the conditional densities.
+
+\subsection{Results}
+\input{./tex/fig/fig_synthetic_benchmark}
+
+In the synthetic tests our model comes out as the best performer, with a mean MSE improvement compared to best competing method of $17\%$ in MAR cases and $71\%$ in MNAR cases (\figref{fig:synthetic_benchmark_box}).
+
+We notice that DAE is not always better than knn ($k=5$), especially in low \snr\ cases.
+
+Since MICE is computationally expensive, we were able to fit it only on MNAR cases with high \snr\, where it performed poorly (boxplot not shown), while in MAR cases this model did not converge.
+
+In \figref{fig:synthetic_benchmark_pred_box} we show a stratification of MAR experiments results by the fraction $f$ of data-points with complete views.
+Here we notice how with already $f \geq 0.25$ we can significantly reduce the prediction error on testing data-points compared to the case $f=0$, where no relationship between views can be established.
+Moreover, reaching the ideal case of $f=1$, that is when there are no missing views in the dataset, does not improve significantly the prediction performance of our model.
+This finding suggests that collecting a minimum amount of data-points with all the views is enough for our model to capture the joint relationship among views.
 
 %%%%%%%%%%%%%%%%%%%%%
 %% MEDICAL IMAGING %%
 %%%%%%%%%%%%%%%%%%%%%
-\section{Experiments on Medical Imaging datasets}
+\section{Experiments on Medical Imaging Datasets}
 \label{ssec:real}
 
-\newpage
 \input{./tex/tab/table_datasets_numbers.tex}
 % \newpage
 % \input{./tex/tab/table_datasets_cross_validation.tex}
@@ -77,9 +98,11 @@ In the MNAR experiments the benchmark against the standard k-nearest-neighbor ($
 \input{./tex/tab/table_datasets_prediction_combat.tex}
 \input{./tex/tab/table_datasets_prediction_dx.tex}
 \input{./tex/tab/table_model_comparison.tex}
+
+
 % \input{./tex/tab/table_model_comparison.tex}
 
-\subsubsection{Data preparation}
+\subsection{Data Preparation}
 Data used in the preparation of this article were obtained from the following sources.
 1) From the Alzheimer's Disease Neuroimaging Initiative (ADNI)
 \footnote{
@@ -106,7 +129,7 @@ All the imaging measurements are averaged on the regions of interests defined in
 In \tabref{table:datasets} we show the number of observations stratified by dataset and modality.
 Please note that the only view in common across datasets is the clinical one, composed by MMSE and age features only.
 
-\subsubsection{Fitting procedure}
+\subsection{Fitting procedure}
 For the model architecture, we choose the likelihood function as in \eqnref{eq:decoder}.
 We then choose to parametrize the encoder as:
 \begin{equation}
@@ -125,7 +148,7 @@ To have a measure of the generalization ability for each model, we measured the 
 The same was done with the model `all'.
 In this case the hold out observations belong to the whole dataset pool and we will refer to its testing set as the `joint' set.
 
-\subsubsection{Results}
+\subsection{Results}
 In \tabref{table:crossvalidation_details} we show for each trained multi-view model, the prediction error on the within-dataset test sets, cross-dataset test sets, and joint set, whenever computable.
 We notice that the generalization performance of the model `all' is almost always the best in predicting the `clin' and `mri' views.
 These are also the views most represented in all the datasets.
@@ -133,5 +156,4 @@ We also note that joint model systematically outperforms the dataset-specific mo
 Moreover it generally provides better predictions even respect to the within-dataset results.
 On the other extreme, views belonging only to a specific dataset, such as `fdg' in `adni2' and `mri local' in the `local' dataset are better predicted with dataset-specific models.
 In the remainig cases of `av45' and `tau', the joint model seems, on average, to perform better than the single dataset-specific ones.
-
 

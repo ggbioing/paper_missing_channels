@@ -75,6 +75,7 @@ We use Algorithm \ref{alg:optim} to solve \eqnref{eq:argmax}.
 The summation in \eqnref{eq:argmax} is done for every dataset $d$ along all the available data-points $n$ and their specific views $v$, although batching data-points with common views can speed up the computation by reducing the number of second level \textit{for} loop iterations in Algorithm \ref{alg:optim}.
 If missing, a particular view $v$ will be simply not accounted for that specific observation, without having to discard all the other views that can still contribute to optimize \eqnref{eq:argmax}.
 The presence of at least one common view among datasets acts as a link and allows the information to flow through all the datasets to the other views.
+In \figref{fig:model} we show the learning scheme of our model in a simple case with four views and one common view between batches.
 
 We observe that this model extends the Multi-Channel VAE \cite{Antelmi2019}, which is a multi-view extension of the VAE \cite{Kingma2013,Rezende2014}.
 The authors of \cite{Antelmi2019} propose a multi-view generative model where they require all the observation in the training set to have all the available views, hence limited to model one dataset at a time (in the case of datasets with different views), after having discarded incomplete observations in that dataset.
