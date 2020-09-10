@@ -28,10 +28,9 @@ By introducing the latent variational approximation $\qz$, we can derive the fol
 \begin{aligned}
 \ln \p{\xdnv|\thetab_v} &= \ln \int \p{\xdnv|\z, \thetab_v} \p{\z} \; d\z \\
                         &= \ln \EE{\qz}{\frac{\p{\xdnv|\z, \thetab_v} \p{\z}}{\qz}} \\
-                        &\geq \EE{\qz}{\ln \p{\xdnv|\z, \thetab_v}} - \KL{\qz}{\pz},
+                        &\geq \EE{\qz}{\ln \p{\xdnv|\z, \thetab_v}} - \KL{\qz}{\pz}.
 \end{aligned}
 \end{equation}
-where we compute the expectation with respect to an arbitrary distribution $\qz$.
 To derive the last line of \eqnref{eq:LB} we leverage on the \textit{Jensen's inequality} applied to the logarithm function, and collect the result into a new expectation term and in the Kullback-Leibler divergence term ($\kl$).
 
 With the right choice of the functional form of $\qz$, $\pz$, and $\p{\xdnv|\z, \thetab_v}$, the \rhs\ of \eqnref{eq:LB} becomes amenable to computation and maximization, yielding to the maximization of the \lhs, also known as the model evidence.

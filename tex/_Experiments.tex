@@ -15,9 +15,10 @@ We then corrupt the observation with increasing levels of noise
 and we apply specific strategies to remove views in the context of the \textit{missing at random} (MAR) and \textit{missing not at random} (MNAR) experiments.
 
 %% MAR %%
-In the MAR experiments views were randomly removed according to a parameter $0 \leq f \leq 1$ to control the fraction of data-points with complete views.
+In the MAR experiments views were randomly removed according to a parameter $0 \leq f \leq 1$, which controls the fraction of data-points with complete views.
 In the extreme case $f=1$, all the data-points have all the views, representing the ideal case of no missing views, that is the working case of the Multi-Channel Variational Autoencoder \citep{Antelmi2019}.
-In the case $f=0$, each data-point has only one randomly assigned view, representing the case where no relationship between views can be established, where the our multi-view model collapses to a disjoint series of independent Variational Autoencoders \citep{Kingma2013, Rezende2014}.
+In the case $f=0$, each data-point has one and only one randomly assigned view, representing the case where no relationship between views can be established.
+Here our multi-view model collapses to a disjoint series of independent Variational Autoencoders \citep{Kingma2013, Rezende2014}.
 In the general case, each data-point has probability $f$ to have all the views, and probability $1-f$ to have a randomly assigned view out of the total available views.
 The general case represents the case where the relationship between views can be established only through a fraction $f$ of the total available data-points.
 
@@ -33,7 +34,7 @@ A =
 \end{pmatrix},
 \end{equation}
 where $A(v,d)=1$ indicates the presence of view $v$ in dataset $d$.
-We limited our MNAR simulations to cases with square association matrices with maximum dimensionality of $5$.
+We limited our MNAR simulations to cases that can be defined with square association matrices having a dimensionality not greater than $5$.
 
 \subsection{Model Fitting and Evaluation}
 
@@ -62,7 +63,7 @@ Here each sample's missing values are imputed using the mean value from $k$ near
 Two samples are close if the features that neither is missing are close in terms of Euclidean distance.
 
 The Denoising Autoencoder, as developed by \cite{dae}, is based on an overcomplete deep autoencoder.
-It maps input data to a higher dimensional subspace, which in combination with an initial dropout layer to induce corruption, makes the model robust to missing data.
+It maps input data to a higher dimensional space, which in combination with an initial dropout layer inducing corruption, makes the model robust to missing data.
 We used the same architecture proposed by the authors, that is three hidden layers for encoder and decoder networks, Tanh activation functions, hyperparameter $\Theta=7$, and dropout $p=0.5$, as they proved to provide consistent better results.
 
 In MICE, as implemented in \cite{mice}, missing values are modeled as a multivariate linear combination of the available features.
@@ -79,10 +80,10 @@ We notice that DAE is not always better than knn ($k=5$), especially in low \snr
 
 Since MICE is computationally expensive, we were able to fit it only on MNAR cases with high \snr\, where it performed poorly (boxplot not shown), while in MAR cases this model did not converge.
 
-In \figref{fig:synthetic_benchmark_pred_box} we show a stratification of MAR experiments results by the fraction $f$ of data-points with complete views.
-Here we notice how with already $f \geq 0.25$ we can significantly reduce the prediction error on testing data-points compared to the case $f=0$, where no relationship between views can be established.
+In \figref{fig:synthetic_benchmark_pred_box} we show MAR experiments results stratified by \snr\ and by the fraction $f$ of data-points with complete views.
+Here we notice how with already $f = 0.25$ we can significantly reduce the prediction error on testing data-points compared to the case $f=0$, where no relationship between views can be established.
 Moreover, reaching the ideal case of $f=1$, that is when there are no missing views in the dataset, does not improve significantly the prediction performance of our model.
-This finding suggests that collecting a minimum amount of data-points with all the views is enough for our model to capture the joint relationship among views.
+These findings suggest that collecting a minimum amount of data-points with all the views is enough for our model to capture the joint relationship among views.
 
 %%%%%%%%%%%%%%%%%%%%%
 %% MEDICAL IMAGING %%
@@ -91,40 +92,51 @@ This finding suggests that collecting a minimum amount of data-points with all t
 \label{ssec:real}
 
 \input{./tex/tab/table_datasets_numbers.tex}
-% \newpage
 % \input{./tex/tab/table_datasets_cross_validation.tex}
-% \newpage
 % \input{./tex/tab/table_datasets_prediction.tex}
 \input{./tex/tab/table_datasets_prediction_combat.tex}
 \input{./tex/tab/table_datasets_prediction_dx.tex}
 \input{./tex/tab/table_model_comparison.tex}
-
-
 % \input{./tex/tab/table_model_comparison.tex}
+
+In this section we describe our results on modeling jointly real medical imaging datasets, independently acquired in the context of studies about cognitive decline.
+
+
 
 \subsection{Data Preparation}
 Data used in the preparation of this article were obtained from the following sources.
 1) From the Alzheimer's Disease Neuroimaging Initiative (ADNI)
 \footnote{
-\href{http://adni.loni.usc.edu}{adni.loni.usc.edu}. The ADNI was launched in 2003 as a public-private partnership, led by Principal Investigator Michael W. Weiner, MD. For up-to-date information, see \href{www.adni-info.org}{www.adni-info.org}.
-}.
-2) From MIRIAD dataset \cite{Miriad}, a database of volumetric MRI brain-scans of Alzheimer's sufferers and healthy elderly people.
-3) From a local cohort collected at the University Hospitals, having healthy subjects and subjects with various cognitive disorders.
+\href{http://adni.loni.usc.edu}{adni.loni.usc.edu}. The ADNI was launched in 2003 as a public-private partnership, led by Principal Investigator Michael W. Weiner, MD. For up-to-date information, see \href{www.adni-info.org}{www.adni-info.org}.}
+a database of brain imaging and related clinical data of cognitively normal subjects and at various stages of cognitive decline.
+%2) From MIRIAD dataset \cite{Miriad}, a database of volumetric MRI brain-scans and related clinical data of Alzheimer's sufferers and healthy elderly people.
+2) From MIRIAD dataset \cite{Miriad}, a database of brain imaging and related clinical data of cognitively normal subjects and data of Alzheimer's.
+%3) From OASIS-3 dataset \citep{oasis3}, a database of brain MRI and amyloid PET scans and related clinical data of cognitively normal subjects and at various stages of cognitive decline.
+3) From OASIS-3 dataset \citep{oasis3}, a database of brain MRI and amyloid PET scans and related clinical data of cognitively normal subjects and subjects at various stages of cognitive decline.
+4) From a local cohort collected at the University Hospitals, with brain MRI and glucose (fdg), amyloid (av45), tau protein PET scans, and related clinical data of healthy subjects and subjects with various cognitive disorders.
+
+All MRI scans, except for the ones in the local cohort, were processed with FreeSurfer \footnote{\href{https://surfer.nmr.mgh.harvard.edu/}{surfer.nmr.mgh.harvard.edu}} \citep{freesurfer} to extract cortical volumes.
+MRIs in the local cohort were instead processed with SPM \cite{Ashburner2000} to extract measurements about gray matter density in the brain.
+
+
+ images were processed with SPM
+\subsection{Views}
 
 We divided the ADNI dataset into two independent ones:
 `adni1', composed by subjects recruited in the initial study,
 and `adni2' composed by those subjects subsequently recruited in ADNI-GO, ADNI2, and ADNI3.
-Since data modalities and acquisition protocols of `adni1' are different from those of `adni2', we consider these two cohorts as indipendent datasets.
+Since data modalities and acquisition protocols of `adni1' are different from those of `adni2', we consider these two cohorts as independent datasets.
 
-From the four datasets (`adni1', `adni2', `miriad', `local') we grouped the observations into the following views.
-1) `clin': containing age and the Mini-Mental cognitive score (MMSE).
-2) `mri': brain volumes computed with FreeSurfer \footnote{
+From the five datasets (`adni1', `adni2', `miriad', `oasis3', `local') we grouped the observations into the following views.
+1) `clin': grouping age and the Mini-Mental cognitive score (MMSE).
+2) `mri': grouping brain volumes computed with FreeSurfer \footnote{
 \href{https://surfer.nmr.mgh.harvard.edu/}{surfer.nmr.mgh.harvard.edu}
 }.
 3) `fdg': average brain glucose uptake measured through the analysis of FDG-PET scans.
 4) `av45': average brain amyloid uptake measured through the analysis of AV45-PET scans.
 5) `tau': average brain protein Tau uptake measured through the analysis of TAU-PET scans.
 6) `mri local': this is a view only present in the `local' dataset, composed by measurements on brain gray matter density derived from SPM \cite{Ashburner2000}.
+
 All the imaging measurements are averaged on the regions of interests defined in the Desikan-Killiany atlas \cite{Desikan2006}
 In \tabref{table:datasets} we show the number of observations stratified by dataset and modality.
 Please note that the only view in common across datasets is the clinical one, composed by MMSE and age features only.
@@ -149,7 +161,7 @@ The same was done with the model `all'.
 In this case the hold out observations belong to the whole dataset pool and we will refer to its testing set as the `joint' set.
 
 \subsection{Results}
-In \tabref{table:crossvalidation_details} we show for each trained multi-view model, the prediction error on the within-dataset test sets, cross-dataset test sets, and joint set, whenever computable.
+In \tabref{tab:features} we show for each trained multi-view model, the prediction error on the within-dataset test sets, cross-dataset test sets, and joint set, whenever computable.
 We notice that the generalization performance of the model `all' is almost always the best in predicting the `clin' and `mri' views.
 These are also the views most represented in all the datasets.
 We also note that joint model systematically outperforms the dataset-specific models when applyed across dataset.

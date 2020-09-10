@@ -1,38 +1,45 @@
 \begin{table*}
 \centering
 \caption{
-Experiment of feature prediction.
-Mean Squared Error (the lower the better) from 5-folds cross-validation shown as average (standard deviation).
+Mean Squared Error (MSE, the lower the better) measured on test dataset views (clinical scores and imaging derived phenotypes) predicted with our model.
+$5$-folds cross-validation results shown as as average (standard deviation).
+Models were trained on all the available modalities of the training dataset, independently of their presence in the testing dataset.
+Experiments run in three different conditions depending on the provenance of the training data:
+1) `same', from the testing dataset (held out partition);
+2) `other', different from the testing dataset (average MSE shown);
+3) `leavel out test', from all the available datasets except the testing dataset.
+By average pooling the results (bottom) we see how in general training on data coming from multiple datasets ameliorates the results.
 }
-\begin{tabular}{llllllll}
+\label{tab:features}
+\begin{tabular}{llcccccc}
 \toprule
        &      &         clin &           mri &          fdg &         av45 &          tau &   mri local \\
-test dataset & train type &              &               &              &              &              &              \\
+test dataset & train dataset &              &               &              &              &              &              \\
 \midrule
-adni1 & within &  0.94 (0.11) &  0.83 (0.10) &            - &            - &            - &            - \\
-       & cross &  0.79 (0.26) &  0.78 (0.14) &            - &            - &            - &            - \\
-       & lodo &  0.47 (0.09) &  0.83 (0.13) &            - &            - &            - &            - \\
+adni1  & same           &  0.94 (0.11) &  0.83 (0.10) &            - &            - &            - &            - \\
+       & other (avg)    &  0.79 (0.26) &  0.78 (0.14) &            - &            - &            - &            - \\
+       & leave out test &  0.47 (0.09) &  0.83 (0.13) &            - &            - &            - &            - \\
 \midrule
-adni2 & within &  0.78 (0.16) &  0.68 (0.12) &  0.60 (0.10) &  0.81 (0.12) &  1.29 (0.54) &            - \\
-       & cross &  0.68 (0.29) &  0.73 (0.16) &  1.13 (0.17) &  1.04 (0.27) &  1.10 (0.38) &            - \\
-       & lodo &  0.43 (0.07) &  0.69 (0.11) &  1.14 (0.20) &  0.91 (0.17) &  1.03 (0.37) &            - \\
+adni2  & same           &  0.78 (0.16) &  0.68 (0.12) &  0.60 (0.10) &  0.81 (0.12) &  1.29 (0.54) &            - \\
+       & other (avg)    &  0.68 (0.29) &  0.73 (0.16) &  1.13 (0.17) &  1.04 (0.27) &  1.10 (0.38) &            - \\
+       & leave out test &  0.43 (0.07) &  0.69 (0.11) &  1.14 (0.20) &  0.91 (0.17) &  1.03 (0.37) &            - \\
 \midrule
-miriad & within &  2.90 (1.24) &  6.19 (1.52) &            - &            - &            - &            - \\
-       & cross &  5.77 (3.83) &  6.32 (1.54) &            - &            - &            - &            - \\
-       & lodo &  1.91 (1.26) &  5.81 (1.35) &            - &            - &            - &            - \\
+miriad & same           &  2.90 (1.24) &  6.19 (1.52) &            - &            - &            - &            - \\
+       & other (avg)    &  5.77 (3.83) &  6.32 (1.54) &            - &            - &            - &            - \\
+       & leave out test &  1.91 (1.26) &  5.81 (1.35) &            - &            - &            - &            - \\
 \midrule
-oasis3 & within &  0.68 (0.24) &  0.65 (0.12) &            - &  1.30 (0.36) &            - &            - \\
-       & cross &  0.98 (0.40) &  0.79 (0.19) &            - &  1.15 (0.32) &            - &            - \\
-       & lodo &  0.74 (0.10) &  0.78 (0.14) &            - &  1.11 (0.32) &            - &            - \\
+oasis3 & same           &  0.68 (0.24) &  0.65 (0.12) &            - &  1.30 (0.36) &            - &            - \\
+       & other (avg)    &  0.98 (0.40) &  0.79 (0.19) &            - &  1.15 (0.32) &            - &            - \\
+       & leave out test &  0.74 (0.10) &  0.78 (0.14) &            - &  1.11 (0.32) &            - &            - \\
 \midrule
-local  & within &  1.07 (0.43) &            - &  3.23 (1.01) &  1.70 (0.46) &  1.36 (0.77) &  1.36 (0.36) \\
-       & cross &  2.49 (1.30) &            - &  2.70 (0.76) &  1.52 (0.57) &  1.67 (0.78) &            - \\
-       & lodo &  1.76 (1.09) &            - &  2.71 (0.79) &  1.37 (0.38) &  1.49 (0.69) &            - \\
+local  & same           &  1.07 (0.43) &            - &  3.23 (1.01) &  1.70 (0.46) &  1.36 (0.77) &  1.36 (0.36) \\
+       & other (avg)    &  2.49 (1.30) &            - &  2.70 (0.76) &  1.52 (0.57) &  1.67 (0.78) &            - \\
+       & leave out test &  1.76 (1.09) &            - &  2.71 (0.79) &  1.37 (0.38) &  1.49 (0.69) &            - \\
 \midrule
 \midrule
-       & within &  1.27 (0.60) &  2.09 (0.77) &  1.91 (0.72) &  1.27 (0.34) &  1.32 (0.67) &  1.36 (0.36) \\
-       & cross  &  2.14 (1.83) &  2.16 (0.78) &  1.92 (0.55) &  1.24 (0.41) &  1.39 (0.61) &            - \\
-       & lodo   &  1.06 (0.75) &  2.03 (0.69) &  1.92 (0.58) &  1.13 (0.30) &  1.26 (0.56) &            - \\
+average& same           &  1.27 (0.60) &  2.09 (0.77) &  1.91 (0.72) &  1.27 (0.34) &  1.32 (0.67) &  1.36 (0.36) \\
+       & other (avg)    &  2.14 (1.83) &  2.16 (0.78) &  \textbf{1.92} (0.55) &  1.24 (0.41) &  1.39 (0.61) &            - \\
+       & leave out test &  \textbf{1.06} (0.75) &  \textbf{2.03} (0.69) &  \textbf{1.92} (0.58) &  \textbf{1.13} (0.30) &  \textbf{1.26} (0.56) &            - \\
 \bottomrule
 \end{tabular}
 \end{table*}
