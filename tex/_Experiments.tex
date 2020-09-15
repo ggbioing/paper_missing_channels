@@ -10,8 +10,8 @@ and 2) datasets with systematically missing views (missing not at random).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Data preparation}
 
-To simulate multi dataset observations, we sample the latent variable $\z_{d,n}$ from a multivariate Gaussian with zero-mean and identity covariance matrix, and then we transform it with random linear mapping towards the observation space to get $\xdnv$.
-We then corrupt the observation with increasing levels of noise
+To simulate multi dataset observations, we sample the latent variable $\z_{d,n}$ from the multivariate Gaussian with zero-mean and identity covariance matrix, and then we transform it with random linear mapping towards the observation space to get $\xdnv$.
+We then corrupt the observations with increasing levels of noise
 and we apply specific strategies to remove views in the context of the \textit{missing at random} (MAR) and \textit{missing not at random} (MNAR) experiments.
 
 %% MAR %%
@@ -145,7 +145,8 @@ Size of the intersection ($\cap$) and union ($\cup$) of subjects with available 
 Please note that the only view in common across datasets is the clinical one, composed by MMSE and age features only.
 
 We normalized all the views feature-wise with the ComBat method \citep{Fortin2018}, an harmonization technique useful for reduce unwanted sources of variation in the data due to the difference in acquisition protocols among datasets.
-In ComBat, we set the `age' as main regressor, and `adni2' as reference dataset.
+In ComBat, we set the `age' as main regressor, and `adni2' as reference dataset for the training set.
+As we used cross-validation to validate our results, the reference dataset for the testing  was the training split.
 
 \subsection{Fitting procedure}
 For the model architecture, we choose the likelihood functions as in \eqnref{eq:decoder}.
