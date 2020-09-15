@@ -38,16 +38,8 @@ We limited our MNAR simulations to cases that can be defined with square associa
 
 \subsection{Model Fitting and Evaluation}
 
-In both MAR and MNAR experiments we fit the synthetic scenarios with our model, where we choose a linear Gaussian parametrization for the variational and likelihood distributions, such that respectively:
-\begin{align}
-\label{eq:encoder}
-q_{d,n,w}(\z) &= \Gaussof{\mub=\mathbf{V}_w^{(\mu)} \xdnw, \Sigmab = diag(\mathbf{V}_w^{(\sigma)} \xdnw)}, \\
-\label{eq:decoder}
-\p{\xdnv|\z,\thetab_v} &= \Gaussof{\mub = \mathbf{G}_v^{(\mu)} \zb, \Sigmab = diag(\mathbf{g}_v^{(\sigma)})},
-\end{align}
-\textit{i.e.} factorized multivariate Gaussian distributions whose moments are linear transformations depending on the conditioning variables. \\
-$\thetab_v = \{\mathbf{G}_v^{(\mu)}, \mathbf{g}_v^{(\sigma)}\}$ and $\phib_w=\{\mathbf{V}_w^{(\mu)}, \mathbf{V}_w^{(\sigma)}\}$ are the parameters to be optimized through (\ref{eq:argmax}).
-Lastly we predicted for each simulated scenario the missing views according to \eqnref{eq:reconstruction} on testing hold-out datasets.
+In both MAR and MNAR experiments we fit the synthetic scenarios with our model, where we choose a linear Gaussian parametrization for the variational and likelihood distributions, respectively explicited in \eqnref{eq:encoder} and \eqnref{eq:decoder}.
+For each simulated scenario we predicted the missing views according to \eqnref{eq:reconstruction} on testing hold-out datasets.
 
 Results, cross validated $5$ times, were summarized with the \textit{mean squared error} (MSE) metric on testing hold-out datasets for every simulated scenario.
 We applied the same evaluation procedure for the following benchmark methods.
@@ -82,7 +74,7 @@ We were able to fit the MICE model only on MNAR cases with high \snr\, where it 
 
 In \figref{fig:synthetic_benchmark_pred_box} we show MAR experiments results stratified by \snr\ and by the fraction $f$ of data-points with complete views.
 Here we notice how with already $f = 0.25$ we can significantly reduce the prediction error on testing data-points compared to the case $f=0$, where no relationship between views can be established.
-Moreover, reaching the ideal case of $f=1$, that is when there are no missing views in the dataset, does not improve significantly the prediction performance of our model.
+Moreover, reaching the ideal case of $f=1$, that is when there are no missing views in the dataset, does not improve significantly the prediction performance of our model compared to the case $f = 0.25$.
 
 %%%%%%%%%%%%%%%%%%%%%
 %% MEDICAL IMAGING %%
@@ -125,31 +117,38 @@ We divided the ADNI dataset into two independent ones:
 and `adni2' composed by those subjects subsequently recruited in ADNI-GO, ADNI2, and ADNI3.
 Since data modalities and acquisition protocols of `adni1' are different from those of `adni2', we consider these two cohorts as independent datasets.
 
-\subsection{Data Preparation}
+\subsection{Imaging Processing}
+All the brain scans were processed in order to have measurements on regions defined in the Desikan-Killiany atlas \citep{Desikan2006}.
 All brain MRI scans, except for the ones in the local cohort, were processed with FreeSurfer \footnote{\href{https://surfer.nmr.mgh.harvard.edu/}{surfer.nmr.mgh.harvard.edu}} \citep{freesurfer} to measure brain cortical and sub-cortical volumes.
-We took measures on regions defined in the Desikan-Killiany atlas \cite{Desikan2006}.
-MRIs in the local cohort were processed with SPM \cite{Ashburner2000} to measure gray matter density in the brain.
+MRIs in the local cohort were processed with SPM \citep{Ashburner2000} to measure gray matter density in the brain, averaged in the regions of interest defined in the chosen atlas.
+Relative standardized uptake values (SUVR) were computed for all the PET scans, processed with SPM.
+SUVRs were computed using the cerebellum as reference region, and averaged for each region in the atlas.
 
-
-
- images were processed with SPM
-\subsection{Views}
+\subsection{Gathering Observations into Views}
 From the five datasets (`adni1', `adni2', `miriad', `oasis3', `local') we grouped the observations into the following views.
 1) `clin': grouping age and the Mini-Mental cognitive score (MMSE).
-2) `mri': grouping brain volumes computed with FreeSurfer \footnote{
-\href{https://surfer.nmr.mgh.harvard.edu/}{surfer.nmr.mgh.harvard.edu}
-}.
+2) `mri': grouping brain volumes computed with FreeSurfer.
 3) `fdg': average brain glucose uptake measured through the analysis of FDG-PET scans.
 4) `av45': average brain amyloid uptake measured through the analysis of AV45-PET scans.
 5) `tau': average brain protein Tau uptake measured through the analysis of TAU-PET scans.
-6) `mri local': this is a view only present in the `local' dataset, composed by measurements on brain gray matter density derived from SPM \cite{Ashburner2000}.
+%6) `mri local': this is a view only present in the `local' dataset, composed by measurements on brain gray matter density derived from SPM \cite{Ashburner2000}.
+6) `mri local': this is a view only present in the `local' dataset, composed by measurements of brain gray matter density.
 
-All the imaging measurements are averaged on the regions of interests defined in the Desikan-Killiany atlas \cite{Desikan2006}
-In \tabref{table:datasets} we show the number of observations stratified by dataset and modality.
+All datasets except `miriad' are composed by multiple time points, or follow ups, for each subject.
+To met the model assumption of independent datapoints, we kept only one time point per subject.
+Specifically, we choose the first time point available, or baseline, for `adni1' and `adni2' subjects.
+In `oasis3', since measurements were mostly acquired in different days, we choose to join nearby time points into a single one.
+Time interval between views within one subject was minimal (`av45' vs `mri': $\leq 90$ days, `mri' vs `clin': $\leq 90$ days).
+
+In \tabref{table:datasets} we show the number of observations stratified by dataset and view.
+Size of the intersection ($\cap$) and union ($\cup$) of subjects with available views is also provided.
 Please note that the only view in common across datasets is the clinical one, composed by MMSE and age features only.
 
+We normalized all the views feature-wise with the ComBat method \citep{Fortin2018}, an harmonization technique useful for reduce unwanted sources of variation in the data due to the difference in acquisition protocols among datasets.
+In ComBat, we set the `age' as main regressor, and `adni2' as reference dataset.
+
 \subsection{Fitting procedure}
-For the model architecture, we choose the likelihood function as in \eqnref{eq:decoder}.
+For the model architecture, we choose the likelihood functions as in \eqnref{eq:decoder}.
 We then choose to parametrize the encoder as:
 \begin{equation}
 \label{eq:dropout_posterior}
