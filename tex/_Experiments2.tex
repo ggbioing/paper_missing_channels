@@ -24,6 +24,8 @@ We executed three kinds of experiments:
 3) diagnosis classification accuracy with our model on all the available datasets.
 
 \subsection{Data Sources}
+\label{ssec:datasets}
+
 Data used in the preparation of this section were obtained from the following sources.
 \begin{enumerate}
 %
@@ -45,6 +47,8 @@ We divided the ADNI dataset into two independent ones:
 and `adni2' composed by those subjects subsequently recruited in ADNI-GO, ADNI2, and ADNI3.
 Since data modalities and acquisition protocols of `adni1' are different from those of `adni2', we consider these two cohorts as independent datasets.
 
+To summarize, we grouped our data into five distinct datasets which we named as follows: `adni1', `adni2', `miriad', `oasis3', `local'.
+
 \subsection{Imaging Processing}
 All the brain scans were processed in order to have measurements on regions defined in the Desikan-Killiany atlas \citep{Desikan2006}.
 All brain MRI scans, except for the ones in the local cohort, were processed with FreeSurfer \footnote{\href{https://surfer.nmr.mgh.harvard.edu/}{surfer.nmr.mgh.harvard.edu}} \citep{freesurfer} to measure brain cortical and sub-cortical volumes.
@@ -53,7 +57,9 @@ Relative standardized uptake values (SUVR) were computed for all the PET scans, 
 SUVRs were computed using the cerebellum as reference region, and averaged in each region of the atlas.
 
 \subsection{Gathering Observations into Views}
-From the five datasets (`adni1', `adni2', `miriad', `oasis3', `local') we grouped the observations into the following views.
+\label{ssec:views}
+
+Observations from the five available datasets (\S~\ref{ssec:datasets}) were grouped into the following views.
 1) `clin': grouping age and the Mini-Mental cognitive score (MMSE).
 2) `mri': grouping brain volumes computed with FreeSurfer.
 3) `fdg': average brain glucose uptake measured through the analysis of FDG-PET scans.
@@ -64,7 +70,7 @@ From the five datasets (`adni1', `adni2', `miriad', `oasis3', `local') we groupe
 
 All datasets except `miriad' are composed by multiple time points, or follow ups, for each subject.
 To met the model assumption of independent datapoints, we kept only one time point per subject.
-Specifically, we choose the first time point available, or baseline, for `adni1' and `adni2' subjects.
+Specifically, we choose the first time point available, or baseline, for subjects belonging to the `adni1', `adni2', and `local' datasets.
 In `oasis3', since measurements were mostly acquired in different days, we choose to join nearby time points into a single one.
 Time interval between views within one subject was minimal (`av45' vs `mri': $\leq 90$ days, `mri' vs `clin': $\leq 90$ days).
 
@@ -77,22 +83,25 @@ In ComBat, we set the `age' as main regressor, and `adni2' as reference dataset 
 As we used cross-validation to validate our results, the ComBat reference dataset for the testing was the training split.
 
 \subsection{Experiment 1: Feature Prediction}
-For the model architecture, we choose the likelihood functions as in \eqnref{eq:decoder}.
-We then choose to parametrize the encoder as:
 
-We fit our multi-view model one dataset at a time, and lastly on the whole dataset pool.
-We will refer to this last model as `all'.
-Observations were divided into five splits, stratified to keep an intra-dataset proportion of views as close as possible as the ones of the original datasets.
-After setting a dropout threshold to $0.5$ we measured, through the mean squared error, the prediction error of the dataset-specific models on the testing hold-out observations of the same dataset (within).
-To have a measure of the generalization ability for each model, we measured the prediction accuracy also on all the test sets not belonging to the same dataset of the trainig set (cross).
-The same was done with the model `all'.
-In this case the hold out observations belong to the whole dataset pool and we will refer to its testing set as the `joint' set.
+The purpose of this experiment is to investigate the generalization performance of our model when tested on datasets not used for its training.
+
+For each testing dataset, chosen among the five available ones (\S~\ref{ssec:datasets}), this experiment was run in three different conditions depending on the provenance of the training data:
+1) from the same dataset as the testing dataset, whose results represents an internal benchmark for our model;
+2) from a different dataset, chosen among the remaining available ones;
+3) from all the remaining available datasets, merged together into a single one.
+
+We choose for our model a linear Gaussian parameterization for the likelihood and variational distributions, respectively as in \eqnref{eq:decoder} and \eqnref{eq:dropout_posterior}.
+Models were trained on all the available views in the training dataset, independently of their presence in the testing dataset.
+Prediction performances were evaluated with the Mean Squared Error (MSE) metric, measured on the available views in the testing dataset, reconstructed with \eqnref{eq:reconstruction}.
+All results were validated by means of $5$-folds cross-validation.
 
 \subsection{Experiment 2: Benchmark Comparison}
-\ldots
+
+The purpose of this experiment is to validate the benchmark results obtained in the synthetic experiments, this time on real data.
 
 \subsection{Experiment 3: Diagnosis Prediction}
-\ldots
+
 
 \subsection{Results}
 In \tabref{tab:features} we show for each trained multi-view model, the prediction error on the within-dataset test sets, cross-dataset test sets, and joint set, whenever computable.
@@ -102,5 +111,4 @@ We also note that joint model systematically outperforms the dataset-specific mo
 Moreover it generally provides better predictions even respect to the within-dataset results.
 On the other extreme, views belonging only to a specific dataset, such as `fdg' in `adni2' and `mri local' in the `local' dataset are better predicted with dataset-specific models.
 In the remainig cases of `av45' and `tau', the joint model seems, on average, to perform better than the single dataset-specific ones.
-
 

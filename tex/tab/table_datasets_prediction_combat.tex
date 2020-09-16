@@ -3,11 +3,11 @@
 \caption{
 Mean Squared Error (MSE, the lower the better) measured on test dataset views (clinical scores and imaging derived phenotypes) predicted with our model.
 $5$-folds cross-validation results shown as as average (standard deviation).
-Models were trained on all the available modalities of the training dataset, independently of their presence in the testing dataset.
+Models were trained on all the available views the training dataset, independently of their presence in the testing dataset.
 Experiments run in three different conditions depending on the provenance of the training data:
-1) `same' dataset as the testing dataset (held out partition);
+1) `same' dataset as the testing dataset;
 2) `different' from the testing dataset (average MSE shown);
-3) `leavel out test', from all the available datasets except the testing dataset.
+3) `leave out test', from all the available datasets except the testing dataset.
 By average pooling the results (bottom) we see how in general training on data coming from multiple datasets ameliorates the results.
 }
 \label{tab:features}
@@ -37,9 +37,9 @@ local  & same           &  1.07 (0.43) &            - &  3.23 (1.01) &  1.70 (0.
        & leave out test &  1.76 (1.09) &            - &  2.71 (0.79) &  1.37 (0.38) &  1.49 (0.69) &            - \\
 \midrule
 \midrule
-average& same           &  1.27 (0.60) &  2.09 (0.77) &  1.91 (0.72) &  1.27 (0.34) &  1.32 (0.67) &  1.36 (0.36) \\
-       & different (avg)    &  2.14 (1.83) &  2.16 (0.78) &  \textbf{1.92} (0.55) &  1.24 (0.41) &  1.39 (0.61) &            - \\
-       & leave out test &  \textbf{1.06} (0.75) &  \textbf{2.03} (0.69) &  \textbf{1.92} (0.58) &  \textbf{1.13} (0.30) &  \textbf{1.26} (0.56) &            - \\
+average& same           &  1.27 (0.60) &  2.09 (0.77) &  \textbf{1.91} (0.72) &  1.27 (0.34) &  1.32 (0.67) &  1.36 (0.36) \\
+       & different (avg)    &  2.14 (1.83) &  2.16 (0.78) &  1.92 (0.55) &  1.24 (0.41) &  1.39 (0.61) &            - \\
+       & leave out test &  \textbf{1.06} (0.75) &  \textbf{2.03} (0.69) &  1.92 (0.58) &  \textbf{1.13} (0.30) &  \textbf{1.26} (0.56) &            - \\
 \bottomrule
 \end{tabular}
 \end{table*}

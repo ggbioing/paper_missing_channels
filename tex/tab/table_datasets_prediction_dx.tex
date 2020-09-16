@@ -2,38 +2,40 @@
 \centering
 \caption{
 Experiment of diagnosis classification.
-Classification prediction accuracy (the higher the better) from a 5-folds cross-validation experiment campain is shown.
-The leave-one-dataset-out (lodo) models have an oaverall better generalization property of predicting the correct class in an unseed dataset with respect to the cross (\ie one dataset at a time) models.
+Classification accuracy (the higher the better) from a 5-folds cross-validation experiments is shown.
+On average, in-dataset (same) prediction performance is higher with respect to all other cases.
+Out-dataset prediction performance is higher if multiple dataset are pooled together (leave out test) with respect to the 
+average case where our model is trained with a single dataset (different).
 }
-\begin{tabular}{lll}
+\begin{tabular}{llcr}
 \toprule
-       &      &            accuracy \% mean (std) \\
-test dataset & train type &                \\
+       &      &            \multicolumn{2}{c}{\% accuracy} \\
+test dataset & train dataset & mean & std \\
 \midrule
-adni1 & within &   61.22 (5.11) \\
-       & cross &  49.43 (11.56) \\
-       & lodo &   58.38 (3.78) \\
+adni1  & same            &  61.22 & 5.11 \\
+       & different (avg) &  49.43 & 11.56 \\
+       & leave out test  &  58.38 & 3.78 \\
 \midrule
-adni2 & within &   64.28 (0.98) \\
-       & cross &   46.41 (5.20) \\
-       & lodo &   56.95 (3.11) \\
+adni2  & same            &  64.28 & 0.98 \\
+       & different (avg) &  46.41 & 5.20 \\
+       & leave out test  &  56.95 & 3.11 \\
 \midrule
-geneva & within &   76.85 (4.41) \\
-       & cross &  34.12 (13.13) \\
-       & lodo &   38.16 (5.41) \\
+geneva & same            &  76.85 & 4.41 \\
+       & different (avg) &  34.12 & 13.13 \\
+       & leave out test  &  38.16 & 5.41 \\
 \midrule
-miriad & within &   90.99 (8.48) \\
-       & cross &  76.45 (13.07) \\
-       & lodo &   92.42 (9.42) \\
+miriad & same            &  90.99 & 8.48 \\
+       & different (avg) &  76.45 & 13.07 \\
+       & leave out test  &  92.42 & 9.42 \\
 \midrule
-oasis3 & within &   80.19 (4.95) \\
-       & cross &   54.34 (9.32) \\
-       & lodo &   62.45 (7.01) \\
+oasis3 & same            &  80.19 & 4.95 \\
+       & different (avg) &  54.34 & 9.32 \\
+       & leave out test  &  62.45 & 7.01 \\
 \midrule
 \midrule
-       & within &   74.70 (4.79) \\
-       & cross  &  52.15 (10.46) \\
-       & lodo   &   61.67 (5.75) \\
+average& same            &  \textbf{74.70} & 4.79 \\
+       & different (avg) &  52.15 & 10.46 \\
+       & leave out test  &  61.67 & 5.75 \\
 \bottomrule
 \end{tabular}
 \end{table}

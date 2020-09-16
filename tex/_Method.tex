@@ -82,7 +82,7 @@ A non-linear parameterization can be as well used, for example in the form of de
 In the literature we can also find the following alternative parameterization for the posterior distribution:
 \begin{equation}
 \label{eq:dropout_posterior}
-    q_{d,n,w}(\z) = \Gauss{\mub}{\Sigmab = \diagp{\sqrt{\alphab} \odot \mub^2}},
+    q_{d,n,w}(\z) = \Gauss{\mub = \mathbf{V}_w^{(\mu)} \xdnw}{\Sigmab = \diagp{\sqrt{\alphab} \odot \mub^2}},
 \end{equation}
 which is known as \textit{dropout posterior} \citep{Kingma2015}.
 The dropout parameter $\alphab$ has components $\alpha_i = \nicefrac{p_i}{1-p_i}$ linked to the probability $p_i$ of dropping out the $i$-th latent variable component \citep{Wang2013}.
@@ -125,8 +125,4 @@ Let's consider, for example, the case where a many-to-one relationship exists be
 In this case, we can consider our model as a multi-view regressor, if the output likelihood function models a continuous variable, or a multi-view classifier in the case of a finite discrete output.
 In general, there may be an $m$-to-$n$ relationship, with partially overlapping views among $m$ input views and $n$ output views.
 Investigating the properties of all the possible architectures is beyond the scope of this work.
-
-
-
-
 
