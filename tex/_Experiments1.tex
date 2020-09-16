@@ -1,0 +1,78 @@
+\section{Synthetic Experiments}
+\label{sec:synth}
+
+In this section we describe our results on extensive synthetic experiments performed with our model and benchmark methods in two conditions:
+1) views missing at random for each dataset,
+and 2) datasets with systematically missing views (missing not at random).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SYNTHETIC EXPERIMENTS %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Data preparation}
+
+To simulate multi dataset observations, we sample the latent variable $\z_{d,n}$ from the multivariate Gaussian with zero-mean and identity covariance matrix, and then we transform it with random linear mapping towards the observation space to get $\xdnv$.
+We then corrupt the observations with increasing levels of noise
+and we apply specific strategies to remove views in the context of the \textit{missing at random} (MAR) and \textit{missing not at random} (MNAR) experiments.
+
+%% MAR %%
+In the MAR experiments views were randomly removed according to a parameter $0 \leq f \leq 1$, which controls the fraction of data-points with complete views.
+In the extreme case $f=1$, all the data-points have all the views, representing the ideal case of no missing views, that is the working case of the Multi-Channel Variational Autoencoder \citep{Antelmi2019}.
+In the case $f=0$, each data-point has one and only one randomly assigned view, representing the case where no relationship between views can be established.
+Here our multi-view model collapses to a disjoint series of independent Variational Autoencoders \citep{Kingma2013, Rezende2014}.
+In the general case, each data-point has probability $f$ to have all the views, and probability $1-f$ to have a randomly assigned view out of the total available views.
+The general case represents the case where the relationship between views can be established only through a fraction $f$ of the total available data-points.
+
+%% MNAR %%
+In the MNAR experiments we removed specific views for each simulated dataset, ensuring at the same time the absence of at least one view for a datasets, and the presence of at least one view in common between pairs of datasets.
+As an example, in the case with three datasets and three views, the association view-dataset can be expressed through the following association matrix $A$:
+\begin{equation}
+A = 
+\begin{pmatrix}
+1 & 0 & 1 \\
+1 & 1 & 0 \\
+0 & 1 & 1 
+\end{pmatrix},
+\end{equation}
+where $A(v,d)=1$ indicates the presence of view $v$ in dataset $d$.
+We limited our MNAR simulations to cases that can be defined with square association matrices having a dimensionality not greater than $5$.
+
+\subsection{Model Fitting and Evaluation}
+
+In both MAR and MNAR experiments we fit the synthetic scenarios with our model, where we choose a linear Gaussian parametrization for the variational and likelihood distributions, respectively explicited in \eqnref{eq:encoder} and \eqnref{eq:decoder}.
+For each simulated scenario we predicted the missing views according to \eqnref{eq:reconstruction} on testing hold-out datasets.
+
+Results, cross validated $5$ times, were summarized with the \textit{mean squared error} (MSE) metric on testing hold-out datasets for every simulated scenario.
+We applied the same evaluation procedure for the following benchmark methods.
+
+\subsection{Benchmark Methods}
+Among state of the art multivariate linear and non linear imputation methods, we selected the following competitors as a benchmark:
+1) k-Nearest Neighbors (knn) with $k=\set{1, 5}$;
+2) Denoising Autoencoder (DAE);
+3) Multivariate Imputation by Chained Equations (MICE).
+
+For the knn approach we used the \textit{KNNImputer} method as implemented in the \textit{Scikit-Learn} library \citep{sklearn}.
+Here each sample's missing values are imputed using the mean value from $k$ nearest neighbors found in the training set.
+Two samples are close if the features that neither is missing are close in terms of Euclidean distance.
+
+The Denoising Autoencoder, as developed by \cite{dae}, is based on an overcomplete deep autoencoder.
+It maps input data to a higher dimensional space, which in combination with an initial dropout layer inducing corruption, makes the model robust to missing data.
+We used the same architecture proposed by the authors, that is three hidden layers for encoder and decoder networks, Tanh activation functions, hyperparameter $\Theta=7$, and dropout $p=0.5$, as they proved to provide consistent better results.
+
+In MICE, as implemented in \cite{mice}, missing values are modeled as a multivariate linear combination of the available features.
+This methodology is attractive if the multivariate distribution is a reasonable description of the data, which in our case it is by construction.
+MICE specifies the multivariate imputation model on a variable-by-variable basis by a set of conditional densities, one for each incomplete variable.
+Starting from an initial imputation, MICE draws imputations by iterating over the conditional densities.
+
+\subsection{Results}
+\input{./tex/fig/fig_synthetic_benchmark}
+
+In the synthetic tests our model comes out as the best performer, with a mean MSE improvement compared to best competing method of $17\%$ in MAR cases and $71\%$ in MNAR cases (\figref{fig:synthetic_benchmark_box}).
+
+We notice that DAE is not always better than knn ($k=5$), especially in low \snr\ cases.
+
+We were able to fit the MICE model only on MNAR cases with high \snr\, where it performed poorly (boxplot not shown), while in all the other cases, including all MAR cases, this model did not converge.
+
+In \figref{fig:synthetic_benchmark_pred_box} we show MAR experiments results stratified by \snr\ and by the fraction $f$ of data-points with complete views.
+Here we notice how with already $f = 0.25$ we can significantly reduce the prediction error on testing data-points compared to the case $f=0$, where no relationship between views can be established.
+Moreover, reaching the ideal case of $f=1$, that is when there are no missing views in the dataset, does not improve significantly the prediction performance of our model compared to the case $f = 0.25$.
+
