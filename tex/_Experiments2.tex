@@ -4,12 +4,8 @@
 \section{Experiments on Medical Imaging Datasets}
 \label{sec:real}
 
-\input{./tex/tab/table_datasets_numbers.tex}
 % \input{./tex/tab/table_datasets_cross_validation.tex}
 % \input{./tex/tab/table_datasets_prediction.tex}
-\input{./tex/tab/table_datasets_prediction_combat.tex}
-\input{./tex/tab/table_model_comparison.tex}
-\input{./tex/tab/table_datasets_prediction_dx.tex}
 % \input{./tex/tab/table_model_comparison.tex}
 
 Joint modeling multiple datasets in real scenarios represents an hybrid case between modeling missing at random (MAR) and missing not at random (MNAR) observations, cases which we separately treated in \S\ref{sec:synth}.
@@ -58,6 +54,7 @@ SUVRs were computed using the cerebellum as reference region, and averaged in ea
 
 \subsection{Gathering Observations into Views}
 \label{ssec:views}
+\input{./tex/tab/table_datasets_numbers.tex}
 
 Observations from the five available datasets (\S~\ref{ssec:datasets}) were grouped into the following views.
 1) `clin': grouping age and the Mini-Mental cognitive score (MMSE).
@@ -82,9 +79,28 @@ We normalized all the views feature-wise with the ComBat method \citep{Fortin201
 In ComBat, we set the `age' as main regressor, and `adni2' as reference dataset for the training set.
 As we used cross-validation to validate our results, the ComBat reference dataset for the testing was the training split.
 
-\subsection{Experiment 1: Feature Prediction}
+A final feature-wise standardization step was applied by zero centering the data and by rescaling them to have a unity variance.
+Standardization parameters were computed on the training sets and applied to the training and test sets.
 
-The purpose of this experiment is to investigate the generalization performance of our model when tested on datasets not used for its training.
+\subsection{Experiment 1: Benchmark Validation}
+\input{./tex/tab/table_model_comparison.tex}
+
+The purpose of this experiment is to validate on real data the benchmarked results obtained with the synthetic experiments (\S~\ref{sec:synth}).
+
+As benchmark methods to compare to, we choose the best performers on the synthetic experiments, namely knn5 and DAE.
+We choose for our model a linear Gaussian parameterization for the likelihood and variational distributions, respectively as in \eqnref{eq:decoder} and \eqnref{eq:dropout_posterior}.
+
+We trained all the models (knn5, dae, ours) with data coming from all the datasets except from `adni2', leaved out for testing purposes.
+We choose the `adni2' dataset as testing dataset, as the results would be supported by the dataset with most of the views, and with generally the highest number of observations per view (\tabref{table:datasets}).
+
+Prediction performances were evaluated with the Mean Squared Error (MSE) metric, measured on the available views in the testing dataset, reconstructed with \eqnref{eq:reconstruction}.
+All results were validated by means of $5$-folds cross-validation.
+
+\subsection{Experiment 2: Feature Prediction}
+\label{ssec:feats}
+\input{./tex/tab/table_datasets_prediction_combat.tex}
+
+The purpose of this experiment is to investigate the generalization performance of our model when tested on unseen datasets.
 
 For each testing dataset, chosen among the five available ones (\S~\ref{ssec:datasets}), this experiment was run in three different conditions depending on the provenance of the training data:
 1) from the same dataset as the testing dataset, whose results represents an internal benchmark for our model;
@@ -96,14 +112,40 @@ Models were trained on all the available views in the training dataset, independ
 Prediction performances were evaluated with the Mean Squared Error (MSE) metric, measured on the available views in the testing dataset, reconstructed with \eqnref{eq:reconstruction}.
 All results were validated by means of $5$-folds cross-validation.
 
-\subsection{Experiment 2: Benchmark Comparison}
-
-The purpose of this experiment is to validate the benchmark results obtained in the synthetic experiments, this time on real data.
-
 \subsection{Experiment 3: Diagnosis Prediction}
+\input{./tex/tab/table_datasets_prediction_dx.tex}
 
+The purpose of this experiment is to investigate the generalization performance of our model in predicting on subjects of unseen datasets their diagnostic class among:
+Alzheimer's disease (AD),
+mild cognitive impairment (MCI),
+normal cognition (NC).
+
+The experimental setup about the choice of training and testing data is the same described in the previous experiment (\S~\ref{ssec:feats}).
+
+We choose a linear Gaussian parameterization for the variational distributions as in \eqnref{eq:dropout_posterior}.
+To adapt our model to this new classification experiment, we adopt as decoding function for the latent variable $\z$, the following Categorical likelihood:
+\begin{align}
+\label{eq:classifier}
+\p{y_{d,n}|\z,\thetab} = \operatorname{Cat}\left(\mathbf{\pi}=\thetab\z\right),
+\end{align}
+where $y_{d,n}$ is the diagnosis associated to the data-point $n$ in the dataset $d$, and where the probability vector $\mathbf{\pi}$ is parametrized with a linear transformation of the latent $\z$ by the matrix $\thetab$.
+
+Models were trained on all the available views in the training dataset, independently of their presence in the testing dataset.
+Classes probabilities were inferred from the all the available views in the testing dataset with the following equation:
+\begin{equation}\label{eq:reconstructiony}
+\begin{aligned}
+\hat y = \frac{1}{V_{d, n}} \sum_{w=1}^{V_{d, n}} \EE{q_{d,n,w}(\z)}{\p{y_{d,n}|\z,\thetab}}.
+\end{aligned}
+\end{equation}
+We attributed to each subject the diagnostic class with the highest inferred probability.
+
+The performance of our model on test datasets was evaluated by measuring the classification accuracy (\%).
+All results were validated by means of $5$-folds cross-validation.
 
 \subsection{Results}
+\subsubsection{Experiment 1: Benchmark Validation}
+\subsubsection{Experiment 2: Feature Prediction}
+\subsubsection{Experiment 3: Diagnosis Prediction}
 In \tabref{tab:features} we show for each trained multi-view model, the prediction error on the within-dataset test sets, cross-dataset test sets, and joint set, whenever computable.
 We notice that the generalization performance of the model `all' is almost always the best in predicting the `clin' and `mri' views.
 These are also the views most represented in all the datasets.
