@@ -1,21 +1,21 @@
 DOC=elsarticle-template-harv
 
-all: ${DOC}.blg ${DOC}.bbl
+all: bib
 	pdflatex --halt-on-error --file-line-error ${DOC}.tex
 	evince ${DOC}.pdf
 
-show: ${DOC}.pdf
-	evince ${DOC}.pdf
-
-${DOC}.blg ${DOC}.bbl: ${DOC}.aux
+bib: first ${DOC}.aux # blg bbl out
 	bibtex ${DOC}.aux
 
-${DOC}.aux: ${DOC}.tex # tex/*.tex  # log pdf aux out
+first: ${DOC}.tex ./tex/*.tex  # log pdf aux out
 	pdflatex --halt-on-error --file-line-error ${DOC}.tex
 
 clear:
 	rm -f ${DOC}.{log,pdf,aux,out,bbl,blg}
 
-vim: ${DOC}.tex
+edit: ${DOC}.tex
 	vim ${DOC}.tex
+
+show: ${DOC}.pdf
+	evince ${DOC}.pdf
 
