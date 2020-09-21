@@ -1,4 +1,19 @@
 \section{Discussion}
-\ldots
-%The results in \figref{fig:synthetic_benchmark_pred_box} suggest that collecting a minimum amount of data-points with all the views is enough for our model to capture the joint relationship among views.
-%Still, including data-points 
+
+In both the experiments on synthetic and real data, the MSE prediction metric was favorable towards our model when compared to classic (\eg\ knn) and state of the art (\eg\ DAE, MICE) benchmark methods.
+As a secondary result, we think it is important to report the surprising performance of knn (k = 5) in synthetic scenarios, especially in low snr cases, and on real data experiment, were it is most of the time superior the DAE.
+This finding is corroborated by \cite{Platias2020} were knn is found to be superior to methods based on autoencoders.
+
+An interesting result is the one in \figref{fig:synthetic_benchmark_pred_box}, suggesting that collecting a minimum amount of data-points with all the views ($25\%$ in our setup) is enough for our model to capture the joint relationship among views.
+Training on more complete scenarios, that is the ones where the fraction of complete observations is higher than $25\%$, does not improve significantly the testing results.
+This condition is known in the literature as \textit{overtraining}, where collecting more data is not necessary to ameliorate the model performance.
+We think that this fact can have a positive impact in studies were the acquisition of complete observations is hampered by economic, ethical, or scarcity reasons.
+
+Overtraining may also explain why in feature prediction on real datasets (\tabref{tab:features}), adding more data does not significantly improve the prediction metric on unseen data.
+Indeed, although on average results are better when pooling training datasets together, the variance in the reconstruction metric is too high for claiming a true difference with respect to the baseline.
+From another point of view, by looking at the same table, we also notice that on average the performance of our model on predicting in-dataset observations (our baseline) is not significantly different from prediction of the out-of-dataset ones.
+We think this support the claim for a good generalization property of our model.
+
+With our last experiment we showed the flexibility of our model by substituting the output decoders of previous experiments with a single decoder used as a classifier.
+In classification we obtained the best results in the baseline case (in-dataset).
+

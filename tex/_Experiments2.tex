@@ -123,33 +123,38 @@ All results were validated by means of $5$-folds cross-validation.
 In \tabref{tab:features} we show the prediction error in terms of MSE for each test dataset and view, on the three experimental conditions described earlier.
 Me measure on average that the third condition, where we train our model on data merged from multiple datasets, gives results which are in line or even better than our internal benchmark condition, where instead training data comes from the same dataset used in testing.
 
-%  \subsection{Experiment 3: Diagnosis Prediction}
-%  \input{./tex/tab/table_datasets_prediction_dx.tex}
-%  
-%  The purpose of this experiment is to investigate the generalization performance of our model in predicting on subjects of unseen datasets their diagnostic class among:
-%  Alzheimer's disease (AD),
-%  mild cognitive impairment (MCI),
-%  normal cognition (NC).
-%  
-%  The experimental setup about the choice of training and testing data is the same described in the previous experiment (\S~\ref{ssec:feats}).
-%  
-%  We choose a linear Gaussian parameterization for the variational distributions as in \eqnref{eq:dropout_posterior}.
-%  To adapt our model to this new classification experiment, we adopt as decoding function for the latent variable $\z$, the following Categorical likelihood:
-%  \begin{align}
-%  \label{eq:classifier}
-%  \p{y_{d,n}|\z,\thetab} = \operatorname{Cat}\left(\mathbf{\pi}=\thetab\z\right),
-%  \end{align}
-%  where $y_{d,n}$ is the diagnosis associated to the data-point $n$ in the dataset $d$, and where the probability vector $\mathbf{\pi}$ is parametrized with a linear transformation of the latent $\z$ by the matrix $\thetab$.
-%  
-%  Models were trained on all the available views in the training dataset, independently of their presence in the testing dataset.
-%  Classes probabilities were inferred from the all the available views in the testing dataset with the following equation:
-%  \begin{equation}\label{eq:reconstructiony}
-%  \begin{aligned}
-%  \hat{y}_{d,n} = \frac{1}{V_{d, n}} \sum_{w=1}^{V_{d, n}} \EE{q_{d,n,w}(\z)}{\p{y_{d,n}|\z,\thetab}}.
-%  \end{aligned}
-%  \end{equation}
-%  We attributed to each subject the diagnostic class with the highest inferred probability.
-%  
-%  The performance of our model on test datasets was evaluated by measuring the classification accuracy (\%).
-%  All results were validated by means of $5$-folds cross-validation.
-%  
+\subsection{Experiment 3: Diagnosis Prediction}
+\input{./tex/tab/table_datasets_prediction_dx.tex}
+
+The purpose of this experiment is to investigate the generalization performance of our model in predicting on subjects of unseen datasets their diagnostic class among:
+Alzheimer's disease (AD),
+mild cognitive impairment (MCI),
+normal cognition (NC).
+
+The experimental setup about the choice of training and testing data is the same described in the previous experiment (\S~\ref{ssec:feats}).
+
+We choose a linear Gaussian parameterization for the variational distributions as in \eqnref{eq:dropout_posterior}.
+To adapt our model to this new classification experiment, we adopt as decoding function for the latent variable $\z$, the following Categorical likelihood:
+\begin{align}
+\label{eq:classifier}
+\p{y_{d,n}|\z,\thetab} = \operatorname{Cat}\left(\mathbf{\pi}=\thetab\z\right),
+\end{align}
+where $y_{d,n}$ is the diagnosis associated to the data-point $n$ in the dataset $d$.
+The probability vector $\mathbf{\pi}$ is a three dimensional vector representing the class probability for each of the three diagnostic class, and is parametrized with a linear transformation of the latent $\z$ by the matrix $\thetab$.
+
+Models were trained on all the available views in the training dataset, independently of their presence in the testing dataset.
+Classes probabilities were inferred from the all the available views in the testing dataset with the following equation:
+\begin{equation}\label{eq:reconstructiony}
+\begin{aligned}
+\hat{y}_{d,n} = \frac{1}{V_{d, n}} \sum_{w=1}^{V_{d, n}} \EE{q_{d,n,w}(\z)}{\p{y_{d,n}|\z,\thetab}}.
+\end{aligned}
+\end{equation}
+We attributed to each subject the diagnostic class with the highest inferred probability.
+
+The performance of our model on test datasets was evaluated by measuring the classification accuracy (\%).
+All results were validated by means of $5$-folds cross-validation.
+
+\paragraph{Results}
+In \tabref{tab:classification} we show the classification accuracy of our model on all the datasets.
+We notice that in all cases the best classifier is the one trained on the same datasets as the testing dataset.
+When trained on different datasets, instead, we measure an average increase of $9.5\%$ in classification accuracy in the case where we pooled together the training datasets with respect to the average case where our model was trained with a single dataset.
