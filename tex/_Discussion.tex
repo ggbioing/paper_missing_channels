@@ -1,13 +1,13 @@
 \section{Discussion}
 
 In both the experiments on synthetic and real data, the MSE prediction metric was favorable towards our model when compared to classic (\eg\ knn) and state of the art (\eg\ DAE, MICE) benchmark methods.
-As a secondary result, we report the surprising performance of knn (k = 5) in synthetic scenarios, especially in low snr cases, and on real data experiment, were it is most of the time superior the DAE.
+As a secondary result, we report the surprising performance of knn (k = 5) in synthetic scenarios, especially in low snr cases, and on real data experiment, were it is most of the time superior to the DAE.
 This finding is corroborated by \cite{Platias2020} were knn is found to be superior to methods based on autoencoders.
 
 An interesting result is the one in \figref{fig:synthetic_benchmark_pred_box}, suggesting that collecting a minimum amount of data-points with complete views ($25\%$ in our setup) is enough for our model to capture the joint relationship among views.
 Training on more complete scenarios, that is the ones where the fraction of data-points with complete views is higher than $0.25$, does not improve significantly the testing results.
-This condition is known in the literature as \textit{overtraining}, where collecting more data is not necessary to ameliorate the model performance.
-We think that this fact can have a positive impact in studies were the acquisition of complete observations is hampered by economic, ethical, or scarcity reasons.
+This condition is known in the literature as \textit{overtraining}, where collecting more data is not necessary to improve the model performance.
+We think that this fact can have a positive impact in studies were the acquisition of complete observations is hampered by economical, ethical, or scarcity reasons.
 
 Overtraining may also explain why in feature prediction on real datasets (\tabref{tab:features}), adding more data does not significantly improve the prediction metric on unseen data.
 Indeed, although on average results are better when pooling training datasets together, the variance in the reconstruction metric is too high for claiming a true difference with respect to the baseline.
@@ -20,7 +20,7 @@ In contrast with feature prediction, though, we consistently obtained the best r
 This is not unexpected as the proportion of classes onto which the decoding classifier is trained is peculiar to each dataset.
 
 As final remark, we want to stress that our model should be applied when the sampling hypothesis of independent and identical distributed data-points are met.
-This is not always the case when joint modeling real datasets because every dataset has it's own peculiarities and boundary conditions.
+This is not always the case when joint modeling real datasets because every dataset has its own peculiarities and boundary conditions.
 In healthcare datasets, such as the ones used in this work, subjects enrollment is biased by design to met the statistical goals relative to the outcomes of each study.
 We mitigated these biases by harmonizing the datasets before applying our model.
 As this represents a current limit for our method, we leave the extension and development of a bias-transparent multi-view model to future works.

@@ -1,4 +1,4 @@
-\begin{table*}[!t]
+\begin{table}[!t]
 \caption{
 Number of subjects per view available in each dataset.
 The last columns provide the size of the intersection ($\cap$) and union ($\cup$) of subjects with available views.
@@ -6,21 +6,22 @@ The mri from the local dataset is considered as a stand-alone modality as the me
 Notice how in the jont dataset no subject have all the modalities.
 }
 \centering
-\begin{tabular}{lcccccc|cc}
+\resizebox{\columnwidth}{!}{
+\begin{tabular}{lccccc|cc}
 \toprule
-View: &    clin &   mri &  fdg & av45 &  tau & mri local & $\cap$ & $\cup$ \\
+View:          &  clin &   MRI &  FDG & AV45 &  TAU & $\cap$ & $\cup$ \\
 \midrule
 Dataset \\
-adni1          &   740 &   730 &    - &    - &    - &          - & 730 &  740 \\
-adni2          &  1324 &   710 &  424 &  417 &   61 &          - &  53 & 1324 \\
-miriad         &    67 &    67 &    - &    - &    - &          - &  67 &   67 \\
-oasis3         &   529 &   489 &    - &  148 &    - &          - & 147 &  529 \\
-local          &   999 &     - &   65 &  120 &   54 &        199 &  14 &  999 \\
+adni1          &   740 &   730 &    - &    - &    - & 730 &  740 \\
+adni2          &  1324 &   710 &  424 &  417 &   61 &  53 & 1324 \\
+miriad         &    67 &    67 &    - &    - &    - &  67 &   67 \\
+oasis3         &   529 &   489 &    - &  148 &    - & 147 &  529 \\
+geneva         &   999 &     - &   65 &  120 &   54 &  15 &  999 \\
 \midrule
-Tot. subjects  &  3659 &  1996 &  489 &  685 &  115 &        199 &   0 & 3659 \\
+Tot. subjects  &  3659 &  1996 &  489 &  685 &  115 &   0 & 3659 \\
 \midrule
-Tot. datasets  & 5     & 4     & 2    & 3    & 2    & 1          &     &      \\
+Tot. datasets  & 5     & 4     & 2    & 3    & 2    &     &      \\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \label{table:datasets}
-\end{table*}
+\end{table}

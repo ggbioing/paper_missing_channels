@@ -1,9 +1,16 @@
 \section{Method}
 \label{sec:method}
 
+In this section we recall the theoretical framework of the \textit{Multi-Channel Variational Autoencoder} (MCVAE) developed in previous works \citep{Antelmi2018, Antelmi2019}, which we now enrich with the novel capability of dealing with missing views.
+In \S~\ref{ssec:generative_model} and \S~\ref{ssec:derivation} we adopt new symbols and change the derivation of the cost function to conveniently set the problem of data modeling when some views are missing, and to make the relationships among views explicit and clear.
+In \S~\ref{ssec:parameterization} we briefly recall the main parametric functions adopted later in our experiments with missing data.
+In \S~\ref{ssec:optimization} we finally propose the new optimization scheme allowing not to discard observations with partially missing views, which is the main contribution of this work.
+
 \subsection{Generative Model}
+\label{ssec:generative_model}
+
 Let $\Dcal = \set{D_d}_{d=1}^D$ be a collection of $D$ independent datasets, where each dataset $D_d = \set{\xdn}_{n=1}^{N_d}$ is composed by $N_d$ independent data-points (\eg subjects in the case of medical imaging datasets).
-To every dataset $D_d$ we associate a total number of $V_d$ available views
+Every dataset $D_d$ is associated with a total number of $V_d$ available views
 (\eg sets of clinical scores, imaging derived phenotypes extracted from multiple imaging modalities, \ldots),
 and we assume that each data-point $\xdn = \set{\xdnv}_{v=1}^{V_{d,n}}$ is composed by $V_{d,n}$ views,
 where $V_{d,n} \leq V_d$.
@@ -21,13 +28,15 @@ where $\pz$ is a prior distribution for the latent variable $\z_{d,n}$ commonly 
 where the likelihood functions $\p{\xdnv|\z_{d,n},\thetab_v}$ belong to a family of distributions parametrized by $\thetab_v$, which represents the view-specific generative parameters shared among all datasets.
 
 \subsection{Variational Inference}
+\label{ssec:derivation}
 
-The exact solution to the inference problem is given by the posterior $\p{\z|\set{\xdnv,\thetab_v}_{v=1}^{V_{d,n}}}$, that is not always computable analytically.
-We can nevertheless look for its approximation $\qz$ through the \textit{Variational Inference} framework \citep{Blei2017}.
-By introducing the latent variational approximation $\qz$, we can derive the following lower bound on the marginal log-likelihood for a single data-point in generative model as follows:
+The exact solution to the inference problem is given by the posterior $\p{\z|\set{\xdnv,\thetab_v}_{v=1}^{V_{d,n}}}$, that is not generally computable analytically.
+We can nevertheless look for its approximation $\qz$ through \textit{Variational Inference} \citep{Blei2017}.
+By introducing the latent variational approximation $\qz$, we can derive the lower bound on the marginal log-likelihood for a single data-point as follows:
 \begin{equation}\label{eq:LB}
 \begin{aligned}
 \ln \p{\xdnv|\thetab_v} &= \ln \int \p{\xdnv|\z, \thetab_v} \p{\z} \; d\z \\
+                        &= \ln \int \frac{\qz}{\qz} \p{\xdnv|\z, \thetab_v} \p{\z} \; d\z \\
                         &= \ln \EE{\qz}{\frac{\p{\xdnv|\z, \thetab_v} \p{\z}}{\qz}} \\
                         &\geq \EE{\qz}{\ln \p{\xdnv|\z, \thetab_v}} - \KL{\qz}{\pz}.
 \end{aligned}
@@ -42,7 +51,7 @@ We define the distribution function $\qz$ to depend on a specific dataset $d$, d
 \end{equation}
 where $\phib_w$ represents the view-specific variational parameters shared among all datasets.
 To force a link among views, we impose the inequality \eqnref{eq:LB} to hold for any $w$ in $1 \ldots V_{d,n}$.
-We can hence average the right and left hand sides of \eqnref{eq:LB} across the $V_{d,n}$ views to give the lower bound:
+To do so, we average the right hand side of \eqnref{eq:LB} across the $V_{d,n}$ views and rewrite \eqnref{eq:LB} as follows:
 \begin{equation}\label{eq:newLB}
 \begin{aligned}
 % \ln \p{\xdnv|\thetab_v} &\geq \underbrace{\frac{1}{V_{d,n}} \sum_{w=1}^{V_{d,n}}
@@ -63,12 +72,13 @@ In \figref{fig:architecture} we sketch the model structure induced by \eqnref{eq
 \input{./tex/fig/architecture}
 
 \subsection{Parameterization}
+\label{ssec:parameterization}
 
 With the right choice of the functional form of $\q{\z|\x_{d,n,w}, \phib_w}$, $\pz$, and $\p{\xdnv|\z, \thetab_v}$, the \rhs\ of \eqnref{eq:newLB} becomes amenable to computation and maximization, yielding to the maximization of the \lhs, also known as the model evidence.
 Of course, the choice for the likelihood function $\p{\xdnv|\z, \thetab_v}$ depends not only on pure computability considerations but also on the nature of the view $\xdnv$.
 For example it can be parametrized as a multivariate Gaussian in the case of continuous data (\ie imaging derived phenotypes), as a Bernoulli likelihood for dichotomic data, as a Categorical likelihood for categorical data, \textit{etc}.
 
-In general, the prior distribution $\pz$ is the  multivariate diagonal Gaussian distribution $\Gausstd$.
+In general, the prior distribution $\pz$ is the  multivariate Gaussian distribution $\Gausstd$.
 The same family of distributions is also commonly used for the variational and likelihood functions, such that respectively:
 \begin{alignat}{4}
 \label{eq:encoder}
@@ -90,8 +100,9 @@ The dropout parameter $\alphab$ has components $\alpha_i = \nicefrac{p_i}{1-p_i}
 It has been shown that the association of this dropout posterior with a log-uniform prior distribution $\pz$ leads to sparse and interpretable models \citep{Antelmi2019,Molchanov2017}.
 
 \subsection{Optimization}
+\label{ssec:optimization}
 
-Assuming independent observations, the marginal log-likelihood in the left hand side of \eqnref{eq:newLB} con be summed up over all the datasets, data-points, and views.
+Assuming independent observations, the marginal log-likelihood in the left hand side of \eqnref{eq:newLB} can be summed up over all the datasets, data-points, and views.
 As a consequence, inference on the model generative parameters $\thetab = \set{\thetab_v}$ and variational parameters $\phib = \set{\phib_w}$ can be achieved by solving the maximization problem:
 \begin{equation}\label{eq:argmax}
 \begin{aligned}
@@ -101,7 +112,8 @@ As a consequence, inference on the model generative parameters $\thetab = \set{\
 \end{equation}
 We use Algorithm \ref{alg:optim} to solve \eqnref{eq:argmax}.
 \input{./tex/algorithm}
-The summation in \eqnref{eq:argmax} is done for every dataset $d$ along all the available data-points $n$ and their specific views $v$, although batching data-points with common views can speed up the computation by reducing the number of second level \textit{for} loop iterations in Algorithm \ref{alg:optim}.
+The summation in \eqnref{eq:argmax} is done for every dataset $d$ along all the available data-points $n$ and their specific views $v$.
+We note that batching data-points with common views can speed up the computation by reducing the number of second level \textit{for} loop iterations in Algorithm \ref{alg:optim}.
 If missing, a particular view $v$ will be simply not accounted for that specific observation, without having to discard all the other views that can still contribute to optimize \eqnref{eq:argmax}.
 The presence of at least one common view among datasets acts as a link and allows the information to flow through all the datasets to the other views.
 In \figref{fig:model} we show the learning scheme of our model in a simple case with four views and one common view between batches.
@@ -118,12 +130,12 @@ Similarly to \cite{Antelmi2019}, the trained model can estimate missing views fr
 \end{aligned}
 \end{equation}
 
-\subsection{Architectures}
-So far we have explicitly modeled a one-to-one correspondence between encoding and decoding views, which is the focus of our work.
-This makes our model part of the family of the auto-encoders, where the model acts as a identity transformation between the input and the output.
-Other architectures are nevertheless possible.
-Let's consider, for example, the case where a many-to-one relationship exists between many encoding views and one decoding view.
-In this case, we can consider our model as a multi-view regressor, if the output likelihood function models a continuous variable, or a multi-view classifier in the case of a finite discrete output.
-In general, there may be an $m$-to-$n$ relationship, with partially overlapping views among $m$ input views and $n$ output views.
-Investigating the properties of all the possible architectures is beyond the scope of this work.
+% \subsection{Architectures}
+% So far we have explicitly modeled a one-to-one correspondence between encoding and decoding views, which is the focus of our work.
+% This makes our model part of the family of the auto-encoders, where the model acts as a identity transformation between the input and the output.
+% Other architectures are nevertheless possible.
+% Let's consider, for example, the case where a many-to-one relationship exists between many encoding views and one decoding view.
+% In this case, we can consider our model as a multi-view regressor, if the output likelihood function models a continuous variable, or a multi-view classifier in the case of a finite discrete output.
+% In general, there may be an $m$-to-$n$ relationship, with partially overlapping views among $m$ input views and $n$ output views.
+% Investigating the properties of all the possible architectures is beyond the scope of this work.
 

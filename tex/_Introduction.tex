@@ -1,24 +1,24 @@
 \section{Introduction}
 
-The joint modeling of multiple datasets presents important challenges when integrating views representing heterogeneous information, such as different imaging modalities and other data-types.
+The joint modeling of multiple datasets presents important challenges when integrating heterogeneous information, such as different imaging modalities and other data-types.
 
 At the level of single datasets or cohorts, efforts to model multi-view data are ubiquitous in the medical literature, where the objective ranges from predicting clinical outcomes \citep{Chen2019} to synthesizing new modalities \citep{Zhou2020, Wei2019}, leveraging on highly engineered neural networks.
 Usually, as training these networks require to establish connections between views, observations with missing views are discarded, yielding a severe loss of available information.
 
 At the higher level of multiple datasets, this problem is exacerbated by non overlapping sets of views among datasets, preventing the gathering of all the available information into a single, robust and generalizable joint model, accounting for the global data variability.
 
-This challenge can be addressed through the development of powerful machine learning techniques, drawing from the domain of Transfer Learning (TL) and Meta Learning (ML).
+This challenge can be addressed through the development of machine learning techniques drawing from the domain of Transfer Learning and Meta Learning.
 Transfer Learning is a well known approach to transfer model parameters from one dataset to another \citep{TL}.
 It is commonly applied to datasets with same modalities (e.g. from image to image) and in its basic form consists in taking the parameters trained on the first dataset and use them as initialization point for training a second time on a second dataset.
-Unfortunately, this often leads to a catastrophic forgetting (CF) \citep{CatastroficForgetting}, the common problem of neural networks that lose the information of the first task after training a second one.
+Unfortunately, this often leads to a catastrophic forgetting \citep{CatastroficForgetting}, the common problem of neural networks that loose the information of the first task after training a second one.
 
 To address this issue, meta-learning methods such as model-agnostic meta-learning (MAML) have been proposed \citep{MAML1}.
-Thanks to this formulation, catastrophic forgetting can be addressed by training a model on a variety of learning tasks, thus enforcing the generalization through fine tuning on the new dataset on few samples only (few-shots learning).
+Thanks to this formulation, catastrophic forgetting can be addressed by training a model on a variety of learning tasks, thus enforcing the generalization through fine tuning on new datasets composed by few samples only (few-shots learning).
 As a result this model can solve new learning tasks after few re-training epochs.
 Nevertheless, these approaches present scalability issues, as for example MAML requires the costly computation of Hessian vectors across dataset parameters.
 
-To overcome the limitations of these machine learning frameworks when applied to complex and heterogeneous biomedical datasets, here we propose a new method able to learn simultaneously from multiple datasets, even in the presence of non-overlapping sets of views among datasets, and missing views for some observations in every dataset.
-By leveraging on the available common views between pairs of datasets, we learn a joint model for all the datasets.
+To overcome the limitations of these machine learning frameworks when applied to complex and heterogeneous biomedical datasets, here we propose a new method able to learn simultaneously from multiple datasets, even in the presence of non-overlapping sets of views among datasets, and of missing views across datasets.
+The basic ides is that leveraging on the available common views between pairs of datasets allows to learn a joint model for all the datasets.
 The common views allows to bridge the datasets, enabling information to flow through all the other views in the dataset pool.
 Our framework \figrefp{fig:architecture} is formulated as a generative latent variable model where the variability of the latent variable is expressed into the observations through view-specific parameters shared among datasets.
 Datasets without a particular view will simply not contribute to the learning of those view-specific parameters in the training phase.
@@ -29,6 +29,6 @@ Being dataset agnostic, our method allows to integrate all the available data in
 
 The rest of this paper is structured as follow.
 In \S~\ref{sec:method} we set the theoretical framework for our model.
-In \S~\ref{sec:synth} experiments on synthetic data show that the prediction error of missing views is competitive with respect to the one obtained with classical and state of the art imputation methods.
+In \S~\ref{sec:synth} experiments on synthetic data show that the prediction error of missing views is competitive with respect to the one obtained with state of the art imputation methods.
 In \S~\ref{sec:real} experiments on real data from independent multi-modal brain imaging datasets show that our model generalizes better than dataset-specific models on new unseen data.
-Lastly we broadly discuss our results and limits and conclude our work with summary remarks.
+Lastly we broadly discuss our results and limitations and conclude our work with summary remarks.

@@ -8,9 +8,9 @@
 % \input{./tex/tab/table_datasets_prediction.tex}
 % \input{./tex/tab/table_model_comparison.tex}
 
-Joint modeling multiple datasets in real scenarios represents an hybrid case between modeling missing at random (MAR) and missing not at random (MNAR) observations, cases which we separately treated in \S\ref{sec:synth}.
+Joint modeling of multiple datasets in real applications often represents an hybrid case between modeling missing at random (MAR) and missing not at random (MNAR) observations.
 Indeed, every dataset may lack of views which are instead present in others by default.
-At the same time, in each dataset, there may be missing views for some data-points due to unknown random reasons.
+At the same time, in each dataset, there may be missing views for some data-points due to unknown reasons.
 
 In this section we describe our results on jointly modeling real medical imaging datasets, independently acquired in the context of research studies on human cognitive decline.
 
@@ -25,32 +25,44 @@ We executed two kinds of experiments:
 Data used in the preparation of this section were obtained from the following sources.
 \begin{enumerate}
 %
-\item From the Alzheimer's Disease Neuroimaging Initiative (ADNI)
+\item The Alzheimer's Disease Neuroimaging Initiative (ADNI)
 \footnote{
 \href{http://adni.loni.usc.edu}{adni.loni.usc.edu}.
 The ADNI was launched in 2003 as a public-private partnership, led by Principal Investigator Michael W. Weiner, MD. For up-to-date information, see \href{www.adni-info.org}{www.adni-info.org}.
 },
-a database of brain imaging and related clinical data of cognitively normal subjects and at various stages of cognitive decline.
+a database of brain imaging and related clinical data of cognitively normal subjects, and on patients presenting various degrees of cognitive decline.
 %
-\item From MIRIAD dataset \cite{Miriad}, a database of brain imaging and related clinical data of cognitively normal subjects and data of Alzheimer's.
+\item MIRIAD dataset, a database of brain imaging and related clinical data of cognitively normal subjects and patients affected by Alzheimer's disease \citep{Miriad}.
 %
-\item From OASIS-3 dataset \citep{oasis3}, a database of brain MRI and PET scans and related clinical data of cognitively normal subjects and subjects at various stages of cognitive decline.
+\item OASIS-3 dataset, a database of brain imaging and related clinical data of cognitively normal subjects and subjects at various stages of cognitive decline \citep{oasis3}.
 %
-\item From a local cohort collected at the University Hospitals, with brain MRI and PET scans and related clinical data of healthy subjects and subjects with various cognitive disorders.
+\item A local cohort collected at the Geneva University Hospitals, with brain imaging and related clinical data of patients with various cognitive disorders.
 \end{enumerate}
-We divided the ADNI dataset into two independent ones:
-`adni1', composed by subjects recruited in the initial study,
-and `adni2' composed by those subjects subsequently recruited in ADNI-GO, ADNI2, and ADNI3.
-Since data modalities and acquisition protocols of `adni1' are different from those of `adni2', we consider these two cohorts as independent datasets.
 
-To summarize, we grouped our data into five distinct datasets which we named as follows: `adni1', `adni2', `miriad', `oasis3', `local'.
+The available imaging modalities comes from the following acquisitions:
+%
+\begin{enumerate}
+\item structural Magnetic Resonance Imaging (MRI) to measure anatomical volumes in the brain;
+%
+\item Positron Emission Tomography (PET) with Fluorodeoxyglucose (FDG) tracer, to measure the glucose uptake, which reflecting the functional status of the brain;
+\item PET with the AV45 tracer, to measure the amyloid protein uptake in the brain, affecting the functioning of neurons ;
+\item PET with the tracer for the TAU protein, also affecting the functionality of neurons.
+\end{enumerate}
+%
+
+We divided the ADNI dataset into two complementary datasets:
+`adni1', composed by subjects recruited in the initial ADNI1 study (2004-2009),
+and `adni2' composed by those subjects subsequently recruited in ADNI-GO, ADNI2, and ADNI3 (2010-ongoing).
+Since data modalities and acquisition protocols of `adni1' present differences from those of `adni2', we consider these two cohorts as independent datasets.
+Specifically, in `adni1' and `adni2' the MRI imaging was performed respectively on 1.5T and 3T scanners.
+
+To summarize, we grouped our data into five distinct datasets which we named as follows: `adni1', `adni2', `miriad', `oasis3', `geneva'.
 
 \subsection{Imaging Processing}
 All the brain scans were processed in order to have measurements on regions defined in the Desikan-Killiany atlas \citep{Desikan2006}.
-All brain MRI scans, except for the ones in the local cohort, were processed with FreeSurfer \footnote{\href{https://surfer.nmr.mgh.harvard.edu/}{surfer.nmr.mgh.harvard.edu}} \citep{freesurfer} to measure brain cortical and sub-cortical volumes.
-MRIs in the local cohort were processed with SPM \citep{Ashburner2000} to measure gray matter density in the brain, averaged in the regions of interest defined in the chosen atlas.
-Relative standardized uptake values (SUVR) were computed for all the PET scans, processed with SPM.
-SUVRs were computed using the cerebellum as reference region, and averaged in each region of the atlas.
+All brain MRI scans were processed with FreeSurfer \footnote{\href{https://surfer.nmr.mgh.harvard.edu/}{surfer.nmr.mgh.harvard.edu}} \citep{freesurfer} to measure brain cortical and sub-cortical volumes, and volumes occupied by the cerebro-spinal fluid (CSF), for a total of $99$ regions of interest.
+Relative standardized uptake values (SUVR) were computed for all the PET scans (fdg, av45, tau), processed with SPM \citep{Ashburner2000}.
+SUVRs were computed using the cerebellum as reference region, and averaged in the same regions used for the MRI, except those containing the CSF, for a total of $94$ regions of interest.
 
 \subsection{Gathering Observations into Views}
 \label{ssec:views}
@@ -58,57 +70,51 @@ SUVRs were computed using the cerebellum as reference region, and averaged in ea
 
 Observations from the five available datasets (\S~\ref{ssec:datasets}) were grouped into the following views.
 1) `clin': grouping age and the Mini-Mental cognitive score (MMSE).
-2) `mri': grouping brain volumes computed with FreeSurfer.
-3) `fdg': average brain glucose uptake measured through the analysis of FDG-PET scans.
-4) `av45': average brain amyloid uptake measured through the analysis of AV45-PET scans.
-5) `tau': average brain protein Tau uptake measured through the analysis of TAU-PET scans.
-%6) `mri local': this is a view only present in the `local' dataset, composed by measurements on brain gray matter density derived from SPM \cite{Ashburner2000}.
-6) `mri local': this is a view only present in the `local' dataset, composed by measurements of brain gray matter density.
+2) `MRI': grouping brain volumes computed with FreeSurfer.
+3) `FDG': average brain glucose uptake measured through the analysis of FDG-PET scans.
+4) `AV45': average brain amyloid uptake measured through the analysis of AV45-PET scans.
+5) `TAU': average brain protein Tau uptake measured through the analysis of TAU-PET scans.
 
-All datasets except `miriad' are composed by multiple time points, or follow ups, for each subject.
-To met the model assumption of independent data-points, we kept only one time point per subject.
-Specifically, we choose the first time point available, or baseline, for subjects belonging to the `adni1', `adni2', and `local' datasets.
-In `oasis3', since measurements were mostly acquired in different days, we choose to join nearby time points into a single one.
-Time interval between views within one subject was minimal (`av45' vs `mri': $\leq 90$ days, `mri' vs `clin': $\leq 90$ days).
+For each subject belonging to the `adni1', `adni2', 'miriad' and `geneva' datasets, we choose the first available time-point, or baseline.
+In `oasis3', since measurements were mostly acquired in different days, we choose to pair nearby time points across modalities into a single one.
+Time interval between views within one subject was minimal (AV45 vs MRI: $\leq 90$ days, MRI vs clin: $\leq 90$ days).
 
 In \tabref{table:datasets} we show the number of observations stratified by dataset and view.
 Size of the intersection ($\cap$) and union ($\cup$) of subjects with available views is also provided.
 Please note that the only view in common across datasets is the clinical one, composed by MMSE and age features only.
 
-We normalized all the views feature-wise with the ComBat method \citep{Fortin2018}, an harmonization technique useful for reduce unwanted sources of variation in the data due to the difference in acquisition protocols among datasets.
+We adjusted all the views feature-wise with \textit{ComBat} \citep{combat}, a batch normalization method originally develop in genomics, which has been adopted in neuroimaging studies to reduce unwanted sources of variation in the data due to the differences in acquisition protocols among datasets \citep{Fortin2017, Fortin2018, Orlhac2020}.
 In ComBat, we set the `age' as main regressor, and `adni2' as reference dataset for the training set.
 As we used cross-validation to validate our results, the ComBat reference dataset for the testing was the training split.
 
 A final feature-wise standardization step was applied by zero centering the data and by rescaling them to have a unity variance.
-Standardization parameters were computed on the training sets and applied to the training and test sets.
-
+Standardization parameters were computed on the training sets and applied to training and testing sets.
 
 \subsection{Experiment 1: Benchmark Validation}
 \input{./tex/tab/table_model_comparison.tex}
 
 The purpose of this experiment is to validate on real data the benchmarked results obtained with the synthetic experiments (\S~\ref{sec:synth}).
 
-As benchmark methods to compare to, we choose the best performers on the synthetic experiments, namely knn5 and DAE.
-We choose for our model a linear Gaussian parameterization for the likelihood and variational distributions, respectively as in \eqnref{eq:decoder} and \eqnref{eq:dropout_posterior}.
+As benchmark methods, we choose the best performers on the synthetic experiments, namely knn5 and DAE.
+We choose for our model a linear Gaussian parameterization for the likelihood and variational distributions of \eqnref{eq:decoder} and \eqnref{eq:dropout_posterior} respectively.
 
-We trained all the models (knn5, dae, ours) with data coming from all the datasets except from `adni2', leaved out for testing purposes.
-We choose the `adni2' dataset as testing dataset, as the results would be supported by the dataset with most of the views, and with generally the highest number of observations per view (\tabref{table:datasets}).
+We trained all the models (knn5, dae, ours) with data coming from all the datasets except from `adni2', left out for testing purposes.
+We choose the `adni2' dataset as testing dataset since it provides all the views, and the highest number of observations per view (\tabref{table:datasets}).
 
 Prediction performances were evaluated with the Mean Squared Error (MSE) metric, measured on the available views in the testing dataset, reconstructed with \eqnref{eq:reconstruction}.
 All results were validated by means of $5$-folds cross-validation.
 
 \paragraph{Results}
 In \tabref{tab:model_comparison}, we show the MSE metric on predicting missing views in the testing dataset with our model and with the benckmark ones.
-Best results in boldface, which show a clear advantage of using our model, confirm our findings in the synthetic experiments.
+Best results are in boldface, which show a clear advantage of using our model and confirm our findings in the synthetic experiments.
 
 \subsection{Experiment 2: Feature Prediction}
 \label{ssec:feats}
-\input{./tex/tab/table_datasets_prediction_combat.tex}
 \input{./tex/tab/table_datasets_prediction_combat_couples.tex}
 
 The purpose of this experiment is to investigate the generalization performance of our model when tested on unseen datasets.
 
-For each testing dataset, chosen among the five available ones (\S~\ref{ssec:datasets}), and for each view, this experiment was run in three different conditions depending on the provenance of the training data:
+For each testing dataset, chosen among the five available ones (\S~\ref{ssec:datasets}), and for each view, this experiment was run in three different conditions depending on the origin of the training data:
 1) from the same dataset as the testing dataset, whose results represents an internal benchmark for our model;
 2) from a different dataset, chosen among the remaining available ones;
 3) from all the remaining available datasets, merged together into a single one.
@@ -125,7 +131,6 @@ In \tabref{tab:features} we show the prediction error in terms of MSE for each t
 Me measure on average that the third condition, where we train our model on data merged from multiple datasets, gives results which are in line or even better than our internal benchmark condition, where instead training data comes from the same dataset used in testing.
 
 \subsection{Experiment 3: Diagnosis Prediction}
-\input{./tex/tab/table_datasets_prediction_dx.tex}
 \input{./tex/tab/table_datasets_prediction_dx_couples.tex}
 
 The purpose of this experiment is to investigate the generalization performance of our model in predicting on subjects of unseen datasets their diagnostic class among:
@@ -157,6 +162,6 @@ The performance of our model on test datasets was evaluated by measuring the cla
 All results were validated by means of $5$-folds cross-validation.
 
 \paragraph{Results}
-In \tabref{tab:classification} we show the classification accuracy of our model on all the datasets.
+In \tabref{tab:classifier} we show the classification accuracy of our model on all the datasets.
 We notice that in all cases the best classifier is the one trained on the same datasets as the testing dataset.
 When trained on different datasets, instead, we measure an average increase of $9.5\%$ in classification accuracy in the case where we pooled together the training datasets with respect to the average case where our model was trained with a single dataset.
