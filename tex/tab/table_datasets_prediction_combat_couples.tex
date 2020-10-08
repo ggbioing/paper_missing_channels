@@ -142,23 +142,23 @@
 \centering
 \caption{
 % Age MMSE
-Mean Squared Error (MSE, the lower the better) measured on test dataset views (clinical scores and imaging derived phenotypes) predicted with the Multi-Channel VAE (mcvae) and our variant (ours).
+Mean Squared Error (MSE, the lower the better) measured on test dataset views (clinical scores and imaging derived phenotypes) predicted with the Multi-Channel VAE (MCVAE) and our model (ours).
 $5$-folds cross-validation results shown as as average (standard deviation).
 Models were trained on all the available views in the training dataset, independently of their presence in the testing dataset.
-Experiments were run in three different conditions depending on the provenance of the training data, separated in the table by thin rules:
-1) from the testing dataset;
-2) from a different dataset;
-3) from all the available datasets except the testing dataset.
-There are $12$ cases in the latter condition that could be fitted with our model.
-In $7$ of them we measure a better performance with respect to the first condition (\S), and with respect to the second condition (\dag).
-In all the cases our model performs either similarly or statistically better than the mcvae, with alpha levels at $0.05$ (*), $0.01$ (**), and $0.001$ (***).
+Experiments were run in three different conditions, separated in the table by thin rules:
+1) when training and testing data are chosen from the same dataset, or Single Task (ST) learning case;
+2) when models trained on one dataset are tested on another dataset, or ST + Transfer Learning (TL) case;
+3) when models are trained on all the available datasets except the testing one, or Multi Task Learning (MTL).
+There are $12$ cases in the MTL experiments that could be fitted with our model.
+In $7$ of them we measure a better performance with respect to ST cases (\S) and with respect to ST + TL cases (\dag).
+In all comparable cases our model performs either similarly or statistically better than the MCVAE, with alpha levels at $0.05$ (*), $0.01$ (**), and $0.001$ (***).
 }
 \label{tab:features}
 \resizebox{\textwidth}{!}{
 \begin{tabular}{llllllllllll}
 \toprule
        & view            & \multicolumn{2}{c}{clin}              & \multicolumn{2}{c}{MRI}             & \multicolumn{2}{c}{FDG}             & \multicolumn{2}{c}{AV45}            & \multicolumn{2}{c}{TAU}         \\
-       & model           &        mcvae &    ours            &        mcvae &    ours              &        mcvae &    ours              &        mcvae &    ours              &        mcvae &    ours              \\
+       & model           &        MCVAE &    ours            &        MCVAE &    ours              &        MCVAE &    ours              &        MCVAE &    ours              &        MCVAE &    ours              \\
 \toprule
 test dataset & train dataset &          &                    &              &                      &              &                      &              &                      &              &                      \\
 \cmidrule(lr){1-2}
@@ -196,9 +196,9 @@ miriad & miriad          &  3.21 (1.07) &  3.23 (2.55)       &  6.39 (1.57) &  6
        & geneva          &            - &            -       &            - &            -         &            - &            -         &            - &            -         &            - &            -         \\
        & oasis3          &  6.80 (6.52) &  6.24 (4.62)       &  6.29 (1.68) &  6.23 (1.40)         &            - &            -         &            - &            -         &            - &            -         \\
 \cmidrule(lr){2-12}
-       & all but miriad  &            - &  2.31 (1.65)       &            - &  6.17 (1.37)\S\dag   &            - &            -         &            - &            -         &            - &            -         \\
+       & all but miriad  &            - &  2.31 (1.65)\S\dag       &            - &  6.17 (1.37)\S\dag   &            - &            -         &            - &            -         &            - &            -         \\
 \toprule
-oasis3 & oasis3          &  0.83 (0.33) &  0.68 (0.28)\S\dag &  0.68 (0.13) &  0.66 (0.12)$^{*}$   &            - &            -         &  1.58 (0.63) &  1.22 (0.26)$^{***}$ &            - &            -         \\
+oasis3 & oasis3          &  0.83 (0.33) &  0.68 (0.28)       &  0.68 (0.13) &  0.66 (0.12)$^{*}$   &            - &            -         &  1.58 (0.63) &  1.22 (0.26)$^{***}$ &            - &            -         \\
 \cmidrule(lr){2-12}
        & adni1           &  1.20 (0.25) &  1.23 (0.28)       &  0.78 (0.14) &  0.79 (0.14)         &            - &            -         &            - &            -         &            - &            -         \\
        & adni2           &  1.11 (0.33) &  1.09 (0.24)       &  0.89 (0.18) &  0.76 (0.15)$^{***}$ &            - &            -         &  0.94 (0.22) &  1.02 (0.26)$^{*}$   &            - &            -         \\

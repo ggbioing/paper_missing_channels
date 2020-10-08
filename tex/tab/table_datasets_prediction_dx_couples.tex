@@ -59,17 +59,17 @@ oasis3  &  149 &    - &  380 &   -  &  529 \\
 \begin{table*}
 \centering
 \caption{
-Experiment of diagnosis classification run with the Multi-Channel VAE (mcvae) and our variant (ours).
+Experiment of diagnosis classification run with the Multi-Channel VAE (MCVAE) and our model (ours).
 $5$-folds classification accuracy in $\%$ is shown as mean (standard deviation). 
 Since there are no MCI in miriad and oasis3 datasets, the classification tests `AD vs MCI' and `MCI vs NC' are meaningless and not reported.
 Since there are no NC in the geneva dataset, the classification tests `AD vs NC' and `MCI vs NC' are meaningless and not reported.
-Experiments were run in three different conditions depending on the provenance of the training data, separated in the table by thin rules:
-1) from the testing dataset;
-2) from a different dataset;
-3) from all the available datasets except the testing dataset.
-There are $7$ cases in the latter condition that could be fitted with our model, which is not possible to do with the mcvae.
+Experiments were run in three different conditions, separated in the table by thin rules:
+1) when training and testing data are chosen from the same dataset, or Single Task (ST) learning case;
+2) when models trained on one dataset are tested on another dataset, or ST + Transfer Learning (TL) case;
+3) when models are trained on all the available datasets except the testing one, or Multi Task Learning (MTL).
+There are $7$ cases in the MTL condition that could be fitted with our model, which is not possible to do with the MCVAE.
 In $5$ of them (\dag) we measure on average a better performance with respect to the second condition.
-In all the cases where the classification accuracy is $>50\%$ our model performs either similarly or statistically better then the mcvae, with $\alpha$ levels at $0.05$ (*), $0.01$ (**), and $0.001$ (***).
+In all the cases where the classification accuracy is $>50\%$ our model performs either similarly or statistically better than the MCVAE, with $\alpha$ levels at $0.05$ (*), $0.01$ (**), and $0.001$ (***).
 }
 \label{tab:classifier}
 \resizebox{\textwidth}{!}{

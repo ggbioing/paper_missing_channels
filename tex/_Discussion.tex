@@ -1,27 +1,25 @@
 \section{Discussion}
 
-In both the experiments on synthetic and real data, the MSE prediction metric was favorable towards our model when compared to classic (\eg\ knn) and state of the art (\eg\ DAE, MICE) benchmark methods.
+In both the experiments on synthetic and real data, our model compared favorably with respect to state of the art benchmark methods.
 As a secondary result, we report the surprising performance of knn (k = 5) in synthetic scenarios, especially in low snr cases, and on real data experiment, were it is most of the time superior to the DAE.
 This finding is corroborated by \cite{Platias2020} were knn is found to be superior to methods based on autoencoders.
 
-An interesting result is the one in \figref{fig:synthetic_benchmark_pred_box}, suggesting that collecting a minimum amount of data-points with complete views ($25\%$ in our setup) is enough for our model to capture the joint relationship among views.
-Training on more complete scenarios, that is the ones where the fraction of data-points with complete views is higher than $0.25$, does not improve significantly the testing results.
-This condition is known in the literature as \textit{overtraining}, where collecting more data is not necessary to improve the model performance.
-We think that this fact can have a positive impact in studies were the acquisition of complete observations is hampered by economical, ethical, or scarcity reasons.
+An interesting result is the one presented in \figref{fig:synthetic_benchmark_pred_box}, suggesting that collecting a minimum amount of data-points with complete views ($25\%$ in our setup) is enough for our model to capture the joint relationship among views.
+In our synthetic tests, training on more complete scenarios does not seem to improve significantly the testing results.
+This condition may be due to overtraining \citep{Bilbao2017}, where collecting more data is not necessary to improve the model performance.
+We think that this fact can have a positive impact in studies were the acquisition of complete observations is hampered by economical or ethical reasons.
 
-Overtraining may also explain why in feature prediction on real datasets (\tabref{tab:features}), adding more data does not significantly improve the prediction metric on unseen data.
-Indeed, although on average results are better when pooling training datasets together, the variance in the reconstruction metric is too high for claiming a true difference with respect to the baseline.
-From another point of view, by looking at the same table, we also notice that on average the performance of our model on predicting in-dataset observations (our baseline) is not significantly different from prediction of the out-of-dataset ones.
-We think this support the claim for a good generalization property of our model.
+The experimental results on real medical imaging datasets (\tabref{tab:features}, \tabref{tab:classifier}) shows the clear improvement of our method with respect to the MCVAE, that inspired our work.
+The features and diagnosis prediction clearly improves when using our method, that allows to not discard observations with missing views.
+Our method generalizes better to new unseen datasets when trained jointly on multiple datasets, with respect to cases where the training happens on a single dataset.
 
-With our last experiment we showed the flexibility of our method to behave as a classifier, by substituting the output decoders of previous experiments with a single decoder used as a classifier.
-Like in the feature prediction experiment, when tested on out-datasets data-points, pooling together training data is beneficial, as it gives an average increase of $9.5\%$ in  prediction.
-In contrast with feature prediction, though, we consistently obtained the best results on the in-dataset baseline case.
-This is not unexpected as the proportion of classes onto which the decoding classifier is trained is peculiar to each dataset.
+In our work we have explicitly modeled a one-to-one correspondence between encoding and decoding views.
+This makes our model part of the family of the auto-encoders, where the model acts as a identity transformation between the input and the output.
+Other architectures are nevertheless possible.
+In general, there may be an $m$-to-$n$ relationship, with partially overlapping views among $m$ input views and $n$ output views.
+Investigating the properties of all the possible architectures is beyond the scope of this work.
 
-As final remark, we want to stress that our model should be applied when the sampling hypothesis of independent and identical distributed data-points are met.
-This is not always the case when joint modeling real datasets because every dataset has its own peculiarities and boundary conditions.
-In healthcare datasets, such as the ones used in this work, subjects enrollment is biased by design to met the statistical goals relative to the outcomes of each study.
-We mitigated these biases by harmonizing the datasets before applying our model.
-As this represents a current limit for our method, we leave the extension and development of a bias-transparent multi-view model to future works.
+As final remark, we want to stress that our model is based on the assumption of independent and identical distributed observations.
+This assumption may be limiting in healthcare datasets, such as the ones used in this work.
+In our work we mitigated these biases by harmonizing the datasets before applying our model, and we leave the extension and development of a bias-transparent multi-view model to future works.
 
