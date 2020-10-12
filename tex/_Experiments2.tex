@@ -114,7 +114,7 @@ Best results are in boldface, which show a clear advantage of using our model an
 \subsection{Experiment 2: Feature Prediction}
 \label{ssec:feats}
 \input{./tex/tab/table_datasets_prediction_combat_couples.tex}
-The purpose of this experiment is to compare the generalization performance of our model with respect to the MCVAE in feature prediction experiments.
+The purpose of this experiment is to compare, in features prediction experiments, the generalization performance the MCVAE model with respect to our new Multi Task extension (MT-MCVE).
 This experiment was run in three different conditions:
 %
 \begin{enumerate}
@@ -126,32 +126,33 @@ This experiment was run in three different conditions:
 %
 \end{enumerate}
 %
-In ST and ST + TL experiments, both MCVAE and our model are trained on the same views,
-but while in MCVAE we have to discard observations with missing views from the training set, with our model we can include then by batching together observations with common views into sub-tasks.
-In MTL experiments MCVAE cannot be trained because no observation have all the views simultaneously.
+In ST and ST + TL experiments, both MCVAE and MT-MCVAE models are trained on the same views,
+but while in MCVAE we have to discard observations with missing views from the training set, with MT-MCVAE we can include them by batching together observations with common views into sub-tasks.
+In MTL experiments MCVAE cannot be trained because no observation has simultaneously all the views.
 %By removing the cases where views are not simultaneously present in both the training and testing set,
 %we are left with $16$ possible scenarios where all the three experimental conditions can be simultaneously tested an thus compared.
 
-We choose for both MCVAE and our model a linear Gaussian parameterization for the likelihood and variational distributionsas in \eqnref{eq:decoder} and \eqnref{eq:dropout_posterior} respectively.
-All models were trained on all the available views in the training dataset.%, independently of their presence in the testing dataset.
+We choose for both MCVAE and MT-MCVAE a linear Gaussian parameterization for the likelihood and variational distributions as in \eqnref{eq:decoder} and \eqnref{eq:dropout_posterior} respectively.
+Models were trained on all the available views in the training dataset. %, independently of their presence in the testing dataset.
 Prediction performances were evaluated with the Mean Squared Error (MSE) metric, measured on the available views in the testing dataset, reconstructed with \eqnref{eq:reconstruction}.
 All results were validated by means of $5$-folds cross-validation.
 
 \paragraph{Results}
 In \tabref{tab:features} we show the prediction error in terms of MSE for each test dataset and view, on the three experimental conditions described earlier.
-In ST and ST + TL cases our model performs either similarly or statistically better than the MCVAE, especially in cases where the difference between the union and intersection set of observations is higher (cfr. \tabref{table:datasets}).
-In MTL cases there are $12$ cases that could be fitted with our model.
-In $7$ of them we measure a better performance with respect to the ST and  ST + TL cases.
+In ST and ST + TL cases, the MT-MCVAE model performs either similarly or statistically better than the MCVAE, especially in cases where the difference between the union and intersection set of observations is higher (cfr. \tabref{table:datasets}).
+In MTL cases there are $12$ cases that could be fitted with MT-MCVAE only.
+In $7$ of them we measure a better performance with respect to the ST and  ST + TL cases fitted with the same model type.
 
 \subsection{Experiment 3: Diagnosis Prediction}
 \input{./tex/tab/table_datasets_prediction_dx_couples.tex}
 
-The purpose of this experiment is to investigate the generalization performance of our model with respect to the MCVAE in experiments of diagnosis prediction, with diagnostic classes among:
+The purpose of this experiment is to compare, in diagnosis prediction experiments, the generalization performance of the MCVAE model with respect to the MT-MCVAE, in the three experimental conditions described earlier (ST, ST+TL, MTL).
+Diagnostic classes are:
 Alzheimer's disease (AD),
 mild cognitive impairment (MCI),
 normal cognition (NC).
 
-For both MCVAE and our model we choose a linear Gaussian parameterization for the variational distributions as in \eqnref{eq:dropout_posterior}.
+For both MCVAE and MT-MCVAE we choose a linear Gaussian parameterization for the variational distributions as in \eqnref{eq:dropout_posterior}.
 To adapt the models to this new classification experiment, we adopt as decoding function for the latent variable $\z$, the following Categorical likelihood:
 \begin{align}
 \label{eq:classifier}
@@ -173,8 +174,8 @@ The performance on test datasets was evaluated by measuring the classification a
 All results were validated by means of $5$-folds cross-validation.
 
 \paragraph{Results}
-In \tabref{tab:classifier} we show the classification accuracy of MCVAE and our model on the experimental conditions described earlier.
-There are $7$ cases in the MTL condition that could be fitted with our model, which is not possible to do with the MCVAE.
-In $5$ of them we measure on average a better performance with respect to the ST + TL condition.
-In all the cases where the classification accuracy is $> 50\%$ our model performs either similarly or statistically better then the MCVAE.
+In \tabref{tab:classifier} we show the classification accuracy of MCVAE and MT-MCVAE.
+In ST and ST + TL cases, the MT-MCVAE model performs either similarly or statistically better than the MCVAE.
+There are $7$ cases in the MTL condition that could be fitted with the MT-MCVAE model only.
+In $5$ of them we measure on average a better performance with respect to the ST + TL cases fitted with the same model type.
 
