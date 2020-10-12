@@ -44,24 +44,25 @@ The available imaging modalities comes from the following acquisitions:
 \begin{enumerate}
 \item structural Magnetic Resonance Imaging (MRI) to measure anatomical volumes in the brain;
 %
-\item Positron Emission Tomography (PET) with Fluorodeoxyglucose (FDG) tracer, to measure the glucose uptake, which reflecting the functional status of the brain;
-\item PET with the AV45 tracer, to measure the amyloid protein uptake in the brain, affecting the functioning of neurons ;
-\item PET with the tracer for the TAU protein, also affecting the functionality of neurons.
+\item Positron Emission Tomography (PET) with Fluorodeoxyglucose (FDG) tracer, to measure the glucose uptake, which reflects the functional status of the brain;
+\item PET with the AV45 tracer, to measure the amyloid protein uptake in the brain;
+\item PET with the tracer for the TAU protein.
 \end{enumerate}
 %
 
 We divided the ADNI dataset into two complementary datasets:
 `adni1', composed by subjects recruited in the initial ADNI1 study (2004-2009),
 and `adni2' composed by those subjects subsequently recruited in ADNI-GO, ADNI2, and ADNI3 (2010-ongoing).
-Since data modalities and acquisition protocols of `adni1' present differences from those of `adni2', we consider these two cohorts as independent datasets.
+Data modalities and acquisition protocols of `adni1' present differences from those of `adni2'.
 Specifically, in `adni1' and `adni2' the MRI imaging was performed respectively on 1.5T and 3T scanners.
+Therefore we consider these two cohorts as independent datasets.
 
 To summarize, we grouped our data into five distinct datasets which we named as follows: `adni1', `adni2', `miriad', `oasis3', `geneva'.
 
 \subsection{Imaging Processing}
-All the brain scans were processed in order to have measurements on regions defined in the Desikan-Killiany atlas \citep{Desikan2006}.
-All brain MRI scans were processed with FreeSurfer \footnote{\href{https://surfer.nmr.mgh.harvard.edu/}{surfer.nmr.mgh.harvard.edu}} \citep{freesurfer} to measure brain cortical and sub-cortical volumes, and volumes occupied by the cerebro-spinal fluid (CSF), for a total of $99$ regions of interest.
-Relative standardized uptake values (SUVR) were computed for all the PET scans (FDG, AV45, TAU), processed with SPM \citep{Ashburner2000}.
+The brain scans were processed in order to have measurements on regions defined in the Desikan-Killiany atlas \citep{Desikan2006}.
+Brain MRI scans were processed with FreeSurfer \footnote{\href{https://surfer.nmr.mgh.harvard.edu/}{surfer.nmr.mgh.harvard.edu}} \citep{freesurfer} to measure brain cortical and sub-cortical volumes, and volumes occupied by the cerebro-spinal fluid (CSF), for a total of $99$ regions of interest.
+Relative standardized uptake values (SUVR) were computed for the PET scans (FDG, AV45, TAU), processed with SPM \citep{Ashburner2000}.
 SUVRs were computed using the cerebellum as reference region, and averaged in the same regions used for the MRI, except those containing the CSF, for a total of $94$ regions of interest.
 
 \subsection{Gathering Observations into Views}
@@ -87,7 +88,7 @@ Please note that the only view in common across datasets is the clinical one, co
 
 We adjusted all the views feature-wise with \textit{ComBat} \citep{combat}, a batch normalization method originally develop in genomics, which has been adopted in neuroimaging studies to reduce unwanted sources of variation in the data due to the differences in acquisition protocols among datasets \citep{Fortin2017, Fortin2018, Orlhac2020}.
 In ComBat, we set the `age' as main regressor, and `adni2' as reference dataset for the training set.
-As we used cross-validation to validate our results, the ComBat reference dataset for the testing was the training split.
+The ComBat reference dataset for testing was the whole training split.
 
 A final feature-wise standardization step was applied by zero centering the data and by rescaling them to have a unity variance.
 Standardization parameters were computed on the training sets and applied to training and testing sets.

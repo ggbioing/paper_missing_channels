@@ -2,12 +2,12 @@
 
 The joint modeling of multiple datasets presents important challenges when integrating heterogeneous information, such as different imaging modalities and other data-types.
 
-At the level of single datasets or cohorts, efforts to model multi-view data are ubiquitous in the medical literature, where the objective ranges from predicting clinical outcomes \citep{Chen2019} to synthesizing new modalities \citep{Zhou2020, Wei2019}, leveraging on highly engineered neural networks.
-Usually, as training these networks require to establish connections between views, observations with missing views are discarded, yielding a severe loss of available information.
+At the level of single datasets or cohorts, efforts to model multi-view data are ubiquitous in the medical literature, where the objective ranges from predicting clinical outcomes \citep{Chen2019} to synthesizing new modalities \citep{Zhou2020, Wei2019}, often leveraging on highly engineered neural networks.
+As training these networks require to establish connections between views, observations with missing views are usually discarded, yielding to potentially  severe loss of available information.
 To mitigate this problem, imputation methods are usually applied to infer the missing views by modeling the relationship across views from complete observations.
-As an example, the $k$-Nearest Neighbor is a popular clustering method which can be used for imputation using the mean value from $k$ nearest neighbors found in the observations with full views.
+As an example, $k$-Nearest Neighbor is a popular approach based on the imputation from $k$ nearest neighbors found in the observations with full views.
 
-The loss of information is exacerbated when considering multiple datasets because of non overlapping sets of views among datasets, preventing the gathering of all the available observations into a single, robust and generalizable joint model, accounting for the global data variability.
+The loss of information is exacerbated when considering multiple datasets, because of non overlapping sets of views among datasets, preventing the gathering of all the available observations into a single, robust and generalizable joint model, accounting for the global data variability.
 
 This challenge can be addressed through the development of machine learning techniques drawing from the domain of Transfer Learning (TL) and Multi Task Learning (MTL).
 TL is a well known approach to transfer model parameters from one dataset to another \citep{TL}.
@@ -15,21 +15,21 @@ It is commonly applied to datasets with same modalities (e.g. from image to imag
 Unfortunately, this often leads to a catastrophic forgetting \citep{CatastroficForgetting}, the common problem of neural networks that loose the information of the first task after training a second one.
 
 To address this issue, when dealing with multiple datasets MTL can be used to exploit the information found in all the datasets and improve the model generalization performances.
-Indeed, the main idea of MTL is to share what is learned for a task with other tasks \citep{Caruana1998, Dorado-Moreno2020}.
+Indeed, the main idea of MTL is to share with other tasks what is learned for a single one \citep{Caruana1998, Dorado-Moreno2020}.
 As an example of MTL, in model-agnostic meta-learning (MAML) \citep{MAML1}, catastrophic forgetting can be addressed by training a model on a variety of learning tasks, thus enforcing the generalization through fine tuning on new datasets.
 As a result this model can solve new learning tasks after few re-training epochs.
 Nevertheless, these approaches present scalability issues, as for example MAML requires the costly computation of Hessian vectors across dataset parameters.
 
 In the context of neural networks, MTL is usually achieved with independent output layers for every task and including a shared representation for all of them \citep{Dorado-Moreno2020}.
-The Multi-Channel Variational Autoencoder (MCVAE) \citep{Antelmi2019} has exactly this structure \figrefp{fig:architecture}, although it was proposed as a Single Task learning method.
-In MCVAE a multi-view generative model is proposed where all views, belonging to a single dataset, share a common latent representation, expressed in the observations through view-specific parameters.
-Training the MCVAE requires to all the observations in the training set to have all the available views, hence limited to model one dataset at a time, after having discarded incomplete observations in that dataset.
+This modeling rationale is at the basis of recent MTL based approaches to heterogeneous data assimilation \citep{Wu2018, Antelmi2019, Shi2019}.
+In particular, approaches such as the The Multi-Channel Variational Autoencoder (MCVAE) \citep{Antelmi2019} are generative models relying on the identification of a common latent representation for different views belonging to a single dataset.
+Training these models requires to all the observations in the training set to have all the available views, and hence is limited to model one dataset at a time, after having discarded incomplete observations in that dataset.
 %
-To overcome this limitation, and inspired by the MCVAE, here we propose a new method able to learn simultaneously from multiple datasets, even in the presence of non-overlapping sets of views among datasets, and of missing views across datasets.
+To overcome this limitation here we investigate an extension of MCVAE to learn simultaneously from multiple datasets, even in the presence of non-overlapping sets of views among datasets, and of missing views across datasets.
 The basic idea is to stack multiple instances of the MCVAE, where each instance models a specific task \figrefp{fig:model}.
 By leveraging on the available common views in training subsets, our model allows to learn a joint model for all the observations in all the datasets.
 The common views allows to bridge the datasets, enabling information to flow through all the other views in the dataset pool.
-Training subsets without a particular view will simply not contribute to the learning of those view-specific parameters in the training phase.
+In this way, data subsets without a particular view will simply not contribute to the learning of those view-specific parameters in the training phase.
 The remaining subsets will nevertheless benefit from the learned parameters they didn't contribute to learn, for the prediction of their missing views.
 As in MCVAE, the variational formulation for computing approximate posterior distributions of the latent variables allows fast and scalable training.
 Being dataset agnostic, our method allows to integrate all the available data into a joint model, gathering  all the available information from multiple datasets at the same time.

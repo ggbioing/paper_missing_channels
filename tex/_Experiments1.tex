@@ -1,7 +1,7 @@
 \section{Synthetic Experiments}
 \label{sec:synth}
 
-In this section we describe our results on extensive synthetic experiments performed with our model and benchmark methods in two conditions:
+In this section we describe our results on extensive synthetic experiments performed with our model and different benchmark methods in two conditions:
 1) missing at random views for each dataset,
 and 2) datasets with systematically missing views (missing not at random).
 
@@ -65,7 +65,7 @@ Starting from an initial imputation, MICE draws imputations by iterating over th
 \subsection{Results}
 \input{./tex/fig/fig_synthetic_benchmark}
 
-In the synthetic tests our model provides the best performances overall, with a mean MSE improvement compared to best competing method of $17\%$ in MAR cases and $71\%$ in MNAR cases (\figref{fig:synthetic_benchmark_box}).
+In the synthetic tests our model provides the best performances overall, with a mean MSE improvement compared to the best competing method of $17\%$ in MAR cases and $71\%$ in MNAR cases (\figref{fig:synthetic_benchmark_box}).
 
 We notice that DAE is not always better than knn ($k=5$), especially in low \snr\ cases.
 
