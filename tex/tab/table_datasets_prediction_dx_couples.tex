@@ -63,13 +63,13 @@ Experiment of diagnosis classification run with the Multi-Channel VAE (MCVAE) an
 $5$-folds classification accuracy in $\%$ is shown as mean (standard deviation). 
 Since there are no MCI in miriad and oasis3 datasets, the classification tests `AD vs MCI' and `MCI vs NC' are meaningless and not reported.
 Since there are no NC in the geneva dataset, the classification tests `AD vs NC' and `MCI vs NC' are meaningless and not reported.
-Experiments were run in three different conditions:
+Experiments were run in two different conditions:
 1) when training and testing data are chosen from the same dataset, or Single Task (ST) learning case;
-2) when models trained on one dataset are tested on another dataset, or ST + Transfer Learning (TL) case;
-3) when models are trained on all the available datasets except the testing one, or Multi Task Learning (MTL).
-In ST and ST + TL cases, the MT-MCVAE model performs either similarly or statistically better than the MCVAE, with $\alpha$ levels at $0.05$ (*), $0.01$ (**), and $0.001$ (***).
-The MTL cases could be fitted with the MT-MCVAE only.
-In $5/7$ of them (\dag) we measure on average a better performance with respect to the ST + TL cases fitted with the same model type.
+2) when models trained on one dataset are tested on another dataset, or ST + Transfer Learning (TL) case.
+%3) when models are trained on all the available datasets except the testing one, or Multi Task Learning (MTL).
+In all cases the MT-MCVAE model performs either similarly or statistically better than the MCVAE, with alpha levels at $0.05$ (*), $0.01$ (**), and $0.001$ (***).
+%The MTL cases could be fitted with the MT-MCVAE only.
+%In $5/7$ of them (\dag) we measure on average a better performance with respect to the ST + TL cases fitted with the same model type.
 }
 \label{tab:classifier}
 \resizebox{\textwidth}{!}{
@@ -86,8 +86,8 @@ adni1  &         ST      & adni1          &   72.70 (3.72)       &  72.87 (4.37)
        &                 & miriad         &              -       &             -          &   82.58 (4.75) &   80.82 (3.16)        &             - &             -         \\
        &                 & oasis3         &              -       &             -          &   48.57 (6.48) &   62.31 (6.43)$^{**}$ &             - &             -         \\
        &                 & geneva         &   46.61 (8.03)$^{*}$ &  36.52 (5.29)          &              - &              -        &             - &             -         \\
-\cmidrule(lr){2-9}
-       &         MTL     & all but adni1  &  -                   &  56.17 (4.29)          &  -             &   74.48 (3.06)\dag    &  -            &             -         \\
+%\cmidrule(lr){2-9}
+%       &         MTL     & all but adni1  &  -                   &  56.17 (4.29)          &  -             &   74.48 (3.06)\dag    &  -            &             -         \\
 \toprule
 adni2  &         ST      & adni2          &   50.58 (3.90)       &  80.07 (2.53)$^{***}$  &   82.86 (3.28) &   87.92 (3.46)$^{*}$  &  58.63 (4.27) &  65.56 (1.11)$^{**}$  \\
 \cmidrule(lr){2-9}
@@ -95,31 +95,73 @@ adni2  &         ST      & adni2          &   50.58 (3.90)       &  80.07 (2.53)
        &                 & miriad         &              -       &             -          &   70.32 (7.29) &   70.20 (7.17)        &             - &             -         \\
        &                 & oasis3         &              -       &             -          &   68.24 (2.97) &   75.72 (1.90)$^{**}$ &             - &             -         \\
        &                 & geneva         &   64.49 (2.98)       &  63.98 (3.30)          &              - &              -        &             - &             -         \\
-\cmidrule(lr){2-9}
-       &         MTL     & all but adni2  &              -       &  68.46 (1.31)\dag       &   -            &   83.89 (1.93)\dag    &  -            &             -         \\
+%\cmidrule(lr){2-9}
+%       &         MTL     & all but adni2  &              -       &  68.46 (1.31)\dag       &   -            &   83.89 (1.93)\dag    &  -            &             -         \\
 \toprule
 geneva &         ST      & geneva         &   65.76 (3.62)       &  77.70 (8.12)$^{*}$    &              - &              -        &             - &             -         \\
 \cmidrule(lr){2-9}
        &         ST + TL & adni1          &   29.17 (5.87)       &  30.08 (5.49)          &              - &              -        &             - &             -         \\
        &                 & adni2          &  38.61 (15.08)       &  70.11 (2.90)$^{**}$   &              - &              -        &             - &             -         \\
-\cmidrule(lr){2-9}
-       &         MTL     & all but geneva &              -       &  56.70 (4.13) &               -         &              -        &             - &             -         \\
+%\cmidrule(lr){2-9}
+%       &         MTL     & all but geneva &              -       &  56.70 (4.13) &               -         &              -        &             - &             -         \\
 \toprule
 miriad &         ST      & miriad         &              -       &             -          &  83.85 (13.84) &  86.70 (15.68)        &             - &             -         \\
 \cmidrule(lr){2-9}
        &         ST + TL & adni1          &              -       &             -          &  74.18 (14.37) &  74.18 (14.37)        &             - &             -         \\
        &                 & adni2          &              -       &             -          &  74.95 (11.58) &  78.90 (11.54)$^{*}$  &             - &             -         \\
        &                 & oasis3         &              -       &             -          &  45.71 (18.08) &  66.04 (19.35)        &             - &             -         \\
-\cmidrule(lr){2-9}
-       &         MTL     & all but miriad &              -       &             -          &  -             &  92.53 (0.30)\dag     &             - &             -         \\
+%\cmidrule(lr){2-9}
+%       &         MTL     & all but miriad &              -       &             -          &  -             &  92.53 (0.30)\dag     &             - &             -         \\
 \toprule
 oasis3 &         ST      & oasis3         &              -       &             -          &   74.47 (2.49) &   80.35 (3.59)$^{*}$  &             - &             -         \\
 \cmidrule(lr){2-9}
        &         ST + TL & adni1          &              -       &             -          &   49.16 (6.34) &   48.22 (5.78)        &             - &             -         \\
        &                 & adni2          &              -       &             -          &   67.86 (3.80) &   75.42 (4.68)$^{*}$  &             - &             -         \\
        &                 & miriad         &              -       &             -          &   64.48 (8.65) &   62.02 (9.74)        &             - &             -         \\
-\cmidrule(lr){2-9}
-       &        MTL      & all but oasis3 &              -       &             -          &   -            &   75.43 (5.67)\dag    &             - &             -         \\
+%\cmidrule(lr){2-9}
+%       &        MTL      & all but oasis3 &              -       &             -          &   -            &   75.43 (5.67)\dag    &             - &             -         \\
 \bottomrule
 \end{tabular}}
 \end{table*}
+
+\begin{table}
+\centering
+\caption{
+Experiment of diagnosis classification run with our model.
+$5$-folds classification accuracy in $\%$ is shown as mean (standard deviation). 
+Experiments were run in three different conditions:
+1) when training and testing data are chosen from the same dataset, or Single Task (ST) learning case;
+2) when models trained on one dataset are tested on another dataset, or ST + Transfer Learning (TL) case;
+3) when models are trained on all the available datasets except the testing one, or Multi Task Learning (MTL).
+In $4/7$ of cases we measure on average a better performance in the MTL condition with respect to the best ST + TL (\dag) one.
+}
+\label{tab:classifier_mtl}
+\resizebox{\columnwidth}{!}{
+\begin{tabular}{llll}
+\toprule
+        & classification task & AD vs MCI         & AD vs NC           \\
+\toprule
+test dataset & condition      &                   &                    \\
+\cmidrule(lr){1-2}
+adni1        & ST             &  72.87 (4.37)     &   81.51 (3.14)     \\
+             & ST + TL (best) &  58.96 (3.55)     &   80.82 (3.16)     \\
+             & MTL            &  56.17 (4.29)     &   74.48 (3.06)     \\
+\midrule
+adni2        & ST             &  80.07 (2.53)     &   87.92 (3.46)     \\
+             & ST + TL (best) &  63.98 (3.30)     &   75.72 (1.90)     \\
+             & MTL            &  68.46 (1.31)\dag &   83.89 (1.93)\dag \\
+\midrule
+geneva       & ST             &  77.70 (8.12)     &              -     \\
+             & ST + TL (best) &  70.11 (2.90)     &              -     \\
+             & MTL            &  56.70 (4.13)     &              -     \\
+\midrule
+miriad       & ST             &             -     &  86.70 (15.68)     \\
+             & ST + TL (best) &             -     &  78.90 (11.54)     \\
+             & MTL            &             -     &  92.53 (0.30)\dag  \\
+\midrule
+oasis3       & ST             &             -     &   80.35 (3.59)     \\
+             & ST + TL (best) &             -     &   75.42 (4.68)     \\
+             & MTL            &             -     &   75.43 (5.67)\dag \\
+\bottomrule
+\end{tabular}}
+\end{table}

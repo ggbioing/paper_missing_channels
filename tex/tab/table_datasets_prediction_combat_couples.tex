@@ -145,13 +145,11 @@
 Mean Squared Error (MSE, the lower the better) measured on test dataset views (clinical scores and imaging derived phenotypes) predicted with the Multi-Channel VAE (MCVAE) and the Multi Task MCVAE (MT-MCVAE).
 $5$-folds cross-validation results shown as as average (standard deviation).
 Models were trained on all the available views in the training dataset, independently of their presence in the testing dataset.
-Experiments were run in three different conditions:
+Experiments were run in two different conditions:
 1) when training and testing data are chosen from the same dataset, or Single Task (ST) learning case;
 2) when models trained on one dataset are tested on another dataset, or Single Task + Transfer Learning (ST + TL) case;
-3) when models are trained on all the available datasets except the testing one, or Multi Task Learning (MTL).
-In the ST and ST + TL cases, the MT-MCVAE performs either similarly or statistically better than the MCVAE, with alpha levels at $0.05$ (*), $0.01$ (**), and $0.001$ (***).
-The MTL cases could be fitted with the MT-MCVAE only.
-In $7/12$ of them we measure a better performance with respect to ST cases (\S) and with respect to ST + TL cases (\dag) fitted with the same model type.
+%3) when models are trained on all the available datasets except the testing one, or Multi Task Learning (MTL).
+In all cases the MT-MCVAE performs either similarly or statistically better than the MCVAE, with alpha levels at $0.05$ (*), $0.01$ (**), and $0.001$ (***).
 }
 \label{tab:features}
 \resizebox{\textwidth}{!}{
@@ -168,8 +166,8 @@ adni1  &             ST  & adni1           &  0.90 (0.12) &  0.89 (0.13)       &
        &                 & miriad          &  0.96 (0.17) &  1.14 (0.27)       &  0.80 (0.14) &  0.82 (0.13)$^{*}$   &            - &            -         &            - &            -         &            - &            -         \\
        &                 & geneva          &            - &            -       &            - &            -         &            - &            -         &            - &            -         &            - &            -         \\
        &                 & oasis3          &  0.83 (0.30) &  0.54 (0.10)$^{*}$ &  0.80 (0.15) &  0.76 (0.11)$^{*}$   &            - &            -         &            - &            -         &            - &            -         \\
-\cmidrule(lr){2-13}
-       &            MTL  & all but adni1   &            - &  0.45 (0.07)\S\dag &            - &  0.77 (0.10)\S       &            - &            -         &            - &            -         &            - &            -         \\
+%\cmidrule(lr){2-13}
+%       &            MTL  & all but adni1   &            - &  0.45 (0.07)\S\dag &            - &  0.77 (0.10)\S       &            - &            -         &            - &            -         &            - &            -         \\
 \toprule
 adni2 &             ST   & adni2            &  0.83 (0.11) &  0.73 (0.15)       &  0.74 (0.13) &  0.70 (0.11)$^{**}$  &  0.73 (0.14) &  0.59 (0.10)$^{***}$ &  1.03 (0.19) &  0.80 (0.10)$^{***}$ &  1.33 (0.59) &  1.18 (0.52)$^{*}$   \\
 \cmidrule(lr){2-13}
@@ -177,8 +175,8 @@ adni2 &             ST   & adni2            &  0.83 (0.11) &  0.73 (0.15)       
        &                 & miriad          &  0.73 (0.20) &  0.71 (0.18)       &  0.78 (0.13) &  0.77 (0.13)         &            - &            -         &            - &            -         &            - &            -         \\
        &                 & geneva          &  0.47 (0.06) &  0.48 (0.09)       &            - &            -         &  1.40 (0.21) &  1.09 (0.15)$^{***}$ &  1.10 (0.21) &  0.91 (0.15)$^{**}$  &  1.34 (0.52) &  1.05 (0.45)$^{***}$ \\
        &                 & oasis3          &  0.76 (0.23) &  0.61 (0.13)       &  0.68 (0.12) &  0.68 (0.11)         &            - &            -         &  1.32 (0.29) &  1.13 (0.26)$^{***}$ &            - &            -         \\
-\cmidrule(lr){2-13}
-       &          MTL    & all but adni2   &            - &  0.45 (0.07)\S\dag &            - &  0.70 (0.13)         &            - &            -         &            - &  0.89 (0.15)\dag     &            - &            -         \\
+%\cmidrule(lr){2-13}
+%       &          MTL    & all but adni2   &            - &  0.45 (0.07)\S\dag &            - &  0.70 (0.13)         &            - &            -         &            - &  0.89 (0.15)\dag     &            - &            -         \\
 \toprule
 geneva &           ST    & geneva          &  0.79 (0.34) &  0.98 (0.52)       &            - &            -         &  3.63 (1.35) &  3.18 (1.04)$^{*}$   &  1.82 (0.57) &  1.76 (0.47)$^{*}$   &  1.27 (0.82) &  1.19 (0.67)$^{*}$   \\
 \cmidrule(lr){2-13}
@@ -186,8 +184,8 @@ geneva &           ST    & geneva          &  0.79 (0.34) &  0.98 (0.52)       &
        &                 & adni2           &  2.57 (1.09) &  2.07 (1.05)       &            - &            -         &  3.01 (1.05) &  2.69 (0.77)$^{*}$   &  1.92 (0.90) &  1.41 (0.39)         &  1.81 (0.81) &  1.42 (0.66)$^{***}$ \\
        &                 & miriad          &            - &            -       &            - &            -         &            - &            -         &            - &            -         &            - &            -         \\
        &                 & oasis3          &  1.93 (0.66) &  2.28 (0.89)       &            - &            -         &            - &            -         &  1.70 (0.51) &  1.63 (0.55)$^{*}$   &            - &            -         \\
-\cmidrule(lr){2-13}
-       &           MTL   & all but geneva  &            - &  1.80 (1.16)\dag   &            - &            -         &            - &            -         &            - &  1.35 (0.37)\S\dag   &            - &            -         \\
+%\cmidrule(lr){2-13}
+%       &           MTL   & all but geneva  &            - &  1.80 (1.16)\dag   &            - &            -         &            - &            -         &            - &  1.35 (0.37)\S\dag   &            - &            -         \\
 \toprule
 miriad &            ST   & miriad          &  3.21 (1.07) &  3.23 (2.55)       &  6.39 (1.57) &  6.38 (1.52)         &            - &            -         &            - &            -         &            - &            -         \\
 \cmidrule(lr){2-13}
@@ -195,8 +193,8 @@ miriad &            ST   & miriad          &  3.21 (1.07) &  3.23 (2.55)       &
        &                 & adni2           &  5.60 (2.76) &  3.97 (3.14)       &  5.93 (1.90) &  6.59 (1.64)         &            - &            -         &            - &            -         &            - &            -         \\
        &                 & geneva          &            - &            -       &            - &            -         &            - &            -         &            - &            -         &            - &            -         \\
        &                 & oasis3          &  6.80 (6.52) &  6.24 (4.62)       &  6.29 (1.68) &  6.23 (1.40)         &            - &            -         &            - &            -         &            - &            -         \\
-\cmidrule(lr){2-13}
-       &           MTL   & all but miriad  &            - &  2.31 (1.65)\S\dag       &            - &  6.17 (1.37)\S\dag   &            - &            -         &            - &            -         &            - &            -         \\
+%\cmidrule(lr){2-13}
+%       &           MTL   & all but miriad  &            - &  2.31 (1.65)\S\dag       &            - &  6.17 (1.37)\S\dag   &            - &            -         &            - &            -         &            - &            -         \\
 \toprule
 oasis3 &          ST     & oasis3          &  0.83 (0.33) &  0.68 (0.28)       &  0.68 (0.13) &  0.66 (0.12)$^{*}$   &            - &            -         &  1.58 (0.63) &  1.22 (0.26)$^{***}$ &            - &            -         \\
 \cmidrule(lr){2-13}
@@ -204,8 +202,53 @@ oasis3 &          ST     & oasis3          &  0.83 (0.33) &  0.68 (0.28)       &
        &                 & adni2           &  1.11 (0.33) &  1.09 (0.24)       &  0.89 (0.18) &  0.76 (0.15)$^{***}$ &            - &            -         &  0.94 (0.22) &  1.02 (0.26)$^{*}$   &            - &            -         \\
        &                 & miriad          &  0.98 (0.21) &  1.02 (0.20)       &  0.83 (0.18) &  0.83 (0.18)         &            - &            -         &            - &            -         &            - &            -         \\
        &                 & geneva          &  0.55 (0.28) &  0.49 (0.26)       &            - &            -         &            - &            -         &  1.23 (0.61) &  1.11 (0.26)$^{*}$   &            - &            -         \\
-\cmidrule(lr){2-13}
-       &         MTL     & all but oasis3  &            - &  0.72 (0.09)       &            - &  0.81 (0.15)         &            - &            -         &            - &  1.09 (0.30)\S       &            - &            -         \\
+%\cmidrule(lr){2-13}
+%       &         MTL     & all but oasis3  &            - &  0.72 (0.09)       &            - &  0.81 (0.15)         &            - &            -         &            - &  1.09 (0.30)\S       &            - &            -         \\
 \bottomrule
 \end{tabular}}
 \end{table*}
+
+\begin{table}
+\centering
+\caption{
+% Age MMSE
+Mean Squared Error (MSE, the lower the better) measured on test dataset views (clinical scores and imaging derived phenotypes) predicted with our model.
+$5$-folds cross-validation results shown as as average (standard deviation).
+Models were trained on all the available views in the training dataset, independently of their presence in the testing dataset.
+Experiments were run in three different conditions:
+1) when training and testing data are chosen from the same dataset, or Single Task (ST) learning case;
+2) when models trained on one dataset are tested on another dataset, or Single Task + Transfer Learning (ST + TL) case;
+3) when models are trained on all the available datasets except the testing one, or Multi Task Learning (MTL).
+In $7/12$ of cases we measure a better performance in the MTL condition with respect to the ST (\S) and best ST + TL (\dag) ones.
+}
+\label{tab:features_mtl}
+\resizebox{\columnwidth}{!}{
+\begin{tabular}{lllll}
+\toprule
+             & view           & clin              & MRI                   & AV45                 \\
+\toprule
+test dataset & condition      &                   &                       &                      \\
+\cmidrule(lr){1-2}
+adni1        &             ST &  0.89 (0.13)       &  0.83 (0.12)         &            -         \\
+             & ST + TL (best) &  0.54 (0.10)       &  0.76 (0.11)         &            -         \\
+             &            MTL &  0.45 (0.07)\S\dag &  0.77 (0.10)\S       &            -         \\
+\midrule
+adni2        &             ST &  0.73 (0.15)       &  0.70 (0.11)         &  0.80 (0.10)         \\
+             & ST + TL (best) &  0.48 (0.09)       &  0.68 (0.11)         &  0.91 (0.15)         \\
+             &          MTL   &  0.45 (0.07)\S\dag &  0.70 (0.13)         &  0.89 (0.15)\dag     \\
+\midrule
+geneva       &           ST   &  0.98 (0.52)       &            -         &  1.76 (0.47)         \\
+             & ST + TL (best) &  2.07 (1.05)       &            -         &  1.41 (0.39)         \\
+             &           MTL  &  1.80 (1.16)\dag   &            -         &  1.35 (0.37)\S\dag   \\
+\midrule
+miriad       &            ST  &  3.23 (2.55)       &  6.38 (1.52)         &            -         \\
+             & ST + TL (best) &  3.97 (3.14)       &  6.23 (1.40)         &            -         \\
+             &           MTL  &  2.31 (1.65)\S\dag &  6.17 (1.37)\S\dag   &            -         \\
+\midrule
+oasis3       &          ST    &  0.68 (0.28)       &  0.66 (0.12)         &  1.22 (0.26)         \\
+             & ST + TL (best) &  0.49 (0.26)       &  0.76 (0.15)         &  1.02 (0.26)         \\
+             &         MTL    &  0.72 (0.09)       &  0.81 (0.15)         &  1.09 (0.30)\S       \\
+\bottomrule
+\end{tabular}
+}
+\end{table}

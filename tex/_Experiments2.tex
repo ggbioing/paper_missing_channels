@@ -138,9 +138,9 @@ Prediction performances were evaluated with the Mean Squared Error (MSE) metric,
 All results were validated by means of $5$-folds cross-validation.
 
 \paragraph{Results}
-In \tabref{tab:features} we show the prediction error in terms of MSE for each test dataset and view, on the three experimental conditions described earlier.
-In ST and ST + TL cases, the MT-MCVAE model performs either similarly or statistically better than the MCVAE, especially in cases where the difference between the union and intersection set of observations is higher (cfr. \tabref{table:datasets}).
-In MTL cases there are $12$ cases that could be fitted with MT-MCVAE only.
+In \tabref{tab:features} and \tabref{tab:features_mtl} we show the prediction error in terms of MSE for each test dataset and view, on the three experimental conditions described earlier.
+In ST and ST + TL cases \tabrefp{tab:features}, the MT-MCVAE model performs either similarly or statistically better than the MCVAE, especially in cases where the difference between the union and intersection set of observations is higher (cfr. \tabref{table:datasets}).
+In MTL cases \tabrefp{tab:features_mtl} there are $12$ cases that could be fitted with MT-MCVAE only.
 In $7$ of them we measure a better performance with respect to the ST and  ST + TL cases fitted with the same model type.
 
 \subsection{Experiment 3: Diagnosis Prediction}
@@ -176,6 +176,6 @@ All results were validated by means of $5$-folds cross-validation.
 \paragraph{Results}
 In \tabref{tab:classifier} we show the classification accuracy of MCVAE and MT-MCVAE.
 In ST and ST + TL cases, the MT-MCVAE model performs either similarly or statistically better than the MCVAE.
-There are $7$ cases in the MTL condition that could be fitted with the MT-MCVAE model only.
-In $5$ of them we measure on average a better performance with respect to the ST + TL cases fitted with the same model type.
+There are $7$ cases in the MTL condition \tabrefp{tab:classifier_mtl} that could be fitted with the MT-MCVAE model only.
+In $4$ of them we measure on average a better performance with respect to the best ST + TL cases.
 
