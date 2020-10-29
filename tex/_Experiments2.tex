@@ -51,13 +51,13 @@ The available imaging modalities comes from the following acquisitions:
 %
 
 We divided the ADNI dataset into two complementary datasets:
-`adni1', composed by subjects recruited in the initial ADNI1 study (2004-2009),
-and `adni2' composed by those subjects subsequently recruited in ADNI-GO, ADNI2, and ADNI3 (2010-ongoing).
-Data modalities and acquisition protocols of `adni1' present differences from those of `adni2'.
-Specifically, in `adni1' and `adni2' the MRI imaging was performed respectively on 1.5T and 3T scanners.
+`Adni1', composed by subjects recruited in the initial ADNI1 study (2004-2009),
+and `Adni2' composed by those subjects subsequently recruited in ADNI-GO, ADNI2, and ADNI3 (2010-ongoing).
+Data modalities and acquisition protocols of `Adni1' present differences from those of `Adni2'.
+Specifically, in `Adni1' and `Adni2' the MRI imaging was performed respectively on 1.5T and 3T scanners.
 Therefore we consider these two cohorts as independent datasets.
 
-To summarize, we grouped our data into five distinct datasets which we named as follows: `adni1', `adni2', `miriad', `oasis3', `geneva'.
+To summarize, we grouped our data into five distinct datasets which we named as follows: `Adni1', `Adni2', `Miriad', `Oasis3', `Geneva'.
 
 \subsection{Imaging Processing}
 The brain scans were processed in order to have measurements on regions defined in the Desikan-Killiany atlas \citep{Desikan2006}.
@@ -78,7 +78,7 @@ Observations from the five available datasets (\S~\ref{ssec:datasets}) were grou
 \item TAU: average brain protein Tau uptake measured through the analysis of TAU-PET scans.
 \end{enumerate}
 
-For each subject belonging to the `adni1', `adni2', 'miriad' and `geneva' datasets, we choose the first available time-point, or baseline.
+For each subject belonging to the `Adni1', `Adni2', 'Miriad' and `Geneva' datasets, we choose the first available time-point, or baseline.
 In `oasis3', since measurements were mostly acquired in different days, we choose to pair nearby time points across modalities into a single one.
 Time interval between views within one subject was minimal (AV45 vs MRI: $\leq 90$ days, MRI vs clin: $\leq 90$ days).
 
@@ -87,7 +87,7 @@ Size of the intersection ($\cap$) and union ($\cup$) of subjects with available 
 Please note that the only view in common across datasets is the clinical one, composed by MMSE and age features only.
 
 We adjusted all the views feature-wise with \textit{ComBat} \citep{combat}, a batch normalization method originally develop in genomics, which has been adopted in neuroimaging studies to reduce unwanted sources of variation in the data due to the differences in acquisition protocols among datasets \citep{Fortin2017, Fortin2018, Orlhac2020}.
-In ComBat, we set the `age' as main regressor, and `adni2' as reference dataset for the training set.
+In ComBat, we set the `age' as main regressor, and `Adni2' as reference dataset for the training set.
 The ComBat reference dataset for testing was the whole training split.
 
 A final feature-wise standardization step was applied by zero centering the data and by rescaling them to have a unity variance.
@@ -101,8 +101,8 @@ The purpose of this experiment is to validate on real data the benchmarked resul
 As benchmark methods, we choose the best performers on the synthetic experiments, namely knn5 and DAE.
 We choose for our model a linear Gaussian parameterization for the likelihood and variational distributions of \eqnref{eq:decoder} and \eqnref{eq:dropout_posterior} respectively.
 
-We trained all the models (knn5, dae, ours) with data coming from all the datasets except from `adni2', left out for testing purposes.
-We choose the `adni2' dataset as testing dataset since it provides all the views, and the highest number of observations per view (\tabref{table:datasets}).
+We trained all the models (knn5, dae, ours) with data coming from all the datasets except from `Adni2', left out for testing purposes.
+We choose the `Adni2' dataset as testing dataset since it provides all the views, and the highest number of observations per view (\tabref{table:datasets}).
 
 Prediction performances were evaluated with the Mean Squared Error (MSE) metric, measured on the available views in the testing dataset, reconstructed with \eqnref{eq:reconstruction}.
 All results were validated by means of $5$-folds cross-validation.
