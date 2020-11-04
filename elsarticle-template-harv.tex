@@ -82,32 +82,62 @@
 %% \title{Title\tnoteref{label1}}
 %% \tnotetext[label1]{}
 %% \author{Name\corref{cor1}\fnref{label2}}
-%% \ead{email address}
-%% \ead[url]{home page}
 %% \fntext[label2]{}
 %% \cortext[cor1]{}
 %% \address{Address\fnref{label3}}
 %% \fntext[label3]{}
 
 \title{
-Learning from Multiple Datasets with Multi-View and Missing Observations:
-Application to Brain Imaging Studies in Dementia
+%Learning from Multiple Datasets with Multi-View and Missing Observations:
+Multi-Task Learning from Datasets with Missing Observations:
+Application to Multi-Modal Neuroimaging Studies in Dementia
 }
+%% 
+%% %% use optional labels to link authors explicitly to addresses:
+%% %% \author[label1,label2]{}
+%% %% \address[label1]{}
+%% %% \address[label2]{}
+%% 
+%% \author{
+%% 	L. Antelmi,
+%% 	N. Ayache,
+%% 	P. Robert,
+%% 	M. Lorenzi,\\
+%% 	for the Alzheimer's Disease Neuroimaging Initiative.
+%% }
+%% 
+%% \address{}
 
-%% use optional labels to link authors explicitly to addresses:
-%% \author[label1,label2]{}
-%% \address[label1]{}
-%% \address[label2]{}
+\author{Luigi Antelmi \fnref{epione}\corref{luigi}}
+\author{Nicholas Ayache \fnref{epione}}
+\author{Philippe Robert\fnref{cobtex,cmrr}}
+%
+\author{Federica Ribaldi\fnref{lane,unibs,lanvie}}
+\author{Valentina Garibotto\fnref{garibotto1,garibotto2}}
+\author{Giovanni B. Frisoni\fnref{lanvie,frisoni1}}
+%
+\author{Marco Lorenzi\fnref{epione}}
+%
+\author{for the Alzheimer's Disease Neuroimaging Initiative \corref{adni}}
 
-\author{
-	L. Antelmi,
-	N. Ayache,
-	P. Robert,
-	M. Lorenzi,\\
-	for the Alzheimer's Disease Neuroimaging Initiative.
+\fntext[epione]{University of Côte d'Azur, Inria, Epione Project-Team, France.}
+\fntext[cobtex]{University of Côte d'Azur, CoBTeK, France.}
+\fntext[cmrr]{Centre Mémoire, CHU of Nice, France}
+%
+\fntext[lane]{Laboratory of Alzheimer’s Neuroimaging and Epidemiology (LANE), Saint John of God Clinical Research Centre, Brescia, Italy.}
+\fntext[unibs]{Department of Molecular and Translational Medicine, University of Brescia, Brescia, Italy.}
+\fntext[lanvie]{Laboratory of Neuroimaging of Aging (LANVIE), University of Geneva, Geneva, Switzerland.}
+\fntext[garibotto1]{Laboratory of Neuroimaging and Innovative Molecular Tracers (NIMTlab), Geneva University Neurocenter and Faculty of Medicine, University of Geneva, Geneva, Switzerland.}
+\fntext[garibotto2]{Division of Nuclear Medicine and Molecular Imaging, Geneva University Hospitals, Geneva, Switzerland}
+\fntext[frisoni1]{Memory Clinic, Geneva University Hospitals, Geneva, Switzerland.}
+%
+\cortext[luigi]{Corresponding author: luigi.antelmi@inria.fr}
+\cortext[adni]{
+Data used in preparation of this article were obtained from the Alzheimer's Disease Neuroimaging Initiative (ADNI) database (http://adni.loni.usc.edu).
+As such, the investigators within the ADNI contributed to the design and implementation of ADNI and/or provided data but did not participate in analysis or writing of this report.
+A complete listing of ADNI investigators can be found at 
+http://adni.loni.usc.edu/wp-content/uploads/how\_to\_apply/ADNI\_Acknowledgement\_List.pdf
 }
-
-\address{}
 
 \begin{abstract}
 \input{./tex/_Abstract}
@@ -133,13 +163,6 @@ Application to Brain Imaging Studies in Dementia
 % %% or \MSC[2008] code \sep code (2000 is the default)
 % 
 % \end{keyword}
-
-
-\tnotetext[t2]{
-Data used in preparation of this article were obtained from the Alzheimer's Disease Neuroimaging Initiative (ADNI) database (http://adni.loni.usc.edu).
-As such, the investigators within the ADNI contributed to the design and implementation of ADNI and/or provided data but did not participate in analysis or writing of this report.
-A complete listing of ADNI investigators can be found at {\small\url{http://adni.loni.usc.edu/wp-content/uploads/how\_to\_apply/ADNI\_Acknowledgement\_List.pdf}}
-}
 
 \end{frontmatter}
 %% \linenumbers

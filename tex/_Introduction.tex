@@ -1,6 +1,6 @@
 \section{Introduction}
 
-The joint modeling of multiple datasets presents important challenges when integrating heterogeneous information, such as different imaging modalities and other data-types.
+The joint modeling of multiple datasets presents important challenges when integrating heterogeneous information, such as multiple imaging modalities and other data-types.
 
 At the level of single datasets or cohorts, efforts to model multi-view data are ubiquitous in the medical literature, where the objective ranges from predicting clinical outcomes \citep{Chen2019} to synthesizing new modalities \citep{Zhou2020, Wei2019}, often leveraging on highly engineered neural networks.
 As training these networks require to establish connections between views, observations with missing views are usually discarded, yielding to potentially  severe loss of available information.
@@ -37,5 +37,5 @@ Being dataset agnostic, our method allows to integrate all the available data in
 The rest of this paper is structured as follow.
 In \S~\ref{sec:method} we set the theoretical framework for our model.
 In \S~\ref{sec:synth} experiments on synthetic data show that the prediction error of missing views is competitive with respect to the one obtained with state of the art imputation methods.
-In \S~\ref{sec:real} experiments on real data from independent multi-modal brain imaging datasets show that our model generalizes better than dataset-specific models on new unseen data.
+In \S~\ref{sec:real} experiments on real data from independent multi-modal neuroimaging datasets show that our model generalizes better than dataset-specific models on new unseen data, in both the tested cases of imaging derived phenotypes prediction and diagnosis prediction.
 Lastly we broadly discuss our results and limitations and conclude our work with summary remarks.
