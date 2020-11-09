@@ -45,8 +45,8 @@ The available imaging modalities comes from the following acquisitions:
 \item structural Magnetic Resonance Imaging (MRI) to measure anatomical volumes in the brain;
 %
 \item Positron Emission Tomography (PET) with Fluorodeoxyglucose (FDG) tracer, to measure the glucose uptake, which reflects the functional status of the brain;
-\item PET with the AV45 tracer, to measure the amyloid protein uptake in the brain;
-\item PET with the tracer for the TAU protein.
+\item PET with the AV45 tracer, to measure the amyloid deposits in the brain;
+\item PET with the AV1451 tracer, to measure the tau protein aggregates in the brain.
 \end{enumerate}
 %
 
@@ -62,7 +62,7 @@ To summarize, we grouped our data into five distinct datasets which we named as 
 \subsection{Imaging Processing}
 The brain scans were processed in order to have measurements on regions defined in the Desikan-Killiany atlas \citep{Desikan2006}.
 Brain MRI scans were processed with FreeSurfer \footnote{\href{https://surfer.nmr.mgh.harvard.edu/}{surfer.nmr.mgh.harvard.edu}} \citep{freesurfer} to measure brain cortical and sub-cortical volumes, and volumes occupied by the cerebro-spinal fluid (CSF), for a total of $99$ regions of interest.
-Relative standardized uptake values (SUVR) were computed for the PET scans (FDG, AV45, TAU), processed with SPM \citep{Ashburner2000}.
+Relative standardized uptake values (SUVR) were computed for the PET scans (FDG, AV45, AV1451), processed with SPM \citep{Ashburner2000}.
 SUVRs were computed using the cerebellum as reference region, and averaged in the same regions used for the MRI, except those containing the CSF, for a total of $94$ regions of interest.
 
 \subsection{Gathering Observations into Views}
@@ -74,8 +74,8 @@ Observations from the five available datasets (\S~\ref{ssec:datasets}) were grou
 \item clin: grouping age and the Mini-Mental cognitive score (MMSE).
 \item MRI: grouping brain volumes computed with FreeSurfer.
 \item FDG: average brain glucose uptake measured through the analysis of FDG-PET scans.
-\item AV45: average brain amyloid uptake measured through the analysis of AV45-PET scans.
-\item TAU: average brain protein Tau uptake measured through the analysis of TAU-PET scans.
+\item AV45: average brain amyloid deposits measured through the analysis of AV45-PET scans.
+\item AV1451: average brain tau protein aggregates measured through the analysis of AV1451-PET scans.
 \end{enumerate}
 
 For each subject belonging to the `Adni1', `Adni2', 'Miriad' and `Geneva' datasets, we choose the first available time-point, or baseline.
