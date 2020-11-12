@@ -45,11 +45,11 @@ We applied the same evaluation procedure for the benchmark methods.
 
 \subsection{Benchmark Methods}
 Among state of the art multivariate linear and non linear imputation methods, we selected the following competitors as a benchmark:
-1) $k$-Nearest Neighbors (knn) with $k=\set{1, 5}$;
+1) $k$-Nearest Neighbors (KNN) with $k=\set{1, 5}$;
 2) Denoising Autoencoder (DAE);
 3) Multivariate Imputation by Chained Equations (MICE).
 
-For the knn approach we used the \textit{KNNImputer} method as implemented in the \textit{Scikit-Learn} library \citep{sklearn}.
+For the KNN approach we used the \textit{KNNImputer} method as implemented in the \textit{Scikit-Learn} library \citep{sklearn}.
 Here each sample's missing values are imputed using the mean value from $k$ nearest neighbors found in the training set, according to their Euclidean distance.
 %Two samples are close if the features that neither is missing are close in terms of Euclidean distance.
 
@@ -67,7 +67,7 @@ Starting from an initial imputation, MICE draws imputations by iterating over th
 
 In the synthetic tests our model provides the best performances overall, with a mean MSE improvement compared to the best competing method of $17\%$ in MAR cases and $71\%$ in MNAR cases (\figref{fig:synthetic_benchmark_box}).
 
-We notice that DAE is not always better than knn ($k=5$), especially in low \snr\ cases.
+We notice that DAE is not always better than KNN ($k=5$), especially in low \snr\ cases.
 
 We were able to fit the MICE model only on MNAR cases with high \snr\, where it performed poorly (boxplot not shown), while in all the other cases, including all MAR cases, the model did not converge.
 
