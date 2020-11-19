@@ -133,7 +133,7 @@ Experiments were run in three different conditions:
 1) when training and testing data are chosen from the same dataset, or Single Task (ST) learning case;
 2) when models trained on one dataset are tested on another dataset, or ST + Transfer Learning (TL) case;
 3) when models are trained on all the available datasets except the testing one, or Multi Task Learning (MTL).
-In $4/7$ of cases we measure on average a better performance in the MTL condition with respect to the best ST + TL (\dag) one.
+In all cases we measure on average a better performance in the MTL condition with respect to the average ST + TL (\dag) one.
 }
 \label{tab:classifier_mtl}
 \resizebox{\columnwidth}{!}{
@@ -144,23 +144,28 @@ In $4/7$ of cases we measure on average a better performance in the MTL conditio
 test dataset & condition      &                   &                    \\
 \cmidrule(lr){1-2}
 Adni1        & ST             &  72.87 (4.37)     &   81.51 (3.14)     \\
-             & ST + TL (best) &  58.96 (3.55)     &   80.82 (3.16)     \\
-             & MTL            &  56.17 (4.29)     &   74.48 (3.06)     \\
+%            & ST + TL (best) &  58.96 (3.55)     &   80.82 (3.16)     \\
+             & ST + TL (avg)  &  47.74 (4.42)     &   72.30 (4.13)     \\
+             & MTL            &  56.17 (4.29)\dag &   74.48 (3.06)\dag \\
 \midrule
 Adni2        & ST             &  80.07 (2.53)     &   87.92 (3.46)     \\
-             & ST + TL (best) &  63.98 (3.30)     &   75.72 (1.90)     \\
+%            & ST + TL (best) &  63.98 (3.30)     &   75.72 (1.90)     \\
+             & ST + TL (avg)  &  61.11 (3.09)     &   70.04 (4.20)     \\
              & MTL            &  68.46 (1.31)\dag &   83.89 (1.93)\dag \\
 \midrule
 Geneva       & ST             &  77.70 (8.12)     &              -     \\
-             & ST + TL (best) &  70.11 (2.90)     &              -     \\
-             & MTL            &  56.70 (4.13)     &              -     \\
+%            & ST + TL (best) &  70.11 (2.90)     &              -     \\
+             & ST + TL (avg)  &  50.10 (4.20)     &              -     \\
+             & MTL            &  56.70 (4.13)\dag &              -     \\
 \midrule
 Miriad       & ST             &             -     &  86.70 (15.68)     \\
-             & ST + TL (best) &             -     &  78.90 (11.54)     \\
+%            & ST + TL (best) &             -     &  78.90 (11.54)     \\
+             & ST + TL (avg)  &             -     &  73.04 (15.09)     \\
              & MTL            &             -     &  92.53 (0.30)\dag  \\
 \midrule
 Oasis3       & ST             &             -     &   80.35 (3.59)     \\
-             & ST + TL (best) &             -     &   75.42 (4.68)     \\
+%            & ST + TL (best) &             -     &   75.42 (4.68)     \\
+             & ST + TL (avg)  &             -     &   61.89 (6.73)     \\
              & MTL            &             -     &   75.43 (5.67)\dag \\
 \bottomrule
 \end{tabular}}
