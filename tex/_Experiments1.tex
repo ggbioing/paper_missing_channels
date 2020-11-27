@@ -40,14 +40,14 @@ For experimental purposes we limited our MNAR simulations to cases that can be d
 In both MAR and MNAR experiments we fit the synthetic scenarios with our model, where we choose a linear Gaussian parametrization for variational and likelihood distributions, made explicit respectively in \eqnref{eq:encoder} and \eqnref{eq:decoder}.
 For each simulated scenario we predicted the missing views according to \eqnref{eq:reconstruction} on testing hold-out datasets.
 
-Results, cross-validated $5$ folds, are summarized with the \textit{mean squared error} (MSE) metric on testing hold-out datasets for every simulated scenario.
+Results, cross-validated on $5$ folds, are summarized with the \textit{mean squared error} (MSE) metric on testing hold-out datasets for every simulated scenario.
 We applied the same evaluation procedure for the benchmark methods.
 
 \subsection{Benchmark Methods}
-Among state of the art multivariate linear and non linear imputation methods, we selected the following competitors as a benchmark:
+Among state of the art multivariate linear and non linear imputation methods, we selected the following benchmark approaches:
 1) $k$-Nearest Neighbors (KNN) with $k=\set{1, 5}$;
-2) Denoising Autoencoder (DAE);
-3) Multivariate Imputation by Chained Equations (MICE).
+2) Denoising Autoencoder (DAE) \citep{Vincent2008};
+3) Multivariate Imputation by Chained Equations (MICE) \citep{Vanbuuren2000}.
 
 For the KNN approach we used the \textit{KNNImputer} method as implemented in the \textit{Scikit-Learn} library \citep{sklearn}.
 Here each sample's missing values are imputed using the mean value from $k$ nearest neighbors found in the training set, according to their Euclidean distance.
@@ -66,9 +66,7 @@ Starting from an initial imputation, MICE draws imputations by iterating over th
 \input{./tex/fig/fig_synthetic_benchmark}
 
 In the synthetic tests our model provides the best performances overall, with a mean MSE improvement compared to the best competing method of $17\%$ in MAR cases and $71\%$ in MNAR cases (\figref{fig:synthetic_benchmark_box}).
-
 We notice that DAE is not always better than KNN ($k=5$), especially in low \snr\ cases.
-
 We were able to fit the MICE model only on MNAR cases with high \snr\, where it performed poorly (boxplot not shown), while in all the other cases, including all MAR cases, the model did not converge.
 
 In \figref{fig:synthetic_benchmark_pred_box} we show MAR experiments results stratified by \snr\ and by the fraction $f$ of data-points with complete views.

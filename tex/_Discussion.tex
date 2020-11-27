@@ -1,15 +1,15 @@
 \section{Discussion}
 
 In both the experiments on synthetic and real data, our model compared favorably with respect to state of the art benchmark methods.
-As a secondary result, we report the positive performance of knn (k = 5) in synthetic scenarios, especially in low snr cases, and on real data experiment, were it is most of the time superior to the DAE.
-This finding is corroborated by \cite{Platias2020} were knn is found to be superior to methods based on autoencoders.
 
 An interesting result is the one presented in \figref{fig:synthetic_benchmark_pred_box}, suggesting that collecting a minimum amount of data-points with complete views ($25\%$ in our setup) is enough for our model to capture the joint relationship among views.
 In our synthetic tests, training on more complete scenarios does not seem to improve significantly the testing results.
 This condition may be due to overtraining, where collecting more data may not necessary to improve the model performance \citep{Bilbao2017}.
-We think that this fact can have a positive impact in studies were the acquisition of complete observations is hampered by economical or ethical reasons.
+% We think that this fact can have a positive impact in studies were the acquisition of complete observations is hampered by economical or ethical reasons.
+As a secondary result, we report the positive performance of knn (k = 5) in synthetic scenarios, especially in low snr cases, and on real data experiment, were it is most of the time superior to the DAE.
+This finding is corroborated by \cite{Platias2020} were knn is found to be superior to methods based on autoencoders.
 
-The experimental results on real medical imaging datasets (\tabref{tab:features}, \tabref{tab:classifier}) shows the clear improvement of our method (MT-MCVAE) with respect to the MCVAE, that inspired our work.
+The experimental results on real medical imaging datasets (\tabref{tab:features}, \tabref{tab:classifier}) show the clear improvement of our method (MT-MCVAE) with respect to the MCVAE, that inspired our work.
 The features and diagnosis prediction clearly improves when using our method, that allows to not discard observations with missing views.
 
 In feature prediction experiments (\tabref{tab:features_mtl}) we showed that MT-MCVAE models trained jointly on multiple datasets (MTL cases) perform generally better than the ones trained on a single dataset.

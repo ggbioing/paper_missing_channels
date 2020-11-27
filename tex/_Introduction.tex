@@ -14,19 +14,19 @@ such as the Alzheimer's Disease (AD).
 Here the datasets interoperability is hampered by the existence of different protocols between studies.
 Because of this, methods whose modeling task are specifically designed on one dataset cannot be directly applied to another dataset.
 %
-Furthermore, at the level each single dataset researchers face the challenge of modeling heterogeneous data,
+Furthermore, at the level of each single dataset researchers face the challenge of modeling heterogeneous data,
 such as multiple imaging modalities, clinical scores and biological measurements.
-Because each one of these sources of information represents an independent \textit{view} on the disease or phenomena under investigation,
+Because each one of these sources of information represents an important and independent \textit{view} on the disease or phenomena under investigation,
 efforts to model multi-view data are ubiquitous in the recent literature \citep{Vieira2020}, where the objective ranges from predicting clinical outcomes \citep{Chen2019} to synthesizing new modalities \citep{Zhou2020, Wei2019}.
 %
 Another common problem to the joint modeling of multiple datasets is represented by missing data.
 At the level of the single datasets, views can be missing at random (MAR) for some subjects.
-Typically, as fitting multi-view models requires to establish connections between modalities, observations with at least one missing view are totally discarded, yielding to potentially severe loss of available information.
+Typically, as fitting multi-view models requires to establish connections between views, observations with at least one missing view are totally discarded, yielding to potentially severe loss of available information.
 To mitigate this problem, imputation methods are usually applied to infer missing views by modeling the relationship across views from complete observations.
-As an example, $k$-Nearest Neighbor is a popular approach based on the imputation from $k$ nearest neighbors found in the observations with full views.
+% As an example, $k$-Nearest Neighbor is a popular approach based on the imputation from $k$ nearest neighbors found in the observations with full views.
 %
 The loss of information is exacerbated when considering multiple datasets altogether.
-Indeed, according to the cohort study design, there may be modalities which are specifically absent, hence missing not at random (MNAR).
+Indeed, according to the cohort study design, there may be views which are specifically absent, hence missing not at random (MNAR).
 This potential mismatch across datasets hampers their interoperability,
 and prevents the gathering of all the available observations into a single, robust and generalizable joint model accounting for the global data variability.
 %
@@ -39,7 +39,7 @@ This challenge is typically addressed in machine learning by the field of Multi 
 To address this issue, MTL aims at improving the model interoperative capabilities by exploiting the information extracted from multiple datasets.
 In MTL each task is usually associated to the modeling of a specific dataset and its views only,
 and the main idea is to share across datasets the parameters learned through each modeling task \citep{Caruana1998, Dorado-Moreno2020}.
-As an example of MTL, in model-agnostic meta-learning (MAML) \citep{MAML1}, catastrophic forgetting can be prevented by training a model on a variety of learning tasks, thus enforcing the generalization through fine tuning on new datasets.
+As an example of MTL, in model-agnostic meta-learning (MAML) \citep{MAML1} the training of a model on a variety of learning tasks enforces the generalization on new datasets after few fine tuning iterations.
 As a result this model can solve new learning tasks after few re-training epochs.
 Nevertheless, these approaches present scalability issues, as for example MAML requires the costly computation of Hessian vectors across dataset parameters.
 %
@@ -47,20 +47,25 @@ In the context of neural networks, MTL is usually achieved with specific output 
 This modeling rationale is at the basis of recent MTL based approaches to heterogeneous data assimilation \citep{Wu2018, Antelmi2019, Shi2019}.
 In particular, approaches such as the The Multi-Channel Variational Autoencoder (MCVAE) \citep{Antelmi2019} rely on the identification of a common latent representation for different views belonging to a single dataset.
 Training these models is possible with some limitations:
-1) after having discarded observations with missing modalities;
+1) after having discarded observations with missing views;
 2) when all the training observations are compatible in terms of available views, and hence are usually limited to model one dataset at a time.
-%
+
 To overcome these limitations, here we investigate an extension of MCVAE to simultaneously learn from multiple datasets, even in the presence of non compatible views between datasets, and missing views within datasets.
-The basic idea is to stack multiple instances of the MCVAE, where each instance models a specific task \figrefp{fig:model}.
-By grouping observations with compatible views into single tasks, our model allows to learn a joint model for all the observations in all the datasets.
-The common modalities between tasks allows to bridge the datasets, enabling information to flow through all the other modalities in the dataset pool.
-In the training phase, batches lacking a particular modality will simply not contribute to the learning of those modality-specific parameters.
-All the datasets will nevertheless benefit from the parameters they didn't contribute to learn, for the prediction of their missing modalities.
+Our extension \figrefp{fig:model} is build upon the following actions:
+1) to regroup all the subjects with compatible views into a new dataset that has no missing views by construction,
+2) to associate each one of these newly defined datasets to a specific modeling task,
+3) to stack multiple instances of the MCVAE, where each instance models a specific task,
+4) share the models parameters of common views between modeling tasks.
+%
+Thanks to all these actions, our method allows to learn a joint model for all the subjects without discarding any information.
+The common views between tasks act as a bridge and enable the information to flow through all the other views.
+In the training phase, tasks lacking a particular view will simply not contribute to the learning of those view-specific parameters.
+All the tasks will nevertheless benefit from the parameters they didn't contribute to learn, for the prediction of their missing views.
 The variational formulation for computing approximate posterior distributions of the latent variables allows fast and scalable training.
 Being dataset agnostic, our method allows to integrate all the available data into a joint model, gathering  all the available information from multiple datasets at the same time.
 
 The rest of this paper is structured as follow.
 In \S~\ref{sec:method} we set the theoretical framework for our model.
 In \S~\ref{sec:synth} experiments on synthetic data show that the prediction error of missing views is competitive with respect to the one obtained with state of the art imputation methods.
-In \S~\ref{sec:real} experiments on real data from independent multi-modal neuroimaging datasets show that our model generalizes better than dataset-specific models on new unseen data, in both the tested cases of imaging derived phenotypes prediction and diagnosis prediction.
+In \S~\ref{sec:real} experiments on real data from independent multi-modal neuroimaging datasets show that our model generalizes better than dataset-specific models on new unseen data, in both the tested cases of imaging derived phenotypes auto-encoding and diagnosis classification.
 Lastly we discuss our results and limitations and conclude our work with summary remarks.

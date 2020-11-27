@@ -8,16 +8,16 @@
 % \input{./tex/tab/table_datasets_prediction.tex}
 % \input{./tex/tab/table_model_comparison.tex}
 
-Joint modeling of multiple datasets in real applications often represents an hybrid case between modeling missing at random (MAR) and missing not at random (MNAR) observations.
-Indeed, every dataset may lack of views which are instead present in others by default.
-At the same time, in each dataset, there may be missing views for some data-points due to unknown reasons.
+% Joint modeling of multiple datasets in real applications often represents an hybrid case between modeling missing at random (MAR) and missing not at random (MNAR) observations.
+% Indeed, every dataset may lack of views which are instead present in others by default.
+% At the same time, in each dataset, there may be missing views for some data-points due to unknown reasons.
+% 
+In this section we describe our results on jointly modeling real medical imaging datasets, independently acquired in the context of dementia studies.
 
-In this section we describe our results on jointly modeling real medical imaging datasets, independently acquired in the context of research studies on human cognitive decline.
-
-We executed two kinds of experiments:
+We executed three kinds of experiments:
 1) benchmark evaluation of our model against the best competing methods from the previous section;
-2) multi-view feature prediction with our model on all the available datasets in multiple conditions.
-%  3) diagnosis classification accuracy with our model on all the available datasets.
+2) multi-view feature prediction with our model on all the available datasets in multiple training and testing conditions.
+3) diagnosis classification from multi-view heterogeneous data in different training and testing conditions.
 
 \subsection{Data Sources}
 \label{ssec:datasets}
@@ -55,6 +55,7 @@ We divided the ADNI dataset into two complementary datasets:
 and `Adni2' composed by those subjects subsequently recruited in ADNI-GO, ADNI2, and ADNI3 (2010-ongoing).
 Data modalities and acquisition protocols of `Adni1' present differences from those of `Adni2'.
 Specifically, in `Adni1' and `Adni2' the MRI imaging was performed respectively on 1.5T and 3T scanners.
+The two cohorts differs also for the presence of PET imaging data.
 Therefore we consider these two cohorts as independent datasets.
 
 To summarize, we grouped our data into five distinct datasets which we named as follows: `Adni1', `Adni2', `Miriad', `Oasis3', `Geneva'.
@@ -86,8 +87,8 @@ In \tabref{table:datasets} we show the number of observations stratified by data
 Size of the intersection ($\cap$) and union ($\cup$) of subjects with available views is also provided.
 Please note that the only view in common across datasets is the clinical one, composed by MMSE and age features only.
 
-We adjusted all the views feature-wise with \textit{ComBat} \citep{combat}, a batch normalization method originally develop in genomics, which has been adopted in neuroimaging studies to reduce unwanted sources of variation in the data due to the differences in acquisition protocols among datasets \citep{Fortin2017, Fortin2018, Orlhac2020}.
-In ComBat, we set the `age' as main regressor, and `Adni2' as reference dataset for the training set.
+We adjusted all the views feature-wise with \textit{ComBat} \citep{combat}, a normalization method originally develop in genomics, which has been adopted in neuroimaging studies to reduce unwanted sources of variation in the data due to the differences in acquisition protocols among datasets \citep{Fortin2017, Fortin2018, Orlhac2020}.
+In ComBat, we set the variable `age' as main regressor, and `Adni2' as reference dataset for the training set.
 The ComBat reference dataset for testing was the whole training split.
 
 A final feature-wise standardization step was applied by zero centering the data and by rescaling them to have a unity variance.
@@ -118,17 +119,18 @@ The purpose of this experiment is to compare, in features prediction experiments
 This experiment was run in three different conditions:
 %
 \begin{enumerate}
-\item Single Task (ST): when training and testing data are chosen from the same dataset;
+\item Single Task with Internal Benchmark (STIB): when training and testing data are chosen from the same dataset;
 %
-\item Single Task + Transfer Learning (ST + TL): when models trained on one dataset are tested on another dataset;
+\item Single Task with External Benchmark (STEB): when models trained on one dataset are tested on another dataset;
 %
 \item Multi Task Learning (MTL): when models are trained on all the available datasets except the testing one.
 %
 \end{enumerate}
 %
-In ST and ST + TL experiments, both MCVAE and MT-MCVAE models are trained on the same views,
-but while in MCVAE we have to discard observations with missing views from the training set, with MT-MCVAE we can include them by batching together observations with common views into sub-tasks.
-In MTL experiments MCVAE cannot be trained because no observation has simultaneously all the views.
+In STIB and STEB experiments, both MCVAE and MT-MCVAE models are trained on the same views,
+but while in MCVAE we need to discard observations with missing views from the training set,
+with MT-MCVAE we can include them by grouping together observations with common views into homogeneous tasks.
+In MTL experiments MCVAE models cannot be trained because no observation has simultaneously all the views.
 %By removing the cases where views are not simultaneously present in both the training and testing set,
 %we are left with $16$ possible scenarios where all the three experimental conditions can be simultaneously tested an thus compared.
 
@@ -139,15 +141,17 @@ All results were validated by means of $5$-folds cross-validation.
 
 \paragraph{Results}
 In \tabref{tab:features} and \tabref{tab:features_mtl} we show the prediction error in terms of MSE for each test dataset and view, on the three experimental conditions described earlier.
-In ST and ST + TL cases \tabrefp{tab:features}, the MT-MCVAE model performs either similarly or statistically better than the MCVAE, especially in cases where the difference between the union and intersection set of observations is higher (cfr. \tabref{table:datasets}).
-In MTL cases \tabrefp{tab:features_mtl} there are $12$ cases that could be fitted with MT-MCVAE only.
-In $7$ of them we measure a better performance with respect to the ST and  ST + TL cases fitted with the same model type.
+In STIB and STEB cases \tabrefp{tab:features}, the MT-MCVAE model performs either similarly or statistically better than the MCVAE, especially in cases where the difference between the union and intersection set of observations is higher (cfr. \tabref{table:datasets}).
+In the MTL scenario \tabrefp{tab:features_mtl} there are $12$ cases that could be fitted with MT-MCVAE only.
+We measure an overall better performance of MTL with respect to STIB ($7/12$ of cases) and with respect to STEB ($10/12$ of cases).
 
 \subsection{Experiment 3: Diagnosis Prediction}
 \label{ssec:classifier}
 \input{./tex/tab/table_datasets_prediction_dx_couples.tex}
 
-The purpose of this experiment is to compare, in diagnosis prediction experiments, the generalization performance of the MCVAE model with respect to the MT-MCVAE, in the three experimental conditions described earlier (ST, ST+TL, MTL).
+The purpose of this experiment is to compare, in diagnosis prediction experiments, the generalization performance of the MCVAE model with respect to the MT-MCVAE,
+in the three experimental conditions described earlier: STIB, STEB, and MTL.
+%
 Diagnostic classes are:
 Alzheimer's disease (AD),
 mild cognitive impairment (MCI),
@@ -176,7 +180,7 @@ All results were validated by means of $5$-folds cross-validation.
 
 \paragraph{Results}
 In \tabref{tab:classifier} we show the classification accuracy of MCVAE and MT-MCVAE.
-In ST and ST + TL cases, the MT-MCVAE model performs either similarly or statistically better than the MCVAE.
+In STIB and STEB cases, the MT-MCVAE model performs either similarly or statistically better than the MCVAE.
 There are $7$ cases in the MTL condition \tabrefp{tab:classifier_mtl} that could be fitted with the MT-MCVAE model only.
-In $4$ of them we measure on average a better performance with respect to the best ST + TL cases.
+In all of them we measure a better performance with respect to the best STEB cases.
 
