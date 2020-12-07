@@ -56,7 +56,7 @@ and `Adni2' composed by those subjects subsequently recruited in ADNI-GO, ADNI2,
 Data modalities and acquisition protocols of `Adni1' present differences from those of `Adni2'.
 Specifically, in `Adni1' and `Adni2' the MRI imaging was performed respectively on 1.5T and 3T scanners.
 The two cohorts differs also for the presence of PET imaging data.
-Therefore we consider these two cohorts as independent datasets.
+Therefore we consider these two cohorts as separated datasets.
 
 To summarize, we grouped our data into five distinct datasets which we named as follows: `Adni1', `Adni2', `Miriad', `Oasis3', `Geneva'.
 
@@ -121,7 +121,7 @@ This experiment was run in three different conditions:
 \begin{enumerate}
 \item Single Task with Internal Benchmark (STIB): when training and testing data are chosen from the same dataset;
 %
-\item Single Task with External Benchmark (STEB): when models trained on one dataset are tested on another dataset;
+\item Single Task with External Benchmark (STEB): when models trained on one dataset are tested on another one;
 %
 \item Multi Task Learning (MTL): when models are trained on all the available datasets except the testing one.
 %
@@ -130,7 +130,7 @@ This experiment was run in three different conditions:
 In STIB and STEB experiments, both MCVAE and MT-MCVAE models are trained on the same views,
 but while in MCVAE we need to discard observations with missing views from the training set,
 with MT-MCVAE we can include them by grouping together observations with common views into homogeneous tasks.
-In MTL experiments MCVAE models cannot be trained because no observation has simultaneously all the views.
+In MTL experiments, MCVAE models cannot be trained because no observation has simultaneously all the views.
 %By removing the cases where views are not simultaneously present in both the training and testing set,
 %we are left with $16$ possible scenarios where all the three experimental conditions can be simultaneously tested an thus compared.
 

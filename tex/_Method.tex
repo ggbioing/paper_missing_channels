@@ -11,7 +11,7 @@ In \S~\ref{ssec:optimization} we finally propose the new optimization scheme all
 
 Let $\Dcal = \set{D_d}_{d=1}^D$ be a collection of $D$ independent datasets, where each dataset $D_d = \set{\xdn}_{n=1}^{N_d}$ is composed by $N_d$ independent data-points (\eg subjects in the case of medical imaging datasets).
 Every dataset $D_d$ is associated with a total number of $V_d$ available views
-(\eg sets of clinical scores, imaging derived phenotypes extracted from multiple imaging modalities, \ldots),
+(\eg sets of clinical scores and imaging derived phenotypes extracted from multiple imaging modalities),
 and we assume that each data-point $\xdn = \set{\xdnv}_{v=1}^{V_{d,n}}$ is composed by $V_{d,n}$ views,
 where $V_{d,n} \leq V_d$.
 With the latest inequality we account for data-points with an arbitrary number of missing views.
@@ -88,7 +88,7 @@ The same family of distributions is also commonly used for the variational and l
 \end{alignat}
 where the moments $\mub$ and $\Sigmab$ are obtained from linear transformations of the conditioning variables.
 Here, $\thetab_v = \{\mathbf{G}_v^{(\mu)}, \mathbf{g}_v^{(\sigma)}\}$ and $\phib_w=\{\mathbf{V}_w^{(\mu)}, \mathbf{V}_w^{(\sigma)}\}$ are the parameters to be optimized.
-A non-linear parameterization can be as well used, for example in the form of deep neural networks.
+A non-linear parameterization can be used as well, for example in the form of deep neural networks.
 
 In \cite{Antelmi2019} we also introduced the following alternative parameterization for the posterior distribution:
 \begin{equation}
