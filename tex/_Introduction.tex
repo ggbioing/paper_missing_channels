@@ -64,6 +64,7 @@ In the training phase, tasks lacking a particular view will simply not contribut
 All the tasks will nevertheless benefit from the parameters they didn't contribute to learn, for the prediction of their missing views.
 The proposed variational formulation for computing approximate posterior distributions of the latent variables allows fast and scalable training.
 Being dataset agnostic, our method allows to integrate all the available data into a joint model, gathering  all the available information from multiple datasets at the same time.
+\hl{Code developed in Pytorch \mbox{\citep{Paszke2019}} is publicly available at \mbox{\url{https://gitlab.inria.fr/epione\_ML/mcvae}}.}
 
 The rest of this paper is structured as follow.
 In \S~\ref{sec:method} we set the theoretical framework for our model.
