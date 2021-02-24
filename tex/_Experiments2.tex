@@ -141,6 +141,8 @@ Models were trained on all the available views in the training dataset. %, indep
 Prediction performances were evaluated with the Mean Squared Error (MSE) metric, measured on the available views in the testing dataset, reconstructed with \eqnref{eq:reconstruction}.
 All results were validated by means of $5$-folds cross-validation.
 
+\input{./tex/tab/table_datasets_prediction_nl.tex}
+
 \paragraph{Results}
 In \tabref{tab:features} and \tabref{tab:features_mtl} we show the prediction error in terms of MSE for each test dataset and view, on the three experimental conditions described earlier.
 In STIB and STEB cases \tabrefp{tab:features}, the MT-MCVAE model performs either similarly or statistically better than the MCVAE, especially in cases where the difference between the union and intersection set of observations is higher (cfr. \tabref{table:datasets}).
