@@ -1,0 +1,20 @@
+\section{MNIST left-right cross-reconstruction}
+\label{sec:mnist}
+\input{./tex/fig/mnist_half}
+
+In this section we describe our results on jointly modeling the left and right halves of hand-written digits coming from the MNIST dataset \citep{mnist}, which consists of $60k$ train images and $10k$ test images.
+To simulate a two-views dataset, the original $28 \times 28$ grayscale images were divided into a left and a right half, each one consisting in a $28 \times 14$ grayscale image ($392$ features).
+To simulate a dataset with missing views, we adopted the same procedure described in the previous section, by controlling the fraction $f$ of observation with complete views.
+In \figref{fig:mnist_scheme} we show a small ($n=30$) training dataset created with $f=1/3$.
+For our true experiment we took all the $50k$ training images and we randomly removed the left and right view until reaching values of $f \in \{0, 0.25, 0.5, 0.75, 1\}$.
+We adopted a deep architecture with $4$ layers encoders, having ReLU activation functions and dimensions $392-800-800-16$ in the encoding and $16-800-800-392$ in the decoding path,
+similar to those used by \cite{dcca1} and \cite{dcca2} for a similar task.
+We adopted a Bernoulli likelihood for the decoders and we trained our model with a mini-batch size of $1000$ for $1000$ epochs, after setting up the Adam optimizer with a learning rate of 0.001.
+Training was repeated $5$ times, by changing the initialization random seed.
+
+\subsection{Results}
+In \tabref{tab:mnist_half} we show the Mean Squared Error (MSE) and Negative Log-Likelihood (NLL) when predicting the left halves from the right ones and \textit{vice versa} in the testing set.
+In \figref{fig:mnist_half} is possible to visually inspect these predictions.
+Results are consistent with the ones in \figref{fig:synthetic_benchmark_pred_box}, where a value of $f = 0.25$ is enough to reduce the prediction error on testing data-points at the level of the ideal case ($f=1$).
+\input{./tex/tab/table_mnist_half}
+

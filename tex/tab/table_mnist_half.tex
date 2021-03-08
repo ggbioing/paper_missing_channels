@@ -1,0 +1,19 @@
+\begin{table}[h]
+\centering
+\caption{
+	Mean squared error (MSE) and negative log-likelihood (NLL) measured on the reconstructed MNIST test set (mean (st.dev.), the lower the better).
+	The left halves of the images were used to infer the right ones, and \textit{vice versa}.
+	Results stratified by $f$, the fraction of observations with complete left and right views in the training set.
+}
+\label{tab:mnist_half}
+\resizebox{\columnwidth}{!}{
+	\begin{tabular}{llllll}
+	\toprule
+	f                &             0.00 &           0.25 &           0.50 &           0.75 &           1.00 \\
+	\midrule
+	MSE             &     35.21 (1.64) &   19.43 (0.44) &   19.36 (0.18) &   18.82 (0.24) &   19.21 (0.84) \\
+	NLL              &   221.96 (20.41) &   80.25 (1.39) &   80.12 (0.81) &   78.19 (0.77) &   79.54 (2.86) \\
+	\bottomrule
+	\end{tabular}
+}
+\end{table}
