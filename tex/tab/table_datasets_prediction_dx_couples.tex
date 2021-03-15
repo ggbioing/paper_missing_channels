@@ -176,23 +176,24 @@ Oasis3       & STIB           &             -     &   80.35 (3.59)     \\
 \end{tabular}}
 \end{table}
 
-\begin{table}
+\begin{table*}[t]
 \centering
 \caption{
 	Classification task.
 	Results stratified by the number of layers in the encoder-decoder architecture.
 }
 \label{tab:classifier_mtl_nl}
-\resizebox{\columnwidth}{!}{
+\resizebox{\textwidth}{!}{
 \begin{tabular}{cccccc}
 \toprule
-	                      &  \#layers   &            1   &            2   &            3   &            4  \\
+	                      &  \#layers:   &            1   &            2   &            3   &            4  \\
+	                      &  model:      & ours \hfill EmbraceNet      &  ours \hfill EmbraceNet & ours \hfill EmbraceNet & ours \hfill EmbraceNet \\
 \midrule
 	classification task   &  condition  &                &                &                &               \\
 \cmidrule(lr){1-2}
-	AD vs NC              &  MTL (avg)  &  \textbf{85.79} (3.26)  &  79.04 (5.56)  &  79.78 (5.92)  &  82.47 (4.11) \\
-	AD vs MCI             &  MTL (avg)  &  \textbf{59.89} (2.94)  &  56.93 (5.02)  &  56.55 (5.33)  &  57.49 (6.03) \\
+	AD vs NC              &  MTL (avg)  &  \textbf{85.79} (3.26); \hfill 85.34 (2.30) &  79.04 (5.56); \hfill 77.68 (4.86) &  79.78 (5.92); \hfill 78.60 (5.34) &  82.47 (4.11); \hfill 77.12 (7.22) \\
+	AD vs MCI             &  MTL (avg)  &  59.89 (2.94); \hfill 61.02 (3.47) &  56.93 (5.02); \hfill 61.38 (3.21) &  56.55 (5.33); \hfill \textbf{62.07} (3.59) &  57.49 (6.03); \hfill 61.29 (5.04) \\
 \bottomrule
 \end{tabular}
 }
-\end{table}
+\end{table*}
