@@ -1,9 +1,10 @@
 \begin{table}[h]
 \centering
 \caption{
-	Mean squared error (MSE) and negative log-likelihood (NLL) measured on the reconstructed MNIST test set (mean (st.dev.), the lower the better).
-	The left halves of the images were used to infer the right ones, and \textit{vice versa}.
-	Results stratified by $f$, the fraction of observations with complete left and right views in the training set.
+	Mean squared error (MSE) and negative log-likelihood (NLL) - the lower the better -  measured as mean (st.dev) on the reconstructed brain images of the test-set.
+	The MRI were used to infer the FDG slices in the same subject, and \textit{vice versa}.
+	Results stratified by $f$, the fraction of observations with no missing views in the training set.
+	Notice the immediate drop in the error metrics as soon as $f$ increases.
 }
 \label{tab:nimg}
 \resizebox{\columnwidth}{!}{

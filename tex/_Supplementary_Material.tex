@@ -1,14 +1,68 @@
 \section*{Supplementary Material}
+\label{sec:supmat}
 \setcounter{section}{0}
 \setcounter{figure}{0}
 \setcounter{table}{0}
+\setcounter{equation}{0}
+\setcounter{algorithm}{0}
 \renewcommand{\thesection}{S\arabic{section}}  
 \renewcommand{\thefigure}{S\arabic{figure}}
 \renewcommand{\thetable}{S\arabic{table}}  
+\renewcommand{\theequation}{S\arabic{equation}}  
+\renewcommand{\thealgorithm}{S\arabic{algorithm}}  
+
+\section{Derivation of the Lower Bound}
+\label{sm:lower_bound}
+
+The exact solution to the inference problem induced by \eqnref{eq:model} is given by the posterior $\p{\z|\set{\xdnv,\thetab_v}_{v=1}^{V_{d,n}}}$, that is not generally computable analytically.
+Following \cite{Antelmi2019}, we can nevertheless look for its approximation $\qz$ through \textit{Variational Inference} \citep{Blei2017}.
+By introducing the latent variational approximation $\qz$, we can derive the lower bound on the marginal log-likelihood for a single data-point as follows:
+\begin{equation}\label{smeq:LB}  % supplementary material equation
+\begin{aligned}
+\ln \p{\xdnv|\thetab_v} &= \ln \int \p{\xdnv|\z, \thetab_v} \p{\z} \; d\z \\
+                        &= \ln \int \frac{\qz}{\qz} \p{\xdnv|\z, \thetab_v} \p{\z} \; d\z \\
+                        &= \ln \EE{\qz}{\frac{\p{\xdnv|\z, \thetab_v} \p{\z}}{\qz}} \\
+                        &\geq \EE{\qz}{\ln \p{\xdnv|\z, \thetab_v}} - \KL{\qz}{\pz}.
+\end{aligned}
+\end{equation}
+To derive the last line of \eqnref{smeq:LB} we leverage on the \textit{Jensen's inequality} and collect the result into a new expectation term and in the Kullback-Leibler divergence term ($\kl$).
+
+We define the distribution function $\qz$ to depend on a specific dataset $d$, data-point $n$, and view $w$, such that:
+\begin{equation}\label{smeq:q}
+\begin{aligned}
+\qz = q_{d,n,w}(\z) = \q{\z|\x_{d,n,w}, \phib_w},
+\end{aligned}
+\end{equation}
+where $\phib_w$ represents the view-specific variational parameters shared among all datasets.
+To force a link among views, we impose the inequality \eqnref{smeq:LB} to hold for any $w$ in $1 \ldots V_{d,n}$.
+To do so, we average the right hand side of \eqnref{smeq:LB} across the $V_{d,n}$ views and rewrite \eqnref{smeq:LB} as follows:
+\begin{equation}\label{smeq:newLB}
+\begin{aligned}
+% \ln \p{\xdnv|\thetab_v} &\geq \underbrace{\frac{1}{V_{d,n}} \sum_{w=1}^{V_{d,n}}
+%   \EE{q_{d,n,w}(\z)}{\ln \p{\xdnv|\z, \thetab_v}}
+% - \KL{q_{d,n,w}(\z)}{\pz}}_{\LBn}. \\
+\ln \p{\xdnv|\thetab_v} \geq \LBdnv = \frac{1}{V_{d,n}} \sum_{w=1}^{V_{d,n}} \LBdnvw,
+\end{aligned}
+\end{equation}
+where
+\begin{equation}\label{smeq:LBdnvw}
+\begin{aligned}
+\LBdnvw = \EE{q_{d,n,w}(\z)}{\ln \p{\xdnv|\z, \thetab_v}} - \KL{q_{d,n,w}(\z)}{\pz}
+\end{aligned}
+\end{equation}
+is the lower bound associated to the data-point $\xdn$ when its view $v$ is predicted from its view $w$.
+
+\section{Optimization}
+\label{sm:optimization}
+
+We use Algorithm \ref{smalg:optim} to solve \eqnref{eq:argmax}.
+\input{./tex/algorithm}
+The summation in \eqnref{eq:argmax} is done for every dataset $d$ along all the available data-points $n$ and their specific views $v$.
+We note that batching data-points with common views can speed up the computation by reducing the number of second level \textit{for} loop iterations in Algorithm \ref{smalg:optim}.
 
 \section{Data Generation}
 test
-\section{Model Architecture}
+\section{Model Architectures}
 \subsection{Linear}
 \subsection{MNIST}
 \label{sm:ssec:mnist}

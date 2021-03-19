@@ -179,20 +179,23 @@ Oasis3       & STIB           &             -     &   80.35 (3.59)     \\
 \begin{table*}[t]
 \centering
 \caption{
-	Classification task.
-	Results stratified by the number of layers in the encoder-decoder architecture.
+	Diagnosis classification with our model and the EmbraceNet (EN, \cite{embracenet}).
+	Accuracy in \% as mean (st.dev.) over 5-folds.
+	Results are stratified by the classification task and by the number of layers in the encoder-decoder architecture.
+	We measure no significant difference among architectures depth (anova test, alpha level $0.05$) and between models (t-test, alpha level $0.05$).
+	Best overall results in boldface.
 }
 \label{tab:classifier_mtl_nl}
 \resizebox{\textwidth}{!}{
-\begin{tabular}{cccccc}
+\begin{tabular}{cccccccccc}
 \toprule
-	                      &  \#layers:   &            1   &            2   &            3   &            4  \\
-	                      &  model:      & ours \hfill EmbraceNet      &  ours \hfill EmbraceNet & ours \hfill EmbraceNet & ours \hfill EmbraceNet \\
+			      &  \#layers:   &  \multicolumn{2}{c}{1}   &  \multicolumn{2}{c}{2}   &  \multicolumn{2}{c}{3}   &  \multicolumn{2}{c}{4}  \\
+			      &  model:      & ours & EN      &  ours  &  EN  &  ours  &  EN  &  ours  &  EN \\
 \midrule
-	classification task   &  condition  &                &                &                &               \\
+	classification task   &  condition  &          &      &        &        &       &         &     &          \\
 \cmidrule(lr){1-2}
-	AD vs NC              &  MTL (avg)  &  \textbf{85.79} (3.26); \hfill 85.34 (2.30) &  79.04 (5.56); \hfill 77.68 (4.86) &  79.78 (5.92); \hfill 78.60 (5.34) &  82.47 (4.11); \hfill 77.12 (7.22) \\
-	AD vs MCI             &  MTL (avg)  &  59.89 (2.94); \hfill 61.02 (3.47) &  56.93 (5.02); \hfill 61.38 (3.21) &  56.55 (5.33); \hfill \textbf{62.07} (3.59) &  57.49 (6.03); \hfill 61.29 (5.04) \\
+	AD vs NC              &  MTL (avg)  &  \textbf{85.79} (3.26)  &  85.34 (2.30) &  79.04 (5.56)  &  77.68 (4.86) &  79.78 (5.92)  &  78.60 (5.34) &  82.47 (4.11)  &  77.12 (7.22) \\
+	AD vs MCI             &  MTL (avg)  &  59.89 (2.94)  &  61.02 (3.47) &  56.93 (5.02)  &  61.38 (3.21) &  56.55 (5.33)  &  \textbf{62.07} (3.59) &  57.49 (6.03)  &  61.29 (5.04) \\
 \bottomrule
 \end{tabular}
 }
