@@ -1,0 +1,18 @@
+\begin{table}[h]
+\centering
+\caption{
+	The Multi-Task Multi-Channel VAE (MT-MCVAE) extends the MCVAE, which is itself an extension of the VAE.
+}
+\label{tab:mcvae}
+\resizebox{\columnwidth}{!}{
+	\begin{tabular}{lccc}
+	\toprule
+		Method                          &  Train with missing data  &  Test with missing data  &  \# views modeled  \\
+	\midrule
+		VAE       &  no   &  no   &  $1$   \\
+		MCVAE     &  no   &  yes  &  $>1$  \\
+		MT-MCVAE  &  yes  &  yes  &  $>1$  \\
+	\bottomrule
+	\end{tabular}
+}
+\end{table}
