@@ -23,6 +23,7 @@ Efforts to model multi-view data are increasing in the recent biomedical literat
 where the objective ranges from predicting clinical outcomes \citep{Chen2019,AbiNader2020,Tabarestani2020}
 to synthesizing new modalities \citep{Zhou2020, Wei2020}.
 
+\textbf{ADDENDUM FOR REVIEWER \#3}.
 The key concept of a shared information space between views is widespread in the literature for the joint model of multi-view data.
 % Qin et al. Unsupervised deformable registration for multi-modal images via disentangled representations
 For example, in \cite{Qin2019} the authors propose
@@ -58,21 +59,21 @@ where it is important to assign a specific input image belonging to a patient, t
 In \cite{Tran2017},
 multiple single-modality correlated input images (poses from the same subject) are encoded into a shared latent space to produce a single output (pose-invariant) image.
 % It assumes no missing data in training nor in testing/validation phase.
+\textbf{END OF ADDENDUM} \\
 
 %%%%%%%%%%%%%%%%%%
 %% MISSING DATA %%
 %%%%%%%%%%%%%%%%%%
-In all the methods described so far,
-Another common problem to the joint modeling of multiple datasets is represented by missing data.
-At the level of the single datasets, views can be missing at random (MAR) for some subjects.
+In all the works cited so far, the problem of missing data, specifically of missing views in the training of multi-view methods, has not been addressed nor considered.
+It is actually a very common problem when joint modeling multiple datasets, especially in neuroimaging research.
+At the level of the single dataset, views can be missing at random (MAR) for some subjects.
 Typically, as fitting multi-view models requires to establish connections between views, observations with at least one missing view are discarded, yielding to potentially severe loss of available information.
-To mitigate this problem, imputation methods are usually applied to infer missing views by modeling the relationship across views from complete observations.
+To mitigate this problem, imputation methods can be applied to infer missing views, by modeling the relationship across views from complete observations.
 %
 The loss of information is exacerbated when considering multiple datasets altogether.
 Indeed, according to the cohort study design, there may be views which are specifically absent, hence missing not at random (MNAR).
 This potential mismatch across datasets hampers their interoperability,
 and prevents the gathering of all the available observations into a single, robust and generalizable joint model accounting for the global data variability.
-%
 %
 This challenge is typically addressed in machine learning by the field of Multi Task Learning (MTL).
 To address this issue, MTL aims at improving the model interoperative capabilities by exploiting the information extracted from multiple datasets.
@@ -96,11 +97,11 @@ With $4$ views, the number of networks that need to be trained, considering all 
 with $5$ views it exceeds $10^{32}$. 
 Moreover, this framework is currently designed for classification tasks only, excluding so far the possibility of modality-to-modality prediction.
 % EMBRACE_NET
-In \cite{embracenet} the problem of missing data is managed by zero-filling the missing input views and by the application of a specific dropout technique where multinomial samples are used to assign partitions of the latent space to specific views.
+With the \textit{EmbraceNet} of \cite{embracenet} the problem of missing data is managed by zero-filling the missing input views and by the application of a specific dropout technique where multinomial samples are used to assign partitions of the latent space to specific views.
 As there are latent features that are randomly discarded even when the correspondent view is not missing, this represents still a loss of information.
 As the previous work, the proposed framework is currently applicable in classification tasks only.
 % DAE
-Dropout is also at the base of the Denoising Autoencoder, as developed by \cite{dae}.
+Dropout is also at the base of the \textit{Denoising Autoencoder}, as developed by \cite{dae}.
 Here an overcomplete deep autoencoder maps input views to a higher dimensional space.
 The initial dropout layer induces random corruption in the input views, making the model robust to missing data.
 This framework is currently applicable in feature prediction tasks only.
