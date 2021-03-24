@@ -13,11 +13,13 @@ such as in Alzheimer's Disease (AD).
 %
 Here the datasets interoperability is hampered by the existence of different protocols between studies.
 Because of this, methods whose modeling task are specifically designed on one dataset cannot be directly applied to another one.
-%
+% MULTI-MODAL
 Furthermore, at the level of each single dataset, researchers face the challenge of modeling heterogeneous data,
 such as multiple imaging modalities, clinical scores and biological measurements.
 Because each one of these sources of information represents an important and independent \textit{view} on the disease or phenomena under investigation,
-efforts to model multi-view data are ubiquitous in the recent literature \citep{Vieira2020}, where the objective ranges from predicting clinical outcomes \citep{Chen2019} to synthesizing new modalities \citep{Zhou2020, Wei2019}.
+efforts to model multi-view data are ubiquitous in the recent literature \citep{Vieira2020,Venugopalan2021},
+where the objective ranges from predicting clinical outcomes \citep{Chen2019,AbiNader2020,Tabarestani2020}
+to synthesizing new modalities \citep{Zhou2020, Wei2019}.
 %
 Another common problem to the joint modeling of multiple datasets is represented by missing data.
 At the level of the single datasets, views can be missing at random (MAR) for some subjects.
@@ -40,8 +42,6 @@ To address this issue, MTL aims at improving the model interoperative capabiliti
 In MTL each task is usually associated to the modeling of a specific dataset and its views only,
 and the main idea is to share across datasets the parameters learned through each modeling task \citep{Caruana1998, Dorado-Moreno2020}.
 As an example of MTL, in model-agnostic meta-learning (MAML) \citep{MAML1} the training of a model on a variety of learning tasks enforces the generalization on new datasets after few fine tuning iterations.
-% As a result this model can solve new learning tasks after few re-training epochs.
-% Nevertheless, these approaches present scalability issues, as for example MAML requires the costly computation of Hessian vectors across dataset parameters.
 %
 In the context of data assimilation, MTL is usually achieved with specific output layers for every task, and by including a shared representation for all of them \citep{Dorado-Moreno2020}.
 This modeling rationale is at the basis of recent MTL based approaches to heterogeneous data assimilation \citep{Wu2018, Antelmi2019, Shi2019}.
@@ -53,8 +53,6 @@ Training these models is possible with some limitations:
 To overcome these limitations, here we investigate an extension of MCVAE to simultaneously learn from multiple datasets, even in the presence of non compatible views between datasets, and missing views within datasets.
 Our extension \figrefp{fig:model} is built upon the following actions:
 1) To define tasks across datasets based on the identification of data subsets presenting compatible views,
-% 1) to regroup all the subjects with compatible views into a new dataset that has no missing views by construction,
-% 2) to associate each one of these newly defined datasets to a specific modeling task,
 2) to stack multiple instances of the MCVAE, where each instance models a specific task,
 3) share the models parameters of common views between modeling tasks.
 %
@@ -70,3 +68,48 @@ In \S~\ref{sec:method} we set the theoretical framework for our model.
 In \S~\ref{sec:synth} experiments on synthetic data show that the prediction error of missing views is competitive with respect to the one obtained with state of the art imputation methods.
 In \S~\ref{sec:real} experiments on real data from independent multi-modal neuroimaging datasets show that our model generalizes better than dataset-specific models on new unseen data, in both the tested cases of data reconstruction and diagnosis classification.
 Lastly we discuss our results and conclude our work with summary remarks.
+
+\subsection{Related Works}
+% MULTI-STAGE FOR DIAGNOSIS CLASSIFICATION
+In \cite{Zhou2019a}, the authors propose a staged deep learning framework for dementia diagnosis classification, able to jointly exploit multi-view data (MRI, PET, and genetic data in this case).
+Their specific staged approach, where at each stage the model learns feature representations for different combinations of views, solves elegantly the problem of missing data.
+Although inspiring for their use of the maximum number of available data samples at each stage,
+the combinatorial nature of their framework makes it in practice applicable only for datasets with at most $3$ views, where they learn $7$ networks jointly:
+$3$ for each view in stage $1$;
+$3$ for each couple of modalities in stage $2$;
+$1$ for the only triplet available at stage $3$.
+In fact, with $4$ views, the number of networks that need to be trained, considering all the possible couples, triplets and quadruplets of views amounts to $4845$;
+with $5$ views it exceeds $10^{32}$. 
+Moreover, this framework is currently applicable in classification tasks only, excluding so far the possibility of modality-to-modality prediction.
+% EMBRACE_NET
+In \cite{embracenet} the problem of missing data is managed by zero-filling the missing input views and by the application of a specific dropout technique where multinomial samples are used to assign partitions of the latent space to specific views.
+As there are latent features that are randomly discarded even when the correspondent view is not missing, this represents still a loss of information.
+As the previous work, the proposed framework is currently applicable in classification tasks only.
+
+% Huang et al. Multimodal unsupervised image-to-image translation
+In \cite{Huang2018}
+specialized model (not general purpose) for image-to-image (bi-modal) domain translation where the pairing between images is not enforced.
+From one input image in one domain, multiple output images in the second domain are produced via the sampling of the “style” code.
+The absence of a one-to-one relationship between images in the two domains makes it unfit for medical applications.
+% Qin et al. Unsupervised deformable registration for multi-modal images via disentangled representations
+In \cite{Qin2019}
+Registration method for aligning intra-subject multi-modal images.
+It is limited to a two-modality setting and assumes no missing data in the training phase.
+This work is not a competitor as our method is not meant to solve the registration problem.
+% Chartsias et al. Disentangle, align and fuse for multimodal and zero-shot image segmentation
+In \cite{Chartsias2019}
+Not peer-reviewed.
+A method that offers improved segmentation accuracy of the modality of interest, by learning to leverage information present in other modalities.
+It assumes no missing data in training phase.
+This work is not a competitor as our method is not meant to solve the segmentation problem.
+% Tran et al. Disentangled representation learning gan for pose-invariant face recognition
+In \cite{Tran2017}
+Multiple single-modality correlated inputs (poses) single output (pose-invariant) method.
+It assumes no missing data in training nor in testing/validation phase.
+% Yang et al. Cross-modality segmentation by self-supervised semantic alignment in disentangled content space
+In \cite{Yang2020}
+It assumes no missing data in the training phase.
+
+In \citep{Lorenzi2019} \ldots
+In \citep{Wei2020} \ldots
+In \citep{Vaden2020} data sharing approach that borrows principles and methods from multiple imputation to replace observed values with synthetic values, thereby creating a fully synthetic neuroimaging dataset that accurately represents the covariance structure of the observed dataset. 
