@@ -106,12 +106,18 @@ Here an overcomplete deep autoencoder maps input views to a higher dimensional s
 The initial dropout layer induces random corruption in the input views, making the model robust to missing data.
 This framework is currently applicable in feature prediction tasks only.
 
-In particular, approaches such as the The Multi-Channel Variational Autoencoder (MCVAE) \citep{Antelmi2019} rely on the identification of a common latent representation for different views belonging to a single dataset.
-Training these models is possible with some limitations:
+To summarize what we have discussed so far,
+we can argue that the projection into a common latent space is a crucial step for the joint modeling of multi-view heterogeneous data;
+moreover the proper transformation the common latent code for the solution of multiple tasks, whether they are classification or feature prediction tasks,
+has the potential to optimally exploit all the available data, including data points with some missing views.
+%
+The Multi-Channel Variational Autoencoder (MCVAE) \citep{Antelmi2019} has this potential \figrefp{fig:architecture}.
+It relies on the identification of a common latent representation for different views belonging to a single dataset.
+Training the MCVAE is possible with some limitations:
 1) after having discarded observations with missing views;
 2) when all the training observations are compatible in terms of available views, and hence are usually limited to model one dataset at a time.
 
-To overcome these limitations, here we investigate an extension of MCVAE to simultaneously learn from multiple datasets, even in the presence of non compatible views between datasets, and missing views within datasets.
+To overcome these limitations, in this work we investigate an extension of MCVAE to simultaneously learn from multiple datasets, even in the presence of non compatible views between datasets, and missing views within datasets.
 Our extension \figrefp{fig:model} is built upon the following actions:
 1) To define tasks across datasets based on the identification of data subsets presenting compatible views,
 2) to stack multiple instances of the MCVAE, where each instance models a specific task,
@@ -125,15 +131,16 @@ The proposed variational formulation for computing approximate posterior distrib
 Being dataset agnostic, our method allows to integrate all the available data into a joint model, gathering  all the available information from multiple datasets at the same time.
 
 The rest of this paper is structured as follow.
-In \S~\ref{sec:method} we set the theoretical framework for our model.
+In \S~\ref{sec:method} we rephrase the mathematical derivation of the MCVAE to set the theoretical framework for our model.
+In \S~\ref{sec:proof_of_concept} we show a simple application for the joint modeling of MRI and PET images when some modalities are missing in the training phase.
 In \S~\ref{sec:synth} experiments on synthetic data show that the prediction error of missing views is competitive with respect to the one obtained with state of the art imputation methods.
 In \S~\ref{sec:real} experiments on real data from independent multi-modal neuroimaging datasets show that our model generalizes better than dataset-specific models on new unseen data, in both the tested cases of data reconstruction and diagnosis classification.
 Lastly we discuss our results and conclude our work with summary remarks.
 
-\subsection{Related Works}
-
-In \citep{Lorenzi2019} \ldots
-In \citep{Vaden2020} data sharing approach that borrows principles and methods from multiple imputation to replace observed values with synthetic values, thereby creating a fully synthetic neuroimaging dataset that accurately represents the covariance structure of the observed dataset. 
+% \subsection{Related Works}
+% 
+% In \citep{Lorenzi2019} \ldots
+% In \citep{Vaden2020} data sharing approach that borrows principles and methods from multiple imputation to replace observed values with synthetic values, thereby creating a fully synthetic neuroimaging dataset that accurately represents the covariance structure of the observed dataset. 
 %
 % This challenge is typically addressed in machine learning by the fields of Transfer Learning (TL) and Multi Task Learning (MTL).
 % TL is based on the transfer of model parameters across datasets \citep{TL}.
