@@ -102,7 +102,10 @@ Standardization parameters were computed on the training sets and applied to tra
 The purpose of this experiment is to validate on real data the benchmarked results obtained with the synthetic experiments (\S~\ref{sec:synth}).
 
 As benchmark methods, we choose the best performers on the synthetic experiments, namely KNN5 and DAE.
-We choose for our model a linear Gaussian parameterization for the likelihood and variational distributions of \eqnref{eq:decoder} and \eqnref{eq:dropout_posterior} respectively.
+We choose for our model a linear Gaussian parameterization for the likelihood and sparse variational distributions of \eqnref{eq:decoder} and \eqnref{eq:dropout_posterior} respectively,
+The latter with a latent dimension of $32$.
+We trained it for $20000$ epochs which ensured convergence, after setting up the Adam optimizer with a learning rate of 0.001.
+In testing, we set up a dropout threshold for the latent space of $0.5$.
 
 We trained all the models (KNN5, DAE, ours) with data coming from all the datasets except from `Adni2', left out for testing purposes.
 We choose the `Adni2' dataset as testing dataset since it provides all the views, and the highest number of observations per view (\tabref{table:datasets}).
@@ -138,6 +141,7 @@ We choose for both MCVAE and MT-MCVAE a linear Gaussian parameterization for the
 Models were trained on all the available views in the training dataset. %, independently of their presence in the testing dataset.
 Prediction performances were evaluated with the Mean Squared Error (MSE) metric, measured on the available views in the testing dataset, reconstructed with \eqnref{eq:reconstruction}.
 Non-linear experiments were also made on the MTL experiments with our MT-MCVAE model, where the encoding and decoding distributions were parametrized with neural networks with up to $4$ layers and LeakyReLU activation functions.
+For the non-linear experiments we choose hidden dimension as the mean value between the input and latent dimensions, rounded towards the nearest integer.
 All results were validated by means of $5$-folds cross-validation.
 
 \input{./tex/tab/table_datasets_prediction_nl.tex}
