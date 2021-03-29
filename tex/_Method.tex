@@ -98,6 +98,7 @@ With the right choice of the functional form of $\q{\z|\x_{d,n,w}, \phib_w}$, $\
 Of course, the choice for the likelihood function $\p{\xdnv|\z, \thetab_v}$ depends on the nature of the view $\xdnv$.
 For example it can be parametrized as a multivariate Gaussian in the case of continuous data (\ie imaging derived phenotypes), as a Bernoulli likelihood for dichotomic data, and as a Categorical likelihood for categorical data.
 
+\subsubsection{Linear parameterization}
 In general, the prior distribution $\pz$ is the  multivariate Gaussian distribution $\Gausstd$.
 The same family of distributions is also commonly used for the variational and likelihood functions, such that respectively:
 \begin{alignat}{4}
@@ -119,3 +120,15 @@ which is known as \textit{dropout posterior} \citep{Kingma2015}.
 The dropout parameter $\alphab$ has components $\alpha_i = \nicefrac{p_i}{1-p_i}$ linked to the probability $p_i$ of dropping out the $i$-th latent variable component \citep{Wang2013}.
 It has been shown that the association of this dropout posterior with a log-uniform prior distribution $\pz$ leads to sparse and interpretable models \citep{Antelmi2019,Molchanov2017}.
 
+\subsubsection{Non linear parameterization}
+Thanks to the flexibility of modern neural network frameworks,
+it is straight forward to implement non linear parametrizations $\mub = \mathbf{f}^{(\mu)}(\x)$ and $\Sigmab = \mathbf{f}^{(\sigma)}(\x)$ for the mean and covariance functions in the variational and likelihood distributions.
+Typically it is done by stacking many linear or convolution layers, interleaved with non-linear activation functions such as the sigmoid and the hyperbolic tangent.
+
+Potentially, the use of non linear networks can provide better results.
+Unfortunately the design choices that the model user must make
+(for example the number of layers, the sizes of hidden dimensions, the activation functions, \etc),
+can be highly dependent on her/his field of work and expertise.
+%
+To avoid this bias, in this work the bulk of our experiments is based on linear parametric mappings from the observation space towards the latent space, and \textit{vice versa}.
+Nevertheless, for the sake of completeness, we will also provide some results based on non linear modeling experiments, starting from the following conceptual case.

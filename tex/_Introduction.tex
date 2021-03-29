@@ -23,14 +23,22 @@ Efforts to model multi-view data are increasing in the recent biomedical literat
 where the objective ranges from predicting clinical outcomes \citep{Chen2019,AbiNader2020,Tabarestani2020}
 to synthesizing new modalities \citep{Zhou2020, Wei2020}.
 
-\textbf{ADDENDUM FOR REVIEWER \#3}.
 The key concept of a shared information space between views is widespread in the literature for the joint model of multi-view data.
+%
+This is the case for well established multivariate linear methods such as
+Canonical Correlation Analysis (CCA),
+Partial Least Squares (PLS),
+Independent Component Analysis (ICA),
+which are some of the most popular methods for multivariate analyses on imaging data, as documented in thousands of published papers (see \cite{Liu2014} for a general review).
+%
+Nowadays, researchers are still looking for optimal multi-view modeling solutions built around the shared information space.
+\textbf{ADDENDUM FOR REVIEWER \#3}.
 % Qin et al. Unsupervised deformable registration for multi-modal images via disentangled representations
 For example, in \cite{Qin2019} the authors propose
 a registration method for aligning intra-subject multi-view images.
 Although limited to a two images registration setting,
 in this work views are projected into a common latent space.
-The proposed registration approach is then built on the latent shape code and on an image-to-image translation approach.
+The proposed registration approach is then built on the latent code and on an image-to-image translation approach.
 % It is limited to a two-modality setting and assumes no missing data in the training phase.
 % This work is not a competitor as our method is not meant to solve the registration problem.
 %
@@ -64,7 +72,7 @@ multiple single-modality correlated input images (poses from the same subject) a
 %%%%%%%%%%%%%%%%%%
 %% MISSING DATA %%
 %%%%%%%%%%%%%%%%%%
-In all the works cited so far, the problem of missing data, specifically of missing views in the training of multi-view methods, has not been addressed nor considered.
+In all the works cited so far, the problem of missing data, specifically of missing views in the training of multi-view methods, has not been addressed nor considered, yet.
 It is actually a very common problem when joint modeling multiple datasets, especially in neuroimaging research.
 At the level of the single dataset, views can be missing at random (MAR) for some subjects.
 Typically, as fitting multi-view models requires to establish connections between views, observations with at least one missing view are discarded, yielding to potentially severe loss of available information.
@@ -84,7 +92,7 @@ As an example of MTL, in model-agnostic meta-learning (MAML) \citep{MAML1} the t
 In the context of data assimilation, MTL is usually achieved with specific output layers for every task, and by including a shared latent representation for all of them \citep{Dorado-Moreno2020}.
 This modeling rationale is at the basis of recent MTL based approaches to heterogeneous data assimilation \citep{Wu2018, Shi2019}.
 % MULTI-STAGE FOR DIAGNOSIS CLASSIFICATION
-In \cite{Zhou2019a}, the authors propose a staged deep learning framework for dementia diagnosis classification,
+For example, in \cite{Zhou2019a}, the authors propose a staged deep learning framework for dementia diagnosis classification,
 able to jointly exploit multi-view data (MRI, PET, and genetic data in this case).
 Their specific staged approach, where at each stage the model learns feature representations for different combinations of views, with one task for each combination,
 solves elegantly the problem of missing data.

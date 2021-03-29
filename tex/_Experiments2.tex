@@ -102,7 +102,7 @@ Standardization parameters were computed on the training sets and applied to tra
 The purpose of this experiment is to validate on real data the benchmarked results obtained with the synthetic experiments (\S~\ref{sec:synth}).
 
 As benchmark methods, we choose the best performers on the synthetic experiments, namely KNN5 and DAE.
-We choose for our model a linear Gaussian parameterization for the likelihood and sparse variational distributions of \eqnref{eq:decoder} and \eqnref{eq:dropout_posterior} respectively,
+We choose for our MT-MCVAE model a linear Gaussian parameterization for the likelihood and sparse variational distributions of \eqnref{eq:decoder} and \eqnref{eq:dropout_posterior} respectively,
 The latter with a latent dimension of $32$.
 We trained it for $20000$ epochs which ensured convergence, after setting up the Adam optimizer with a learning rate of 0.001.
 In testing, we set up a dropout threshold for the latent space of $0.5$.
@@ -139,18 +139,27 @@ In MTL experiments, MCVAE models cannot be trained because no observation has si
 
 We choose for both MCVAE and MT-MCVAE a linear Gaussian parameterization for the likelihood and variational distributions as in \eqnref{eq:decoder} and \eqnref{eq:dropout_posterior} respectively.
 Models were trained on all the available views in the training dataset. %, independently of their presence in the testing dataset.
+We trained them for $20000$ epochs which ensured convergence, after setting up the Adam optimizer with a learning rate of 0.001.
 Prediction performances were evaluated with the Mean Squared Error (MSE) metric, measured on the available views in the testing dataset, reconstructed with \eqnref{eq:reconstruction}.
-Non-linear experiments were also made on the MTL experiments with our MT-MCVAE model, where the encoding and decoding distributions were parametrized with neural networks with up to $4$ layers and LeakyReLU activation functions.
-For the non-linear experiments we choose hidden dimension as the mean value between the input and latent dimensions, rounded towards the nearest integer.
+
+Non-linear experiments were also made on the MTL scenarios with our MT-MCVAE model, where the encoding and decoding distributions were parametrized with neural networks with up to $4$ layers and LeakyReLU activation functions.
+For the non-linear experiments we choose hidden dimension as the mean value between the input features and latent dimension (32 features), rounded towards the nearest integer
+(\eg for the MRI views and a depth of $3$ layers we used a symmetric encoding-decoding architecture with dimensions: $99-66-66-32-66-66-99$).
+
 All results were validated by means of $5$-folds cross-validation.
 
 \input{./tex/tab/table_datasets_prediction_nl.tex}
 
 \paragraph{Results}
 In \tabref{tab:features} and \tabref{tab:features_mtl} we show the prediction error in terms of MSE for each test dataset and view, on the three experimental conditions described earlier.
+
 In STIB and STEB cases \tabrefp{tab:features}, the MT-MCVAE model performs either similarly or statistically better than the MCVAE, especially in cases where the difference between the union and intersection set of observations is higher (cfr. \tabref{table:datasets}).
+
 In the MTL scenario \tabrefp{tab:features_mtl} there are $12$ cases that could be fitted with MT-MCVAE only.
 We measure an overall better performance of MTL with respect to STIB ($7/12$ of cases) and with respect to STEB ($10/12$ of cases).
+
+In \tabref{tab:features_mtl_nl}, the results on a non linear application of our method in MTL cases show
+that no improvement is gained when changing the architecture depth (anova test, alpha level $0.05$).
 
 \subsection{Experiment 3: Diagnosis Prediction}
 \label{ssec:classifier}
@@ -172,7 +181,8 @@ To adapt the models to this new classification experiment, we adopt as decoding 
 \end{align}
 where $y_{d,n}$ is the diagnosis associated to the data-point $n$ in the dataset $d$.
 The probability vector $\mathbf{\pi}$ is a two dimensional vector representing the class probability for each of the three binary comparisons across the three diagnostic classes, namely AD \textit{vs} MCI, AD \textit{vs} NC, MCI \textit{vs} NC ,and is parametrized with a linear transformation of the latent $\z$ by the matrix $\thetab$.
-Non-linear experiments were also made on the MTL experiments with our MT-MCVAE model, benchmarked against the EmbraceNet method \citep{embracenet}, where the encoding distributions were parametrized with neural networks with up to $4$ layers and LeakyReLU activation functions.
+
+Non-linear experiments were also made on the MTL scenarios with our MT-MCVAE model, benchmarked against the EmbraceNet method \citep{embracenet}, where the encoding distributions were parametrized with neural networks with up to $4$ layers and LeakyReLU activation functions.
 
 Models were trained on all the available views in the training dataset, independently of their presence in the testing dataset.
 Classes probabilities were inferred from the all the available views in the testing dataset with the following equation:
@@ -192,3 +202,6 @@ In STIB and STEB cases, the MT-MCVAE model performs either similarly or statisti
 There are $7$ cases in the MTL condition \tabrefp{tab:classifier_mtl} that could be fitted with the MT-MCVAE model only.
 In all of them we measure a better performance with respect to the best STEB cases.
 
+In \tabref{tab:classifier_mtl_nl}, the results on a non linear application of our method in MTL cases show
+that no improvement is gained when changing the architecture depth (anova test, alpha level $0.05$) for both the EmbraceNet an MC-MCVAE models.
+No significant difference (t-test, alpha level $0.05$) also were recorded between the EmbraceNet and MT-MCVAE models for any given architecture depth level.

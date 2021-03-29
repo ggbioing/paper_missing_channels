@@ -1,7 +1,8 @@
 \section{Proof of concept}
 \label{sec:proof_of_concept}
 
-In this section we describe our results on a simple experiment where we use our MT-MCVAE method to model the joint relationship between MRI and PET-FDG images when there are missing data at train time.
+In this section we describe a simple experiment where we use our MT-MCVAE method to model the joint relationship between MRI and PET-FDG images when there are missing data at train time.
+The trained model will be then applied on test data to predict MRI from FDG and \textit{vice versa}.
 
 Data comes from the `Adni2' dataset (\S~\ref{ssec:datasets}, \tabref{table:datasets}), from where we took the MRI and FDG modalities, and for each subject ($n=424$, with both MRI and FDG) we extracted $3$ brain slices for each one of the sagittal, coronal, and axial plane.
 The resulting $3816$ slices were randomly allocated to a training and testing set with respectively sizes of $3500\backslash 316$.
@@ -19,7 +20,7 @@ Training was repeated $5$ times, by changing the initialization random seed of t
 \input{./tex/fig/nimg.tex}
 \input{./tex/tab/table_nimg.tex}
 In \tabref{tab:nimg} we show the Mean Squared Error (MSE) and Negative Log-Likelihood (NLL) when predicting MRI from the FDG slices and \textit{vice versa} in the testing set.
-We notice the immediate drop in the error metrics as soon as the parameter $f$ increases, which means that as the models are fed with more and more paired MRI and FDG data points in the trainig set, its predictions on the testing set becomes more precise.
+We notice the immediate drop in the error metrics as soon as the parameter $f$ increases, which means that as the model is fed with more and more paired MRI and FDG data points in the trainig set, its predictions on the testing set become more precise.
 %
 In \figref{fig:nimg_test} is possible to visually inspect these predictions.
 

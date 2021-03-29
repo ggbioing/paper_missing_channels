@@ -2,24 +2,30 @@
 
 In both the experiments on synthetic and real data, our model compared favorably with respect to state of the art benchmark methods.
 
-An interesting result is the one presented in \figref{fig:synthetic_benchmark_pred_box}, suggesting that collecting a minimum amount of data-points with complete views ($25\%$ in our setup) is enough for our model to capture the joint relationship among views.
-In our synthetic tests, training on more complete scenarios does not seem to improve significantly the testing results.
+An interesting result is the one presented in \figref{fig:synthetic_benchmark_pred_box}, suggesting that collecting a minimum amount of data-points with complete views is enough for our model to capture the joint relationship among views.
+The empirical bound on this minimum level of data-points with all available views amounts to $25\%$.
+In fact, in our synthetic tests, training on scenarios with completeness level above this bound does not seem to improve significantly the testing results.
 This condition may be explained by the high collinearity between features due to the linear mappings used to generate the multi-view data.
-
+The same bound may be noticed also in our showcase experiment (\S~\ref{sec:proof_of_concept}) where we jointly modeled MRI and FDG brain images.
+This results suggest that our model can reach its highest prediction power also when data collection resources are scarce,
+such as in studies were the acquisition of complete observations is hampered by economical reasons or subject dropout.
 % This condition may be due to overtraining, where collecting more data may not necessary to improve the model performance \citep{Bilbao2017}.
 % We think that this fact can have a positive impact in studies were the acquisition of complete observations is hampered by economical or ethical reasons.
+
 As a secondary result, we report the positive performance of knn (k = 5) in synthetic scenarios, especially in low snr cases, and on real data experiment, were it is most of the time superior to the DAE.
 This finding is corroborated by \cite{Platias2020} were knn is found to be superior to methods based on autoencoders.
 
-The experimental results on real medical imaging datasets (\tabref{tab:features}, \tabref{tab:classifier}) show the clear improvement of our method (MT-MCVAE) with respect to the MCVAE, that inspired our work.
-The features and diagnosis prediction clearly improves when using our method, that allows to not discard observations with missing views.
+The experimental results on real medical imaging datasets (\tabref{tab:features}, \tabref{tab:classifier}) show the clear improvement of our MT-MCVAE method with respect to the MCVAE, that inspired our work.
+The features and diagnosis prediction clearly improves when using our method, that allows to not discard observations with missing views in the training phase.
 
-In feature prediction experiments (\tabref{tab:features_mtl}) we showed that MT-MCVAE models trained jointly on multiple datasets (MTL cases) perform generally better than the ones trained on a single dataset.
+In feature prediction experiments (\tabref{tab:features_mtl}) we showed that MT-MCVAE models trained jointly on multiple neuroimaging datasets (ADNI, MIRIAD, OASIS-3, Geneva cohort)
+perform generally better than the ones trained on a single dataset.
 We suspect that there are two reasons explaining these results.
 The first is that modeling simultaneously multiple datasets with our method brings more variability and information at play, making the generalization to unseen data less prone to prediction errors.
 The second reason maybe that every decoder, associated to its specific view, acts, through the shared latent space, as a regularizer for all the other decoders.
 
-In diagnosis prediction experiments (\tabref{tab:classifier_mtl}) the MT-MCVAE generalizes better to new unseen datasets when trained jointly on multiple datasets (MTL cases) with respect to cases where the training happens on a single dataset.
+In experiments where we seek to classify subjects to predict their cognitive status (\tabref{tab:classifier_mtl}),
+the MT-MCVAE generalizes better to new unseen datasets when trained jointly on multiple datasets (MTL cases) with respect to cases where the training happens on a single dataset.
 We notice that the best results happen in cases where testing data and training data come from the same dataset (ST cases), that is when the testing dataset is not anymore unseen to our model.
 This is a different result than the analogous one in the feature prediction experiments, and we argue that the reason may be due to the lack of the regularization mechanism induced by having concurring decoders.
 Indeed, the MT-MCVAE classifier is composed by a single decoder only, which can become highly specialized in decoding testing data coming from the same dataset of the training data.
@@ -29,6 +35,11 @@ This makes our model part of the family of the auto-encoders, where the model ac
 Other architectures are nevertheless possible, such as the classifier described in \S~\ref{ssec:classifier}
 In general, there may be an $m$-to-$n$ relationship, with partially overlapping views among $m$ input views and $n$ output views.
 Investigating the properties of all the possible architectures is beyond the scope of this work.
+
+In our non linear experiments we did not capture any improvement by using deep architectures with respect to simple linear mappings,
+in both feature prediction and classification tasks on real neuroimaging datasets.
+This result is in line with our previous work \citep{Antelmi2019}, were we benchmarked other auto-encoding based methods on observations coming from the ADNI dataset.
+For this reason we suspect that this result is data-dependent and that it may not hold when modeling other kinds of dataset.
 
 As final remark, we want to stress that our model is based on the assumption of independent and identical distributed observations.
 This assumption may be limiting in healthcare datasets, such as the ones used in this work.
