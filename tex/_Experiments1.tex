@@ -1,4 +1,4 @@
-\section{Synthetic Experiments}
+\subsection{Synthetic Experiments}
 \label{sec:synth}
 
 In this section we describe our results on extensive synthetic experiments performed with our model and different benchmark methods in two conditions:
@@ -8,7 +8,7 @@ and 2) datasets with systematically missing views (missing not at random).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% SYNTHETIC EXPERIMENTS %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Data preparation}
+\subsubsection{Data preparation}
 
 To simulate multi dataset observations, we sample the latent variable $\z_{d,n}$ from a multivariate Gaussian with zero-mean and identity covariance matrix, and subsequently we transform each sample with random linear mapping towards the observation space to obtain $\xdnv$.
 The detailed procedure is described in \asupmat.
@@ -37,7 +37,7 @@ A =
 where $A(v,d)=1$ indicates the presence of view $v$ in dataset $d$.
 For experimental purposes we limited our MNAR simulations to cases that can be defined with square association matrices having a dimensionality not greater than $5\times5$.
 
-\subsection{Model Fitting and Evaluation}
+\subsubsection{Model Fitting and Evaluation}
 In both MAR and MNAR experiments we fit the synthetic scenarios with our model, where we choose a linear Gaussian parametrization for variational and likelihood distributions, made explicit respectively in \eqnref{eq:encoder} and \eqnref{eq:decoder}, with a latent dimension matched to the one used to generate the data.
 We trained our model for $10000$ epochs which ensured convergence, after setting up the Adam optimizer with a learning rate of 0.001.
 For each simulated scenario we predicted the missing views according to \eqnref{eq:reconstruction} on testing hold-out datasets.
@@ -45,7 +45,7 @@ For each simulated scenario we predicted the missing views according to \eqnref{
 Results, cross-validated on $5$ folds, are summarized with the \textit{mean squared error} (MSE) metric on testing hold-out datasets for every simulated scenario.
 We applied the same evaluation procedure for the benchmark methods.
 
-\subsection{Benchmark Methods}
+\subsubsection{Benchmark Methods}
 Among state of the art multivariate linear and non linear imputation methods, we selected the following benchmark approaches:
 1) $k$-Nearest Neighbors (KNN) with $k=\set{1, 5}$;
 2) Denoising Autoencoder (DAE) \citep{dae};
@@ -64,7 +64,7 @@ This methodology is attractive if the multivariate distribution is a reasonable 
 MICE specifies the multivariate imputation model on a variable-by-variable basis by a set of conditional densities, one for each incomplete variable.
 Starting from an initial imputation, MICE draws imputations by iterating over the conditional densities.
 
-\subsection{Results}
+\subsubsection{Results}
 \input{./tex/fig/fig_synthetic_benchmark}
 
 In the synthetic tests our model provides the best performances overall, with a mean MSE improvement compared to the best competing method of $17\%$ in MAR cases and $71\%$ in MNAR cases (\figref{fig:synthetic_benchmark_box}).

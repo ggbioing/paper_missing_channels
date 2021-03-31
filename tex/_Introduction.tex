@@ -29,10 +29,9 @@ This is the case for well established multivariate linear methods such as
 Canonical Correlation Analysis (CCA),
 Partial Least Squares (PLS),
 Independent Component Analysis (ICA),
-which are some of the most popular methods for multivariate analyses on imaging data, as documented in thousands of published papers (see \cite{Liu2014} for a general review).
+which are some of the most popular methods for multivariate analyses on imaging data, as documented in a multitude of works from the state of the art (see \cite{Liu2014} for a general review).
 %
-Nowadays, researchers are still looking for optimal multi-view modeling solutions built around the shared information space.
-\textbf{ADDENDUM FOR REVIEWER \#3}.
+While these studies essentially focus of the development of multivariate association models, multi-view methods specifically tailored to medical imaging tasks, such as image registration and segmentation have been proposed in parallel.
 % Qin et al. Unsupervised deformable registration for multi-modal images via disentangled representations
 For example, in \cite{Qin2019} the authors propose
 a registration method for aligning intra-subject multi-view images.
@@ -44,8 +43,7 @@ The proposed registration approach is then built on the latent code and on an im
 %
 %
 % Chartsias et al. Disentangle, align and fuse for multimodal and zero-shot image segmentation
-In \cite{Chartsias2021}, authors propose
-a method that offers improved segmentation accuracy of the imaging of interest, by learning to leverage information present in other complementary imaging views.
+\cite{Chartsias2021} propose a segmentation method based on the learning of information presented jointly in complementary imaging views.
 From the different inputs views, anatomical factors are encoded into a common latent space and fused to extract more accurate segmentation masks.
 % It assumes no missing data in training phase.
 % This work is not a competitor as our method is not meant to solve the segmentation problem.
@@ -54,32 +52,31 @@ From the different inputs views, anatomical factors are encoded into a common la
 % Yang et al. Cross-modality segmentation by self-supervised semantic alignment in disentangled content space
 In \cite{Yang2020} a cross-modality segmentation pipeline is build around a similar concept.
 % It assumes no missing data in the training phase.
-
-Advantages of multi-view modeling are described also in the machine learning literature for computer vision.
-%
-% Huang et al. Multimodal unsupervised image-to-image translation
-In \cite{Huang2018}
-a method for image-to-image translation is proposed.
-From one input image in one domain, multiple output images in the second domain are produced via the sampling in the shared latent space.
-The absence of a one-to-one relationship between images in the two domains makes it unfit for medical applications, though,
-where it is important to assign a specific input image belonging to a patient, to another image belonging to the same patient.
-% Tran et al. Disentangled representation learning gan for pose-invariant face recognition
-In \cite{Tran2017},
-multiple single-modality correlated input images (poses from the same subject) are encoded into a shared latent space to produce a single output (pose-invariant) image.
-% It assumes no missing data in training nor in testing/validation phase.
-\textbf{END OF ADDENDUM} \\
-
+% 
+% Advantages of multi-view modeling are described also in the machine learning literature for computer vision.
+% %
+% % Huang et al. Multimodal unsupervised image-to-image translation
+% For example, in \cite{Huang2018}
+% a method for image-to-image translation is proposed.
+% From one input image in one domain, multiple output images in the second domain are produced via the sampling in the shared latent space.
+% The absence of a one-to-one relationship between images in the two domains makes this approach unfit for medical applications, though,
+% where it is important to assign a specific input image belonging to a patient, to another image belonging to the same patient.
+% % Tran et al. Disentangled representation learning gan for pose-invariant face recognition
+% In \cite{Tran2017},
+% multiple single-modality correlated input images (poses from the same subject) are encoded into a shared latent space to produce a single output (pose-invariant) image.
+% % It assumes no missing data in training nor in testing/validation phase.
+% 
 %%%%%%%%%%%%%%%%%%
 %% MISSING DATA %%
 %%%%%%%%%%%%%%%%%%
-In all the works cited so far, the problem of missing data, specifically of missing views in the training of multi-view methods, has not been addressed nor considered, yet.
-It is actually a very common problem when joint modeling multiple datasets, especially in neuroimaging research.
+In all the works cited so far, the problem of missing data, specifically of missing views during training of multi-view methods, is generally not addressed nor considered.
+Still, this is a very common problem when joint modeling multiple datasets, especially in neuroimaging research.
 At the level of the single dataset, views can be missing at random (MAR) for some subjects.
-Typically, as fitting multi-view models requires to establish connections between views, observations with at least one missing view are discarded, yielding to potentially severe loss of available information.
+Typically, as fitting multi-view models requires to establish correspondences between views, observations with at least one missing view are generally discarded, yielding to potentially severe loss of available information.
 To mitigate this problem, imputation methods can be applied to infer missing views, by modeling the relationship across views from complete observations.
 %
 The loss of information is exacerbated when considering multiple datasets altogether.
-Indeed, according to the cohort study design, there may be views which are specifically absent, hence missing not at random (MNAR).
+Indeed, according to the cohort study design, there may be views which are specifically absent for a given dataset, hence missing not at random (MNAR).
 This potential mismatch across datasets hampers their interoperability,
 and prevents the gathering of all the available observations into a single, robust and generalizable joint model accounting for the global data variability.
 %
@@ -94,20 +91,20 @@ This modeling rationale is at the basis of recent MTL based approaches to hetero
 % MULTI-STAGE FOR DIAGNOSIS CLASSIFICATION
 For example, in \cite{Zhou2019a}, the authors propose a staged deep learning framework for dementia diagnosis classification,
 able to jointly exploit multi-view data (MRI, PET, and genetic data in this case).
-Their specific staged approach, where at each stage the model learns feature representations for different combinations of views, with one task for each combination,
-solves elegantly the problem of missing data.
+Their approach, where at each stage the model learns feature representations for different combinations of views, solves elegantly the problem of missing data.
 Although inspiring for their use of the maximum number of available data samples at each stage,
-the combinatorial nature of their framework makes it in practice applicable only for datasets with at most $3$ views, where they learn $7$ networks jointly:
+the combinatorial nature of their framework makes it in practice applicable only for datasets with very few views.
+For example, when considering $3$ views, this approach requires to learn $7$ networks jointly:
 $3$ for each view in stage $1$;
 $3$ for each couple of modalities in stage $2$;
 $1$ for the only triplet available at stage $3$.
 With $4$ views, the number of networks that need to be trained, considering all the possible couples, triplets and quadruplets of views amounts to $4845$;
-with $5$ views it exceeds $10^{32}$. 
-Moreover, this framework is currently designed for classification tasks only, excluding so far the possibility of modality-to-modality prediction.
+while with $5$ views it exceeds $10^{32}$.
+Moreover, this framework is currently designed for classification tasks only, excluding the possibility of modality-to-modality prediction.
 % EMBRACE_NET
 With the \textit{EmbraceNet} of \cite{embracenet} the problem of missing data is managed by zero-filling the missing input views and by the application of a specific dropout technique where multinomial samples are used to assign partitions of the latent space to specific views.
 As there are latent features that are randomly discarded even when the correspondent view is not missing, this represents still a loss of information.
-As the previous work, the proposed framework is currently applicable in classification tasks only.
+Similarly with the previous work, the proposed framework is currently applicable in classification tasks only.
 % DAE
 Dropout is also at the base of the \textit{Denoising Autoencoder}, as developed by \cite{dae}.
 Here an overcomplete deep autoencoder maps input views to a higher dimensional space.
@@ -129,7 +126,7 @@ To overcome these limitations, in this work we investigate an extension of MCVAE
 Our extension \figrefp{fig:model} is built upon the following actions:
 1) To define tasks across datasets based on the identification of data subsets presenting compatible views,
 2) to stack multiple instances of the MCVAE, where each instance models a specific task,
-3) share the models parameters of common views between modeling tasks.
+3) to share the models parameters of common views between modeling tasks.
 %
 Thanks to these actions, our method allows to learn a joint model for all the subjects without discarding any information.
 The common views between tasks act as a bridge and enable the information to flow through all the other views.
@@ -139,10 +136,10 @@ The proposed variational formulation for computing approximate posterior distrib
 Being dataset agnostic, our method allows to integrate all the available data into a joint model, gathering  all the available information from multiple datasets at the same time.
 
 The rest of this paper is structured as follow.
-In \S~\ref{sec:method} we rephrase the mathematical derivation of the MCVAE to set the theoretical framework for our model.
+In \S~\ref{sec:method} we present the mathematical derivation of the classical MCVAE model that will be used to derive the proposed framework.
 In \S~\ref{sec:proof_of_concept} we show a simple application for the joint modeling of MRI and PET images when some modalities are missing in the training phase.
 In \S~\ref{sec:synth} experiments on synthetic data show that the prediction error of missing views is competitive with respect to the one obtained with state of the art imputation methods.
-In \S~\ref{sec:real} experiments on real data from independent multi-modal neuroimaging datasets show that our model generalizes better than dataset-specific models on new unseen data, in both the tested cases of data reconstruction and diagnosis classification.
+In \S~\ref{sec:real} experiments on real data from independent multi-modal neuroimaging datasets show that our model generalizes better than dataset-specific models, in both the cases of data reconstruction and diagnosis classification.
 Lastly we discuss our results and conclude our work with summary remarks.
 
 % \subsection{Related Works}

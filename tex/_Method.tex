@@ -68,11 +68,15 @@ As a consequence, inference on the model generative parameters $\thetab = \set{\
                            &= \underset{\thetab, \phib}{\argmax} \sum_{d,n,v} \frac{1}{V_{d,n}} \sum_{w=1}^{V_{d,n}} \LBdnvw.
 \end{aligned}
 \end{equation}
-We implemented Algorithm \ref{smalg:optim} (\textit{Sup. Mat.}) to solve \eqnref{eq:argmax}.
+%
+\input{./tex/algorithm}
+%
+We implemented Algorithm \ref{alg:optim} to solve \eqnref{eq:argmax}.
 The summation in \eqnref{eq:argmax} is done for every dataset $d$ along all the available data-points $n$ and their specific views $v$.
 If missing, a particular view $v$ will be simply not accounted for that specific observation, without having to discard all the other views that can still contribute to optimize \eqnref{eq:argmax}.
+We note that batching data-points with common views can speed up the computation by reducing the number of second level \textit{for} loop iterations in Algorithm \ref{alg:optim}.
 The presence of at least one common view among datasets acts as a link across datasets and allows the information to flow through all the datasets to the other views.
-In \figref{fig:model} we show the learning scheme of our model in a simple case with four views and one common view between batches.
+In \figref{fig:model} the learning scheme of our model in a simple case with four views and one common view between batches.
 
 \input{./tex/fig/model}
 
@@ -80,7 +84,7 @@ In \figref{fig:model} we show the learning scheme of our model in a simple case 
 In \tabref{tab:mcvae} we show how our Multi-Task model extends the capabilities of the Multi-Channel VAE (MCVAE, \cite{Antelmi2019}), which is itself a multi-view extension of the VAE \citep{Kingma2013,Rezende2014}.
 
 In our former work we proposed a multi-view generative model trainable only with observation in the training set have all the available views, limited to model one dataset at a time (in the case of datasets with multiple views), after having discarded incomplete observations in that dataset.
-We address this limitation by allowing missing views in the training set for some observations, thanks to the \textit{ad hoc} optimization scheme in \eqnref{eq:argmax}.
+We address this limitation by allowing missing views in the training set for some observations, thanks to the adapted optimization scheme in \eqnref{eq:argmax}.
 \input{./tex/tab/table_mcvae}
 
 As in the MCVAE, at test time, the trained MT-MCVAE model can estimate missing views $\hat\xb_{d,n,v}$ from the available ones through the formula:
@@ -120,15 +124,11 @@ which is known as \textit{dropout posterior} \citep{Kingma2015}.
 The dropout parameter $\alphab$ has components $\alpha_i = \nicefrac{p_i}{1-p_i}$ linked to the probability $p_i$ of dropping out the $i$-th latent variable component \citep{Wang2013}.
 It has been shown that the association of this dropout posterior with a log-uniform prior distribution $\pz$ leads to sparse and interpretable models \citep{Antelmi2019,Molchanov2017}.
 
-\subsubsection{Non linear parameterization}
 Thanks to the flexibility of modern neural network frameworks,
 it is straight forward to implement non linear parametrizations $\mub = \mathbf{f}^{(\mu)}(\x)$ and $\Sigmab = \mathbf{f}^{(\sigma)}(\x)$ for the mean and covariance functions in the variational and likelihood distributions.
-Typically it is done by stacking many linear or convolution layers, interleaved with non-linear activation functions such as the sigmoid and the hyperbolic tangent.
+Typically it is done by stacking linear or convolution layers, interleaved with non-linear activation functions such as sigmoid and hyperbolic tangent.
 
-Potentially, the use of non linear networks can provide better results.
-Unfortunately the design choices that the model user must make
+The use of non linear networks can provide better results.
+The design choices that the model user must make
 (for example the number of layers, the sizes of hidden dimensions, the activation functions, \etc),
-can be highly dependent on her/his field of work and expertise.
-%
-To avoid this bias, in this work the bulk of our experiments is based on linear parametric mappings from the observation space towards the latent space, and \textit{vice versa}.
-Nevertheless, for the sake of completeness, we will also provide some results based on non linear modeling experiments, starting from the following conceptual case.
+is in general highly task-dependent.

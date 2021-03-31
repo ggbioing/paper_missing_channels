@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%
 %% MEDICAL IMAGING %%
 %%%%%%%%%%%%%%%%%%%%%
-\section{Experiments on Medical Imaging Datasets}
+\subsection{Experiments on Brain Imaging Data}
 \label{sec:real}
 
 % \input{./tex/tab/table_datasets_cross_validation.tex}
@@ -19,7 +19,7 @@ We executed three kinds of experiments:
 2) multi-view feature prediction with our model on all the available datasets in multiple training and testing conditions.
 3) diagnosis classification from multi-view heterogeneous data in different training and testing conditions.
 
-\subsection{Data Sources}
+\subsubsection{Data Sources}
 \label{ssec:datasets}
 
 Data used in the preparation of this section were obtained from the following sources.
@@ -62,13 +62,13 @@ Therefore we consider these two cohorts as separated datasets.
 
 To summarize, we grouped our data into five distinct datasets which we named as follows: `Adni1', `Adni2', `Miriad', `Oasis3', `Geneva'.
 
-\subsection{Imaging Processing}
+\subsubsection{Imaging Processing}
 The brain scans were processed in order to have measurements on regions defined in the Desikan-Killiany atlas \citep{Desikan2006}.
 Brain MRI scans were processed with FreeSurfer \footnote{\href{https://surfer.nmr.mgh.harvard.edu/}{surfer.nmr.mgh.harvard.edu}} \citep{freesurfer} to measure brain cortical and sub-cortical volumes, and volumes occupied by the cerebro-spinal fluid (CSF), for a total of $99$ regions of interest.
 Relative standardized uptake values (SUVR) were computed for the PET scans (FDG, AV45, AV1451), processed with SPM \citep{Ashburner2000}.
 SUVRs were computed using the cerebellum as reference region, and averaged in the same regions used for the MRI, except those containing the CSF, for a total of $94$ regions of interest.
 
-\subsection{Gathering Observations into Views}
+\subsubsection{Gathering Observations into Views}
 \label{ssec:views}
 \input{./tex/tab/table_datasets_numbers.tex}
 
@@ -96,7 +96,7 @@ The ComBat reference dataset for testing was the whole training split.
 A final feature-wise standardization step was applied by zero centering the data and by rescaling them to have a unity variance.
 Standardization parameters were computed on the training sets and applied to training and testing sets.
 
-\subsection{Experiment 1: Benchmark Validation}
+\subsubsection{Experiment 1: Benchmark Validation}
 \input{./tex/tab/table_model_comparison.tex}
 
 The purpose of this experiment is to validate on real data the benchmarked results obtained with the synthetic experiments (\S~\ref{sec:synth}).
@@ -117,7 +117,7 @@ All results were validated by means of $5$-folds cross-validation.
 In \tabref{tab:model_comparison}, we show the MSE metric on predicting missing views in the testing dataset with our model and with the benckmark ones.
 Best results are in boldface, which show a clear advantage of using our model and confirm our findings in the synthetic experiments.
 
-\subsection{Experiment 2: Feature Prediction}
+\subsubsection{Experiment 2: Feature Prediction}
 \label{ssec:feats}
 \input{./tex/tab/table_datasets_prediction_combat_couples.tex}
 The purpose of this experiment is to compare, in features prediction experiments, the generalization performance the MCVAE model with respect to our new Multi Task extension (MT-MCVE).
@@ -161,7 +161,7 @@ We measure an overall better performance of MTL with respect to STIB ($7/12$ of 
 In \tabref{tab:features_mtl_nl}, the results on a non linear application of our method in MTL cases show
 that no improvement is gained when changing the architecture depth (anova test, alpha level $0.05$).
 
-\subsection{Experiment 3: Diagnosis Prediction}
+\subsubsection{Experiment 3: Diagnosis Prediction}
 \label{ssec:classifier}
 \input{./tex/tab/table_datasets_prediction_dx_couples.tex}
 
