@@ -31,7 +31,7 @@ Partial Least Squares (PLS),
 Independent Component Analysis (ICA),
 which are some of the most popular methods for multivariate analyses on imaging data, as documented in a multitude of works from the state of the art (see \cite{Liu2014} for a general review).
 %
-While these studies essentially focus of the development of multivariate association models, multi-view methods specifically tailored to medical imaging tasks, such as image registration and segmentation have been proposed in parallel.
+While these studies essentially focus on the general problem of multivariate association modeling, multi-view methods specifically tailored to medical imaging tasks, such as image registration and segmentation have been proposed in parallel.
 % Qin et al. Unsupervised deformable registration for multi-modal images via disentangled representations
 For example, in \cite{Qin2019} the authors propose
 a registration method for aligning intra-subject multi-view images.
@@ -83,52 +83,57 @@ and prevents the gathering of all the available observations into a single, robu
 This challenge is typically addressed in machine learning by the field of Multi Task Learning (MTL).
 To address this issue, MTL aims at improving the model interoperative capabilities by exploiting the information extracted from multiple datasets.
 In MTL each task is usually associated to the modeling of a specific dataset and its views only,
-and the main idea is to share across datasets the parameters learned through each modeling task \citep{Caruana1998, Dorado-Moreno2020}.
+when the main idea consists is sharing across datasets the parameters learned through each modeling task \citep{Caruana1998, Dorado-Moreno2020}.
 As an example of MTL, in model-agnostic meta-learning (MAML) \citep{MAML1} the training of a model on a variety of learning tasks enforces the generalization on new datasets after few fine tuning iterations.
 %
 In the context of data assimilation, MTL is usually achieved with specific output layers for every task, and by including a shared latent representation for all of them \citep{Dorado-Moreno2020}.
-This modeling rationale is at the basis of recent MTL based approaches to heterogeneous data assimilation \citep{Wu2018, Shi2019}.
+This modeling rationale is at the basis of recent MTL based approaches to heterogeneous data assimilation \citep{Wu2018, Shi2019},
+especially in medical imaging approaches.
+%
 % MULTI-STAGE FOR DIAGNOSIS CLASSIFICATION
 For example, in \cite{Zhou2019a}, the authors propose a staged deep learning framework for dementia diagnosis classification,
 able to jointly exploit multi-view data (MRI, PET, and genetic data in this case).
 Their approach, where at each stage the model learns feature representations for different combinations of views, solves elegantly the problem of missing data.
 Although inspiring for their use of the maximum number of available data samples at each stage,
-the combinatorial nature of their framework makes it in practice applicable only for datasets with very few views.
-For example, when considering $3$ views, this approach requires to learn $7$ networks jointly:
-$3$ for each view in stage $1$;
-$3$ for each couple of modalities in stage $2$;
-$1$ for the only triplet available at stage $3$.
+the combinatorial nature of their framework makes it in practice applicable only for datasets with very few available views.
+For example, when considering $3$ views, this approach requires to learn $7$ networks.
+% $3$ for each view in stage $1$;
+% $3$ for each couple of modalities in stage $2$;
+% $1$ for the only triplet available at stage $3$.
 With $4$ views, the number of networks that need to be trained, considering all the possible couples, triplets and quadruplets of views amounts to $4845$;
 while with $5$ views it exceeds $10^{32}$.
 Moreover, this framework is currently designed for classification tasks only, excluding the possibility of modality-to-modality prediction.
 % EMBRACE_NET
 With the \textit{EmbraceNet} of \cite{embracenet} the problem of missing data is managed by zero-filling the missing input views and by the application of a specific dropout technique where multinomial samples are used to assign partitions of the latent space to specific views.
 As there are latent features that are randomly discarded even when the correspondent view is not missing, this represents still a loss of information.
-Similarly with the previous work, the proposed framework is currently applicable in classification tasks only.
+Similarly as for the previous work, the proposed framework is currently applicable in classification tasks only.
 % DAE
 Dropout is also at the base of the \textit{Denoising Autoencoder}, as developed by \cite{dae}.
 Here an overcomplete deep autoencoder maps input views to a higher dimensional space.
 The initial dropout layer induces random corruption in the input views, making the model robust to missing data.
 This framework is currently applicable in feature prediction tasks only.
 
-To summarize what we have discussed so far,
-we can argue that the projection into a common latent space is a crucial step for the joint modeling of multi-view heterogeneous data;
-moreover the proper transformation the common latent code for the solution of multiple tasks, whether they are classification or feature prediction tasks,
-has the potential to optimally exploit all the available data, including data points with some missing views.
+The common underlying assumption of these approaches consists in the existence of a
+proper transformation into a common latent code for the solution of multiple tasks,
+whether classification or feature prediction.
 %
-The Multi-Channel Variational Autoencoder (MCVAE) \citep{Antelmi2019} has this potential \figrefp{fig:architecture}.
-It relies on the identification of a common latent representation for different views belonging to a single dataset.
-Training the MCVAE is possible with some limitations:
+Based on these general assumptions,
+the Multi-Channel Variational Autoencoder (MCVAE) \citep{Antelmi2019}
+is a recent  analysis method allowing the identification of a common latent representation for different views belonging to a single dataset \figrefp{fig:architecture}.
+MCVAE extends currently available approaches to account for non-linear transformations from the data to the latent space,
+while it can be adapted to multiple tasks, including data reconstruction and classification.
+In spite of the high modeling flexibility, the extension of this method to the analysis of multiple datasets is currently challenging.
+Training the MCVAE in a multi-dataset context is indeed possible with some limitations:
 1) after having discarded observations with missing views;
-2) when all the training observations are compatible in terms of available views, and hence are usually limited to model one dataset at a time.
+2) when at train time all the observations are compatible in terms of available views.
 
 To overcome these limitations, in this work we investigate an extension of MCVAE to simultaneously learn from multiple datasets, even in the presence of non compatible views between datasets, and missing views within datasets.
-Our extension \figrefp{fig:model} is built upon the following actions:
+Our extension is built upon the following actions:
 1) To define tasks across datasets based on the identification of data subsets presenting compatible views,
 2) to stack multiple instances of the MCVAE, where each instance models a specific task,
 3) to share the models parameters of common views between modeling tasks.
 %
-Thanks to these actions, our method allows to learn a joint model for all the subjects without discarding any information.
+Thanks to these actions, the method here proposed allows to learn a joint model for all the subjects without discarding any information \figrefp{fig:model}.
 The common views between tasks act as a bridge and enable the information to flow through all the other views.
 In the training phase, tasks lacking a particular view will simply not contribute to the learning of those view-specific parameters.
 All the tasks will nevertheless benefit from the parameters they didn't contribute to learn, for the prediction of their missing views.
@@ -137,9 +142,9 @@ Being dataset agnostic, our method allows to integrate all the available data in
 
 The rest of this paper is structured as follow.
 In \S~\ref{sec:method} we present the mathematical derivation of the classical MCVAE model that will be used to derive the proposed framework.
-In \S~\ref{sec:proof_of_concept} we show a simple application for the joint modeling of MRI and PET images when some modalities are missing in the training phase.
-In \S~\ref{sec:synth} experiments on synthetic data show that the prediction error of missing views is competitive with respect to the one obtained with state of the art imputation methods.
-In \S~\ref{sec:real} experiments on real data from independent multi-modal neuroimaging datasets show that our model generalizes better than dataset-specific models, in both the cases of data reconstruction and diagnosis classification.
+In \S~\ref{sec:proof_of_concept} we show an illustrative application for the joint modeling of MRI and PET images when some modalities are missing in the training phase.
+In \S~\ref{sec:synth}, experiments on synthetic data show that the prediction error of missing views is competitive with respect to the one obtained with state of the art imputation methods.
+In \S~\ref{sec:real}, experiments on real data from independent multi-modal neuroimaging datasets show that our model generalizes better than dataset-specific models, in both the cases of data reconstruction and diagnosis classification.
 Lastly we discuss our results and conclude our work with summary remarks.
 
 % \subsection{Related Works}

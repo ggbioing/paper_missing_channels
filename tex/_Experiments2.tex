@@ -89,7 +89,8 @@ In \tabref{table:datasets} we show the number of observations stratified by data
 Size of the intersection ($\cap$) and union ($\cup$) of subjects with available views is also provided.
 Please note that the only view in common across datasets is the clinical one, composed by MMSE and age features only.
 
-We adjusted all the views feature-wise with \textit{ComBat} \citep{combat}, a normalization method originally develop in genomics, which has been adopted in neuroimaging studies to reduce unwanted sources of variation in the data due to the differences in acquisition protocols among datasets \citep{Fortin2017, Fortin2018, Orlhac2020}.
+We adjusted all the views feature-wise with \textit{ComBat} \citep{combat}, a normalization method originally develop in genomics,
+which was adopted in neuroimaging studies to reduce unwanted sources of variation in the data due to the differences in acquisition protocols among datasets \citep{Fortin2017, Fortin2018, Orlhac2020}.
 In ComBat, we set the variable `age' as main regressor, and `Adni2' as reference dataset for the training set.
 The ComBat reference dataset for testing was the whole training split.
 
@@ -103,7 +104,7 @@ The purpose of this experiment is to validate on real data the benchmarked resul
 
 As benchmark methods, we choose the best performers on the synthetic experiments, namely KNN5 and DAE.
 We choose for our MT-MCVAE model a linear Gaussian parameterization for the likelihood and sparse variational distributions of \eqnref{eq:decoder} and \eqnref{eq:dropout_posterior} respectively,
-The latter with a latent dimension of $32$.
+the latter with a latent dimension of $32$.
 We trained it for $20000$ epochs which ensured convergence, after setting up the Adam optimizer with a learning rate of 0.001.
 In testing, we set up a dropout threshold for the latent space of $0.5$.
 
@@ -143,7 +144,7 @@ We trained them for $20000$ epochs which ensured convergence, after setting up t
 Prediction performances were evaluated with the Mean Squared Error (MSE) metric, measured on the available views in the testing dataset, reconstructed with \eqnref{eq:reconstruction}.
 
 Non-linear experiments were also made on the MTL scenarios with our MT-MCVAE model, where the encoding and decoding distributions were parametrized with neural networks with up to $4$ layers and LeakyReLU activation functions.
-For the non-linear experiments we choose hidden dimension as the mean value between the input features and latent dimension (32 features), rounded towards the nearest integer
+In this case we choose hidden dimension as the mean value between the input features and latent dimension (32 features), rounded towards the nearest integer
 (\eg for the MRI views and a depth of $3$ layers we used a symmetric encoding-decoding architecture with dimensions: $99-66-66-32-66-66-99$).
 
 All results were validated by means of $5$-folds cross-validation.
@@ -204,4 +205,4 @@ In all of them we measure a better performance with respect to the best STEB cas
 
 In \tabref{tab:classifier_mtl_nl}, the results on a non linear application of our method in MTL cases show
 that no improvement is gained when changing the architecture depth (anova test, alpha level $0.05$) for both the EmbraceNet an MC-MCVAE models.
-No significant difference (t-test, alpha level $0.05$) also were recorded between the EmbraceNet and MT-MCVAE models for any given architecture depth level.
+No significant differences (t-test, alpha level $0.05$) also were recorded between the EmbraceNet and MT-MCVAE models for any given architecture depth level.

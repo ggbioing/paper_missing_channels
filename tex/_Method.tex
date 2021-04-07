@@ -85,6 +85,7 @@ In \tabref{tab:mcvae} we show how our Multi-Task model extends the capabilities 
 
 In our former work we proposed a multi-view generative model trainable only with observation in the training set have all the available views, limited to model one dataset at a time (in the case of datasets with multiple views), after having discarded incomplete observations in that dataset.
 We address this limitation by allowing missing views in the training set for some observations, thanks to the adapted optimization scheme in \eqnref{eq:argmax}.
+This aspect naturally extends the training paradigm of MCVAE to the more challenging scenario of multi-dataset analysis.
 \input{./tex/tab/table_mcvae}
 
 As in the MCVAE, at test time, the trained MT-MCVAE model can estimate missing views $\hat\xb_{d,n,v}$ from the available ones through the formula:
@@ -122,13 +123,9 @@ In \cite{Antelmi2019} we also introduced the following alternative parameterizat
 \end{equation}
 which is known as \textit{dropout posterior} \citep{Kingma2015}.
 The dropout parameter $\alphab$ has components $\alpha_i = \nicefrac{p_i}{1-p_i}$ linked to the probability $p_i$ of dropping out the $i$-th latent variable component \citep{Wang2013}.
-It has been shown that the association of this dropout posterior with a log-uniform prior distribution $\pz$ leads to sparse and interpretable models \citep{Antelmi2019,Molchanov2017}.
+It has been shown that the association of this dropout posterior with a log-uniform prior distribution $\pz$ leads to sparse and interpretable models \citep{Molchanov2017,Garbarino2021}.
 
 Thanks to the flexibility of modern neural network frameworks,
-it is straight forward to implement non linear parametrizations $\mub = \mathbf{f}^{(\mu)}(\x)$ and $\Sigmab = \mathbf{f}^{(\sigma)}(\x)$ for the mean and covariance functions in the variational and likelihood distributions.
+it is straightforward to implement non linear parametrizations $\mub = \mathbf{f}^{(\mu)}(\x)$ and $\Sigmab = \mathbf{f}^{(\sigma)}(\x)$ for the mean and covariance functions in the variational and likelihood distributions.
 Typically it is done by stacking linear or convolution layers, interleaved with non-linear activation functions such as sigmoid and hyperbolic tangent.
-
-The use of non linear networks can provide better results.
-The design choices that the model user must make
-(for example the number of layers, the sizes of hidden dimensions, the activation functions, \etc),
-is in general highly task-dependent.
+This modeling is in general highly task-dependent.

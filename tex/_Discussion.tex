@@ -6,7 +6,7 @@ An interesting result is the one presented in \figref{fig:synthetic_benchmark_pr
 The empirical bound on this minimum level of data-points with all available views amounts to $25\%$.
 In fact, in our synthetic tests, training on scenarios with completeness level above this bound does not seem to improve significantly the testing results.
 This condition may be explained by the high collinearity between features due to the linear mappings used to generate the multi-view data.
-The same bound may be noticed also in our showcase experiment (\S~\ref{sec:proof_of_concept}) where we jointly modeled MRI and FDG brain images.
+The same bound may be noticed also in our showcase experiment (\S~\ref{sec:proof_of_concept}) where we jointly modeled MRI and FDG-PET brain images.
 This results suggest that our model can reach its highest prediction power also when data collection resources are scarce,
 such as in studies were the acquisition of complete observations is hampered by economical reasons or subject dropout.
 % This condition may be due to overtraining, where collecting more data may not necessary to improve the model performance \citep{Bilbao2017}.
@@ -37,9 +37,11 @@ In general, there may be an $m$-to-$n$ relationship, with partially overlapping 
 Investigating the properties of all the possible architectures is beyond the scope of this work.
 
 In our non linear experiments we did not capture any improvement by using deep architectures with respect to simple linear mappings,
-in both feature prediction and classification tasks on real neuroimaging datasets.
-This result is in line with our previous work \citep{Antelmi2019}, were we benchmarked other auto-encoding based methods on observations coming from the ADNI dataset.
-For this reason we suspect that this result is data-dependent and that it may not hold when modeling other kinds of dataset.
+in both feature prediction \tabrefp{tab:features_mtl_nl} and classification tasks \tabrefp{tab:classifier_mtl_nl} on real neuroimaging datasets.
+These results are in line with our previous work \citep{Antelmi2019}, were we benchmarked other auto-encoding based methods on observations coming from the ADNI dataset.
+We suspect that this result is due to the general high heterogeneity and relatively small sample size of typical neuroimaging data.
+In our experiments we found no significant differences between the EmbraceNet and our MT-MCVAE \tabrefp{tab:classifier_mtl_nl},
+although we note that is only with the latter that we have a framework adaptable to both classification and modality-to-modality prediction tasks.
 
 As final remark, we want to stress that our model is based on the assumption of independent and identical distributed observations.
 This assumption may be limiting in healthcare datasets, such as the ones used in this work.
