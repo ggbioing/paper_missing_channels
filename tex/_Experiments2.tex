@@ -25,11 +25,7 @@ We executed three kinds of experiments:
 Data used in the preparation of this section were obtained from the following sources.
 \begin{enumerate}
 %
-\item The Alzheimer's Disease Neuroimaging Initiative (ADNI)
-\footnote{
-\href{http://adni.loni.usc.edu}{adni.loni.usc.edu}.
-The ADNI was launched in 2003 as a public-private partnership, led by Principal Investigator Michael W. Weiner, MD. For up-to-date information, see \href{www.adni-info.org}{www.adni-info.org}.
-},
+\item The Alzheimer's Disease Neuroimaging Initiative (ADNI),
 a database of brain imaging and related clinical data of cognitively normal subjects, and on patients presenting various degrees of cognitive decline.
 %
 \item MIRIAD dataset, a database of brain imaging and related clinical data of cognitively normal subjects and patients affected by Alzheimer's disease \citep{Miriad}.
@@ -146,6 +142,7 @@ Prediction performances were evaluated with the Mean Squared Error (MSE) metric,
 Non-linear experiments were also made on the MTL scenarios with our MT-MCVAE model, where the encoding and decoding distributions were parametrized with neural networks with up to $4$ layers and LeakyReLU activation functions.
 In this case we choose hidden dimension as the mean value between the input features and latent dimension (32 features), rounded towards the nearest integer
 (\eg for the MRI views and a depth of $3$ layers we used a symmetric encoding-decoding architecture with dimensions: $99-66-66-32-66-66-99$).
+Training for $20000$ epochs with Adam and a learning rate of 0.001 ensured convergence.
 
 All results were validated by means of $5$-folds cross-validation.
 
@@ -183,7 +180,9 @@ To adapt the models to this new classification experiment, we adopt as decoding 
 where $y_{d,n}$ is the diagnosis associated to the data-point $n$ in the dataset $d$.
 The probability vector $\mathbf{\pi}$ is a two dimensional vector representing the class probability for each of the three binary comparisons across the three diagnostic classes, namely AD \textit{vs} MCI, AD \textit{vs} NC, MCI \textit{vs} NC ,and is parametrized with a linear transformation of the latent $\z$ by the matrix $\thetab$.
 
+% MT_MCVAE vs EMBRACENET
 Non-linear experiments were also made on the MTL scenarios with our MT-MCVAE model, benchmarked against the EmbraceNet method \citep{embracenet}, where the encoding distributions were parametrized with neural networks with up to $4$ layers and LeakyReLU activation functions.
+Training for $20000$ epochs with the Adam optimizer and a learning rate of 0.001 ensured convergence.
 
 Models were trained on all the available views in the training dataset, independently of their presence in the testing dataset.
 Classes probabilities were inferred from the all the available views in the testing dataset with the following equation:

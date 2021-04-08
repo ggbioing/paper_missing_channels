@@ -6,7 +6,12 @@ magnetic resonance imaging (MRI) and fluorodeoxyglucose positron emission tomogr
 The trained model will be then applied on test data
 to the cross-modality reconstruction problem (MRI to FDG-PET and \textit{vice versa}).
 
-Data comes from the `Adni2' dataset (see details in \S~\ref{ssec:datasets}, \tabref{table:datasets}), from which we took the MRI and FDG-PET brain imaging modalities.
+Data comes from the `Adni2'
+\footnote{
+\href{http://adni.loni.usc.edu}{adni.loni.usc.edu}.
+The ADNI was launched in 2003 as a public-private partnership, led by Principal Investigator Michael W. Weiner, MD. For up-to-date information, see \href{www.adni-info.org}{www.adni-info.org}.
+}
+dataset (see details in \S~\ref{ssec:datasets}, \tabref{table:datasets}), from which we took the MRI and FDG-PET brain imaging modalities.
 In what follows, each one of this two modalities corresponds to a specific data view.
 For each subject ($n=424$, with both MRI and FDG-PET) we extracted $3$ brain slices for each one of the sagittal, coronal, and axial plane.
 The resulting $3816$ slices were randomly allocated to a training and testing set with respectively sizes of $3500$ and $316$ samples.
