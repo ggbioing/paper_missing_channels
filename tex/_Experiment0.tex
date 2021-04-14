@@ -1,7 +1,7 @@
 \textcolor{blue}{
-\refnum{\#5, \#6, \#8}
 	\subsection{Illustration on a simplified brain imaging dataset}
 	\label{sec:proof_of_concept}
+\refnum{\#5, \#6, \#8}
 	In this section we describe a simple experiment where we use MT-MCVAE to model the joint relationship between
 	magnetic resonance imaging (MRI) and fluorodeoxyglucose positron emission tomography (FDG-PET) images when there are missing data at training time.
 	The trained model will be then applied on test data
@@ -22,7 +22,7 @@
 	this procedure is depicted in \figref{fig:nimg_scheme} where we show an example of training dataset created with $f=1/3$.
 	%
 	For our experiments we took all the $3500$ training images and we randomly removed MRI and FDG-PET views to obtain different training sets for which $f \in \{0, 0.25, 0.5, 0.75, 1\}$.
-	In the case $f = 0$, from each subjects we kept either its MRI or FDG-PET slices, representing the limit case where no direct relationship between views is observable.
+	In the case $f = 0$, from each subjects we kept only its MRI or FDG-PET slices, representing the limit case where no direct relationship between views is observable.
 	In the limit case $f = 1$, all MRI and FDG-PET are paired, representing the ideal case of no missing views, that is the working case of the MCVAE \citep{Antelmi2019}.
 	We adopted a deep architecture with $4$ layers for both encoders and decoders, having ReLU activation functions and layer dimensions of $784-1024-1024-16$ in the encoding and $16-1024-1024-784$ in the decoding path,
 	an architecture inspired from those used by \cite{dcca1} and \cite{dcca2} for a similar task on the MNIST dataset \citep{mnist}.

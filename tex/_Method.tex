@@ -2,9 +2,10 @@
 \label{sec:method}
 
 In this section we recall the theoretical framework of the \textit{Multi-Channel Variational Autoencoder} (MCVAE) developed in our previous work \citep{Antelmi2019}, which we now extend to tackle the problem of missing data integration.
-In \S~\ref{ssec:generative_model} and \S~\ref{ssec:derivation} we introduce the approach and derive the model in presence of missing data.
+In \S~\ref{ssec:generative_model} and \S~\ref{ssec:derivation} we introduce our framework, the \textit{Multi-Task MCVAE} (MT-MCVAE), and derive the model in presence of missing data.
+In \S~\ref{ssec:optimization} we propose the new optimization scheme allowing to account for observations with partially missing views.
+In \S~\ref{ssec:comparison} we emphasize the differences between the MCVAE and our current approach.
 In \S~\ref{ssec:parameterization} we briefly recall the main parametric functions adopted later in our experiments with missing data.
-In \S~\ref{ssec:optimization} we finally propose the new optimization scheme allowing to account for observations with partially missing views.
 Code developed in Pytorch \citep{Paszke2019} is publicly available at \url{https://gitlab.inria.fr/epione\_ML/mcvae}.
 
 \subsection{Generative Model}
@@ -82,8 +83,9 @@ In \figref{fig:model} the learning scheme of our model in a simple case with fou
 
 \textcolor{blue}{
 	\subsection{Comparison with VAE and MCVAE}
+	\label{ssec:comparison}
 \refnum{\#4, \#15}
-	In \tabref{tab:mcvae} we show how our Multi-Task model extends the capabilities of the Multi-Channel VAE (MCVAE, \cite{Antelmi2019}), which is itself a multi-view extension of the VAE \citep{Kingma2013,Rezende2014}.
+	In \tabref{tab:mcvae} we show how the Multi-Task framework detailed in Algorithm \ref{alg:optim} extends the capabilities of the Multi-Channel VAE (MCVAE, \cite{Antelmi2019}), which is itself a multi-view extension of the VAE \citep{Kingma2013,Rezende2014}.
 	In our former work we proposed a multi-view generative model trainable only with observation in the training set have all the available views, limited to model one dataset at a time (in the case of datasets with multiple views), after having discarded incomplete observations in that dataset.
 	We address this limitation by allowing missing views in the training set for some observations, thanks to the adapted optimization scheme in \eqnref{eq:argmax}.
 	This aspect naturally extends the training paradigm of MCVAE to the more challenging scenario of multi-dataset analysis.

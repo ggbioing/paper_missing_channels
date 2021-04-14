@@ -24,8 +24,9 @@ such as in studies were the acquisition of complete observations is hampered by 
 	given the very same training and testing conditions for both of models.
 	The features and diagnosis prediction clearly improves when using our method, that allows to not discard observations with missing views in the training phase.
 	On the same tables, when read on the vertical axes, we note that models trained and tested on the same single dataset (STIB cases) tend to be more accurate than those trained on multiple other datasets (STEB cases).
-	As this usually happens when the problem of domain shift is such that observations coming from different datasets are not identically distributed,
-	we want to emphasize that we mitigated this problem with a data harmonization step based on ComBat \citep{combat},
+	This is an expected result pointing to the issue of ``domain shift'', i.e. when observations coming from different datasets are not identically distributed,
+	leading to generally high ``within task'' accuracy, and low generalization ability in the ``between task'' setting.
+	We want to emphasize that we mitigated this problem with a data harmonization step based on ComBat \citep{combat},
 	one of the state-of-the-art normalization method in biomedical applications \citep{Fortin2017, Fortin2018, Orlhac2020}.
 	For this reason, we believe that the domain shift has a marginal impact for the application proposed in our study,
 	and that those differences on the vertical axes are most likely due to the large variety of number of observations, available views, and differences in stratification by diseases in the datasets (\cf \tabref{table:datasets}, \tabref{tab:dx_stratification}).
@@ -49,8 +50,12 @@ These results are in line with our previous work \citep{Antelmi2019}, were we be
 We suspect that this result is due to the general high heterogeneity and relatively small sample size of typical neuroimaging data.
 \textcolor{blue}{
 	\refnum{\#11}
-	We also report no significant differences between the EmbraceNet and our MT-MCVAE \tabrefp{tab:classifier_mtl_nl},
-	although we note that is only with the latter that we have a framework adaptable to both classification and modality-to-modality prediction tasks.
+	Our results on the classification task in multi-view and multi-dataset problem also showed that our approach is equivalent to the EmbraceNet \citep{embracenet} recently proposed in the literature (\S~\ref{ssec:classifier}).
+	While this finding indicates the ability of MT-MCVAE to provide results compatible with the state of the art in MTL classification problems,
+	we note that the architecture of our framework enables a much larger set of applications than the one tackled by the EmbraceNet,
+	such as cross-modality reconstruction and cross-dataset dimensionality reduction.
+	%We also report no significant differences between the EmbraceNet and our MT-MCVAE \tabrefp{tab:classifier_mtl_nl},
+	%although we note that is only with the latter that we have a framework adaptable to both classification and modality-to-modality prediction tasks.
 }
 
 In our work we have thoroughly investigated architectures with a one-to-one correspondence between encoding and decoding views.

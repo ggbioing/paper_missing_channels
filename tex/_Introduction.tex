@@ -24,7 +24,7 @@ Because of this, methods whose modeling task are specifically designed on one da
 }
 Efforts to model multi-view data are increasing in the recent biomedical literature \citep{Vieira2020,Venugopalan2021},
 where the objective ranges from predicting clinical outcomes \citep{Chen2019,AbiNader2020,Tabarestani2020}
-to synthesizing new modalities \citep{Zhou2020, Wei2020}.
+to synthesizing new modalities \citep{Wei2019, Wei2020, Zhou2020}.
 The key concept of a shared information space between views is widespread in the literature for the joint model of multi-view data.
 %
 \textcolor{blue}{
@@ -128,7 +128,7 @@ especially in medical imaging approaches.
 	Similarly as for the previous work, the proposed framework is currently applicable in classification tasks only.
 }
 % DAE
-Dropout is also at the base of the \textit{Denoising Autoencoder}, as developed by \cite{dae}.
+Dropout is at the basis of the \textit{Denoising Autoencoder}, as developed by \cite{dae}.
 Here an overcomplete deep autoencoder maps input views to a higher dimensional space.
 The initial dropout layer induces random corruption in the input views, making the model robust to missing data.
 This framework is currently applicable in feature prediction tasks only.
@@ -137,7 +137,7 @@ The common underlying assumption of these approaches consists in the existence o
 proper transformation into a common latent code for the solution of multiple tasks,
 whether classification or feature prediction.
 %
-Based on these general assumptions,
+Based on this general assumption,
 the Multi-Channel Variational Autoencoder (MCVAE) \citep{Antelmi2019}
 is a recent  analysis method allowing the identification of a common latent representation for different views belonging to a single dataset \figrefp{fig:architecture}.
 MCVAE extends currently available approaches to account for non-linear transformations from the data to the latent space,
@@ -148,14 +148,16 @@ Training the MCVAE in a multi-dataset context is indeed possible with some limit
 2) when at train time all the observations are compatible in terms of available views.
 
 To overcome these limitations, in this work we investigate an extension of MCVAE to simultaneously learn from multiple datasets, even in the presence of non compatible views between datasets, and missing views within datasets.
-Our extension is built upon the following actions:
-1) To define tasks across datasets based on the identification of data subsets presenting compatible views,
-2) to stack multiple instances of the MCVAE, where each instance models a specific task,
-3) to share the models parameters of common views between modeling tasks.
+While our formulation naturally extends the original MCVAE approach,
+to the best of our knowledge no systematic investigation of this approach for the modeling of multi-view and multi-dataset neuroimaging data has been proposed so far.
+Our extension is built upon the following steps:
+1) defining tasks across datasets based on the identification of data subsets presenting compatible views,
+2) stacking multiple instances of the MCVAE, where each instance models a specific task,
+3) sharing the models parameters of common views between modeling tasks.
 %
-Thanks to these actions, the method here proposed allows to learn a joint model for all the subjects without discarding any information \figrefp{fig:model}.
-The common views between tasks act as a bridge and enable the information to flow through all the other views.
-In the training phase, tasks lacking a particular view will simply not contribute to the learning of those view-specific parameters.
+Thanks to these actions, the framework here proposed allows to learn a joint model for all the subjects without discarding any information \figrefp{fig:model}.
+The common views between tasks act as a bridge and enable the information to flow through all the other views,
+while, in the training phase, tasks lacking a particular view will simply not contribute to the learning of those view-specific parameters.
 All the tasks will nevertheless benefit from the parameters they didn't contribute to learn, for the prediction of their missing views.
 The proposed variational formulation for computing approximate posterior distributions of the latent variables allows fast and scalable training.
 Being dataset agnostic, our method allows to integrate all the available data into a joint model, gathering  all the available information from multiple datasets at the same time.
