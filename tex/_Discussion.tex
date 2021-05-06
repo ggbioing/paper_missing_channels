@@ -12,14 +12,14 @@ such as in studies were the acquisition of complete observations is hampered by 
 % This condition may be due to overtraining, where collecting more data may not necessary to improve the model performance \citep{Bilbao2017}.
 % We think that this fact can have a positive impact in studies were the acquisition of complete observations is hampered by economical or ethical reasons.
 
-\textcolor{blue}{
-\refnum{\#23}
+%\textcolor{blue}{
+%\refnum{\#23}
 	As a secondary result, we report the positive performance of knn (k = 5) in synthetic scenarios, especially in low snr cases, and on real data experiment, were it is most of the time superior to the DAE.
 	This finding is corroborated by \cite{Platias2020} were knn is found to be superior to methods based on autoencoders.
-}
+%}
 
-\textcolor{blue}{
-\refnum{\#24, \#25}
+%\textcolor{blue}{
+%\refnum{\#24, \#25}
 	The experimental results on real medical imaging datasets (\tabref{tab:features}, \tabref{tab:classifier}) show on the horizontal axes the clear improvement of our MT-MCVAE method with respect to the MCVAE, that inspired our work,
 	given the very same training and testing conditions for both of models.
 	The features and diagnosis prediction clearly improves when using our method, that allows to not discard observations with missing views in the training phase.
@@ -30,7 +30,7 @@ such as in studies were the acquisition of complete observations is hampered by 
 	one of the state-of-the-art normalization method in biomedical applications \citep{Fortin2017, Fortin2018, Orlhac2020}.
 	For this reason, we believe that the domain shift has a marginal impact for the application proposed in our study,
 	and that those differences on the vertical axes are most likely due to the large variety of number of observations, available views, and differences in stratification by diseases in the datasets (\cf \tabref{table:datasets}, \tabref{tab:dx_stratification}).
-}
+%}
 
 In feature prediction experiments (\tabref{tab:features_mtl}) we showed that MT-MCVAE models trained jointly on multiple neuroimaging datasets (ADNI, MIRIAD, OASIS-3, Geneva cohort)
 perform generally better than the ones trained on a single dataset.
@@ -48,15 +48,15 @@ In our non linear experiments we did not capture any improvement by using deep a
 in both feature prediction \tabrefp{tab:features_mtl_nl} and classification tasks \tabrefp{tab:classifier_mtl_nl} on real neuroimaging datasets.
 These results are in line with our previous work \citep{Antelmi2019}, were we benchmarked other auto-encoding based methods on observations coming from the ADNI dataset.
 We suspect that this result is due to the general high heterogeneity and relatively small sample size of typical neuroimaging data.
-\textcolor{blue}{
-	\refnum{\#11}
+%\textcolor{blue}{
+%\refnum{\#11}
 	Our results on the classification task in multi-view and multi-dataset problem also showed that our approach is equivalent to the EmbraceNet \citep{embracenet} recently proposed in the literature (\S~\ref{ssec:classifier}).
 	While this finding indicates the ability of MT-MCVAE to provide results compatible with the state of the art in MTL classification problems,
 	we note that the architecture of our framework enables a much larger set of applications than the one tackled by the EmbraceNet,
 	such as cross-modality reconstruction and cross-dataset dimensionality reduction.
 	%We also report no significant differences between the EmbraceNet and our MT-MCVAE \tabrefp{tab:classifier_mtl_nl},
 	%although we note that is only with the latter that we have a framework adaptable to both classification and modality-to-modality prediction tasks.
-}
+%}
 
 In our work we have thoroughly investigated architectures with a one-to-one correspondence between encoding and decoding views.
 This makes our model part of the family of the auto-encoders, where the model acts as identity transformation between the input and the output.
@@ -64,9 +64,9 @@ Other architectures are nevertheless possible, such as the classifier described 
 In general, there may be an $m$-to-$n$ relationship, with partially overlapping views among $m$ input views and $n$ output views.
 Investigating the properties of all the possible architectures is beyond the scope of this work.
 
-\textcolor{blue}{
-\refnum{\#24}
+%\textcolor{blue}{
+%\refnum{\#24}
 	As final remark, we want to stress that our model is based on the assumption of independent and identical distributed observations.
 	This assumption may be limiting in healthcare datasets, such as the ones used in this work.
 	In our work we mitigated these biases by harmonizing the datasets before applying our model, and we leave the extension and development of a bias-transparent multi-view models to future works.
-}
+%}

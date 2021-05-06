@@ -81,10 +81,10 @@ In \figref{fig:model} the learning scheme of our model in a simple case with fou
 
 \input{./tex/fig/model}
 
-\textcolor{blue}{
+%\textcolor{blue}{
 	\subsection{Comparison with VAE and MCVAE}
 	\label{ssec:comparison}
-\refnum{\#4, \#15}
+%\refnum{\#4, \#15}
 	In \tabref{tab:mcvae} we show how the Multi-Task framework detailed in Algorithm \ref{alg:optim} extends the capabilities of the Multi-Channel VAE (MCVAE, \cite{Antelmi2019}), which is itself a multi-view extension of the VAE \citep{Kingma2013,Rezende2014}.
 	In our former work we proposed a multi-view generative model trainable only with observation in the training set have all the available views, limited to model one dataset at a time (in the case of datasets with multiple views), after having discarded incomplete observations in that dataset.
 	We address this limitation by allowing missing views in the training set for some observations, thanks to the adapted optimization scheme in \eqnref{eq:argmax}.
@@ -97,7 +97,7 @@ In \figref{fig:model} the learning scheme of our model in a simple case with fou
 	\end{aligned}
 	\end{equation}
 	where the available views $\xdnw$ are encoded into the distributions $q_{d,n,w}$, which are then used to predict the missing view through its decoding distribution $\p{\xdnv|\z, \thetab_v}$.
-}
+%}
 
 \subsection{Parameterization}
 \label{ssec:parameterization}

@@ -1,7 +1,7 @@
-\textcolor{blue}{
+%\textcolor{blue}{
 	\subsection{Illustration on a simplified brain imaging dataset}
 	\label{sec:proof_of_concept}
-\refnum{\#5, \#6, \#8}
+%\refnum{\#5, \#6, \#8}
 	In this section we describe a simple experiment where we use MT-MCVAE to model the joint relationship between
 	magnetic resonance imaging (MRI) and fluorodeoxyglucose positron emission tomography (FDG-PET) images when there are missing data at training time.
 	The trained model will be then applied on test data
@@ -27,7 +27,7 @@
 	We adopted a deep architecture with $4$ layers for both encoders and decoders, having ReLU activation functions and layer dimensions of $784-1024-1024-16$ in the encoding and $16-1024-1024-784$ in the decoding path,
 	an architecture inspired from those used by \cite{dcca1} and \cite{dcca2} for a similar task on the MNIST dataset \citep{mnist}.
 	We adopted a Gaussian likelihood for the decoders, with independent diagonal covariance parameters, and
-\refnum{\#9}
+%\refnum{\#9}
 	we trained our model with mini-batches of size $500$ for $3000$ epochs, after setting up the Adam optimizer with a learning rate of 0.001.
 	Training was repeated $5$ times, by changing the initialization random seed of the model parameters.
 %	
@@ -37,6 +37,6 @@
 	We notice the immediate drop in the error metrics as soon as the parameter $f$ increases,
 	which means that as the model is fed with an increasing proportion of multi-view data points in the training set,
 	its predictions on the testing set become more precise.
-}
+%}
 	%
 	% In \figref{fig:nimg_test} is possible to visually inspect these predictions.
