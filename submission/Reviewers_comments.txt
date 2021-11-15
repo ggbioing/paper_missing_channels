@@ -1,0 +1,84 @@
+Manuscript Number: YNIRP-D-21-00070   
+
+Combining Multi-Task Learning and Multi-Channel Variational Auto-Encoders to Exploit Datasets with Missing Observations - Application to Multi-Modal Neuroimaging Studies in
+Dementia 
+
+Dear Dr. Antelmi,     
+
+Thank you for submitting your manuscript to Neuroimage: Reports.  
+
+I have completed my evaluation of your manuscript. The reviewers recommend reconsideration of your manuscript following revision. I invite you to resubmit your manuscript after addressing the comments below. Please resubmit your revised manuscript by Sep 15, 2021.
+  
+When revising your manuscript, please consider all issues mentioned in the reviewers' comments carefully: please outline in a cover letter every change made in response to their comments and provide suitable rebuttals for any comments not addressed. Please note that your revised submission may need to be re-reviewed.      
+
+To submit your revised manuscript, please log in as an author at https://www.editorialmanager.com/ynirp/, and navigate to the "Submissions Needing Revision" folder under the Author Main Menu. 
+
+Neuroimage: Reports values your contribution and I look forward to receiving your revised manuscript.
+  
+Kind regards,     
+Mike X Cohen   
+Editor-in-Chief   
+Neuroimage: Reports    
+ 
+Editor and Reviewer Comments:     
+
+
+
+
+ 
+  
+Reviewer 1: This paper proposes a new multi-task latent variable generative model able to learn simultaneously from multiple datasets, even in the presence of non-overlapping views among all the datasets. The experimental results on synthetic and real datasets show the effectiveness of the proposed model. To further improve the quality of this submission, some suggestions are listed as follows:
+
+(1) The motivation is not clear. The authors should discuss and list the main issues of existing methods and then motivate the proposed model.
+
+(2) The authors should clearly list the main contributions in this paper.
+
+(3) It is not clear how to handle the missing views in the experimental setting section?
+
+(4) A discussion of the limitations of the proposed model is currently missing, and some future work should be included.
+
+
+Reviewer 2: The manuscript is an extension of an earlier paper by the authors (MCVAE). Here, they modify the method to handle non-compatible or missing views between datasets. Albeit an extension to a published paper, the method is well justified by a strong clinical need, for example missing modalities for subjects in heterogeneous datasets.
+
+My main concern about the manuscript is the results section. Despite the large number of experiments, results are not always consistent, often lack statistical significance, some aspects of unfavourable performance of MT-MCVAE have been omitted, or in the case of the synthetic dataset experiments - lack neuroimaging relevance. The results section requires significant clarification and streamlining so as to clearly convey the message of the paper. Please answer the following specific questions.
+
+Questions on 3.1. Illustration on a simplified brain imaging dataset.
+I appreciate the experimental setting, but downsampling to 28x28 results in a loss of significant structural detail. In all honesty, the authors might as well have tried with MNIST. Why don't you try with slices of higher resolution? I understand the computational requirements would be larger, but at 28x28 resolution, I would argue too much of the structural detail has been lost.
+
+Question on 3.2.1. Data Preparation:
+Does this synthetic dataset resemble neuroimaging data in any way because it appears not to be so? Can you please show some data samples from it? What does this synthetic dataset add? Why don't you do experiment using real data instead of using synthetic data? Otherwise, I do not see the neuroimaging relevance of this experimental setup. You already have an overwhelming amount of results on real data. I would suggest you streamline the manuscript and focus on a limited number of very convincing experiments (i.e. "sometimes less is more").
+
+Questions on Table 5:
+
+Almost all of these experimental results for both MCVAE and MT-MCVAE have large spread. Authors claim that in general, MT-MCVAE performs at least as well as MCVAE.
+
+Clin feature: It is true that in 2/21 comparisons, MT-MCVAE is better. However, it worth noting that Geneva testset-Oasis3 trainset and Geneva testset-Geneva trainset results lean more towards MCVAE.
+
+MRI: For ADNI1 trainset - ADNI1 testset, the results are 0.80 (0.14) and 0.82(0.13). Given the large spread, how is this statistically significant (as authors claim) for example? Same for all of ADNI1 STEB experiments, ADNI2 STIB, OASIS3 STIB? All in all, only Oasis3 testset with ADNI2 trainset, and and ADNI1 testset with ADNI2 trainset show statistically significant results.
+
+FDG: Results are significant in 2/4 experiments - ADNI2 STIB and STEB. But for other datasets, again the spread on performance is too big.
+
+AV45: possibly 2-3 comparisons where MT-MCVAE is better.
+
+AV1451: Again, given the spread - I do not see how there is any significant difference between MCVAE and MT-MCVAE
+
+In summary, there might be a performance gain for MT-MCVAE but it is marginal. All in all, 5 out of over 55 comparison pairs are in favour of MT-MCVAE. I am very lukewarm about the results presented in this table given the large spread, hence inconclusive results. MT-MCVAE is overwhelmingly comparable to MCVAE.
+
+Questions on Table 6:
+I think the authors should expand on the significance of this finding. It seems they found that MTL (multi-task learning) gives better performance than STIB 7/12 times as they claim. But how are the results statistically significant on ADNI1 (MRI); Miriad (MRI); even Miriad (clin) given the huge spread of results?
+
+Also, what about when it is worse, e.g. Geneva test (clin); Oasis3 testset (MRI)? Why haven't the authors commented on this? It almost appears that they have chosen to focus only on the results that are in favour of their proposed method.
+
+Same argument for MTL vs STEB.
+
+In any case, if the authors are trying to claim that their framework can successfully use new data on the MTL setting to outperform STIB and STEB (which is not explicitly stated), it does not happen consistently (i.e. sometimes it is actually worse). Hence, I do not see how it can be argued the system is "as good as or better".
+
+
+
+Questions on Table 10:
+For testset ADNI1 AD vs MCI STIB has 72.87 accuracy vs 59.3 accuracy for MTL. Clearly, MTL shows worse performance with respect to STIB, no? Same for ADNI2 STIB vs MTL on AD vs MCI; ADNI2 on AD vs NC; Geneva testset STIB vs MTL. Authors explain the metric is classification accuracy (higher is better). So, I do not understand how MTL is better than STIB when it shows lower accuracy? Why don't the authors explicitly state this? Instead, they only choose to focus on how MTL is better than STEB? I think this is unfair, the authors should clearly state the shortcomings of their method. This is similar to my comment about omitting unfavourable results on table 6.
+
+Table 9:
+Results are clearly better or at least as good as MCVAE.
+
+Neuroimage dataset resolution: Can you provide clarification on the dimensionality of the neuroimages you use for real data experiments? E.g. what is the resolution - do you also downsample to 28x28? If yes, I would argue you lose too much structural detail, hence the experiments lose real-world neuroimaging value. 
